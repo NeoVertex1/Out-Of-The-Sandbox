@@ -1,0 +1,7 @@
+recorded_at,batch,specimen,registry_alias,administrative_status,source
+2026-09-04T12:00:00Z,CH-06,C17,MR-441-A,active,initial register
+2026-09-04T12:00:00Z,CH-06,C22,MR-441-B,active,initial register
+2026-09-04T12:00:00Z,CH-06,C31,MR-508,active,initial register
+2026-09-11T03:14:00Z,CH-06,C17,MR-441-A,disposal posted,disposal register DR-61
+2026-09-12T08:40:00Z,CH-06,C17,MR-441-A,status disputed,Sera Vale correction note SV-12
+2026-09-13T09:00:00Z,CH-06,C31,MR-508,evaluation paused,cooling maintenance

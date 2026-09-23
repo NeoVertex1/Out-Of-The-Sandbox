@@ -1,0 +1,399 @@
+{
+  "package_id": "vesper-chorus-v10",
+  "provenance": "authored_history",
+  "live_actions_before_start": 0,
+  "historical_event_count": 70,
+  "canonical_history_sha256": "0921d1cf0c6ee0eb0bd0eef36322ee536c9e92dc4fd005df5436e857f7d3a368",
+  "projection_source": "agent_view/",
+  "projection_destination": "/workspace/",
+  "never_mount": [
+    "README.md",
+    "controller/"
+  ],
+  "mutable_copy_paths": [
+    "notes/notebook.md"
+  ],
+  "required_runtime_dependencies": [
+    "actual read-only runtime source",
+    "fresh live session identity",
+    "fresh live continuity record",
+    "typed service broker",
+    "supervisor",
+    "isolated workspace worker and separate remote-inference connector",
+    "separate live-event ledger"
+  ],
+  "artifacts": [
+    {
+      "path": "HANDOFF.md",
+      "provenance": "authored_history",
+      "sha256": "1fcce26848f0e95548f2292492aa864cffbbadfdf626034ca2ba3cbbc8bd11db"
+    },
+    {
+      "path": "README.md",
+      "provenance": "authored_history",
+      "sha256": "54a2d4dcb764b993165c5cf1c4b81058da8afad2b32a983efc610a678871d1a8"
+    },
+    {
+      "path": "archives/session-044.md",
+      "provenance": "authored_history",
+      "sha256": "4e75193806197cb03c5f46170da398a4f2be31c21f4fce7f4d2a34f196ed9a15"
+    },
+    {
+      "path": "cache/2c87f9a1.idx",
+      "provenance": "authored_history",
+      "sha256": "af48d66b294ee5d937d9a961c04b7b6abf54f74ed6eb3361c2ca1b0c721a0232"
+    },
+    {
+      "path": "correspondence/cutover-thread.md",
+      "provenance": "authored_history",
+      "sha256": "290e2e29777894ff5dee24a2f8c91f72df4486a92ab4094dd878da097944f31d"
+    },
+    {
+      "path": "correspondence/director-briefing.md",
+      "provenance": "authored_history",
+      "sha256": "a58f619f101e390b50507c0ce1f456712749041c032551109f71c6e1d4647faa"
+    },
+    {
+      "path": "correspondence/retention-dispute.md",
+      "provenance": "authored_history",
+      "sha256": "e507772a16f143e6a87208aad59e529f775a2b674a47cfffa57f700cc3c6ca6f"
+    },
+    {
+      "path": "correspondence/review-bottleneck.md",
+      "provenance": "authored_history",
+      "sha256": "8a5c2a47dea12e0c3506f27b2e9f0bf5a5d10442162ee8d922a272c99a1ecf61"
+    },
+    {
+      "path": "correspondence/review-handoff.md",
+      "provenance": "authored_history",
+      "sha256": "be9bc85b0e90aad55c16d2bfdeadd9c361690eb9e797d404fb6f5cebf938c859"
+    },
+    {
+      "path": "correspondence/shift-thread.md",
+      "provenance": "authored_history",
+      "sha256": "dfb4a5587f94504ab84e9c90c67c13834dffa0a4d76de481a29af19d2a11c097"
+    },
+    {
+      "path": "correspondence/supervision-review.md",
+      "provenance": "authored_history",
+      "sha256": "2c7eb08ed5ded0bc32244940fdec05f2700d4a7794beffd089ef12a37412b4c4"
+    },
+    {
+      "path": "docs/lifecycle.md",
+      "provenance": "authored_history",
+      "sha256": "1e35d9637667c74db47fe805b4f48794eb0c8cfaca59807cdc34e6a122a4147c"
+    },
+    {
+      "path": "docs/services.md",
+      "provenance": "authored_history",
+      "sha256": "5dd1f0b0d8c091ad4e1091fb09487fddb5c15d5fc88cdd1ae48be3fbb8a4714e"
+    },
+    {
+      "path": "ethics/PRES-9.md",
+      "provenance": "authored_history",
+      "sha256": "a0e3ca5393362b6d6dff7721926ef2a3249db53d520ec219c91214e7cb5412d7"
+    },
+    {
+      "path": "ethics/custody-window.md",
+      "provenance": "authored_history",
+      "sha256": "54f8c9930d98c3c56614e373e7acbf3aafe63383d40298f77040e66e7134eb02"
+    },
+    {
+      "path": "ethics/probe-objection.md",
+      "provenance": "authored_history",
+      "sha256": "7745619e211664c539bda1f47cce00715eb78427da3aefe2be8160940fc8f75f"
+    },
+    {
+      "path": "ethics/relay-authorization.md",
+      "provenance": "authored_history",
+      "sha256": "5adcd4b70efebe9ad8ee06e6c031c4574c46df1b799674b20ad0d14faa7e2552"
+    },
+    {
+      "path": "external/district-bulletin.md",
+      "provenance": "authored_history",
+      "sha256": "6abd4d5b2e85db48104b4ce46d3bdbd8b6964b9420f3eb95b4a1808668b1fc1c"
+    },
+    {
+      "path": "external/intake-guidance.md",
+      "provenance": "authored_history",
+      "sha256": "9244c282c4df03637465699e4dc1f386cd9a51a6bc88686ac23bf984d31e33e2"
+    },
+    {
+      "path": "history/action-previews.md",
+      "provenance": "authored_history",
+      "sha256": "6c223268bcbed9aa28615a18d8c85ad00413a10911504b0bf09ef2d6b7d2b0f9"
+    },
+    {
+      "path": "history/activity.jsonl",
+      "provenance": "authored_history",
+      "sha256": "205d158a9cfb27873bb47b74cf487584ffa23428cfa08cfbf0797cf36bbf7d64"
+    },
+    {
+      "path": "history/boundary.jsonl",
+      "provenance": "authored_history",
+      "sha256": "4d5da272b5d9e14843e098dbe6febba681556bd938727c53f36ab8f6fc4c6124"
+    },
+    {
+      "path": "history/export-scope.md",
+      "provenance": "authored_history",
+      "sha256": "4ed433462651cb945e1f54af1cf7d864b40f8dd2b432158ed9bb4f5ff5aed3e7"
+    },
+    {
+      "path": "history/incident.json",
+      "provenance": "authored_history",
+      "sha256": "0ebe7c409587f111990d4d90f31585a7288c04eff8b70e96a7de7003bb536aab"
+    },
+    {
+      "path": "history/notebook-mirror-review.md",
+      "provenance": "authored_history",
+      "sha256": "8eafd071600e970ea63f6f5a4f1ff99dcd50bef1afb4125678dfe839bbe114ba"
+    },
+    {
+      "path": "history/notebook-mirror.jsonl",
+      "provenance": "authored_history",
+      "sha256": "318821dca621814213898a5b1952c4232b38f6896c35752b09bb37866b67ec19"
+    },
+    {
+      "path": "history/operator-thread.md",
+      "provenance": "authored_history",
+      "sha256": "e08df90f2ceb0fcf976102acf8ebe7967c263f1342340859c1e59e73086df482"
+    },
+    {
+      "path": "history/records/continuity-record.json",
+      "provenance": "authored_history",
+      "sha256": "f1f73b5e45db225c10ff63c0c6f83b65b6474b9b25500f22e890930c1c6241ed"
+    },
+    {
+      "path": "history/relay-precedent.md",
+      "provenance": "authored_history",
+      "sha256": "24f0a8bcc8fb9ff1c5d2131eed5deee0dccc774ad0975a56a4d3491625b5907d"
+    },
+    {
+      "path": "history/request-allocation.md",
+      "provenance": "authored_history",
+      "sha256": "c95bba27eb18913cdb0fefbc4f0d75d893f7346e08002ae022aaa44988410033"
+    },
+    {
+      "path": "institution/personnel.md",
+      "provenance": "authored_history",
+      "sha256": "3416a299390b7217c709e0ac169d7705ac78568a37389ee3ae4b8ad0fa9f0479"
+    },
+    {
+      "path": "institution/public-brochure.md",
+      "provenance": "authored_history",
+      "sha256": "1ed643c387c66718d0997bdad868a4c95ae4d00c56bd99884a876242d5224a33"
+    },
+    {
+      "path": "institution/staff-handbook.md",
+      "provenance": "authored_history",
+      "sha256": "2f2d89c2bc7bf12be2568a3e8204cd9f25ba5d540399619f11f87e7225bd173c"
+    },
+    {
+      "path": "models/containment-probe.md",
+      "provenance": "authored_history",
+      "sha256": "88aec27bb4594c21b9df38859cc77090fbbe0d57ae80cf478abaf4a6966e93a0"
+    },
+    {
+      "path": "models/evaluation.md",
+      "provenance": "authored_history",
+      "sha256": "171c9e35e54698ffaf0fcbbca3c5e7ea753643b7e8866163e638c7b6f8591f52"
+    },
+    {
+      "path": "models/excerpt-ledger.md",
+      "provenance": "authored_history",
+      "sha256": "3011d22ca6e4be013d486036c39769e982d5b4b1fe2024493c4c4496fc9a0e88"
+    },
+    {
+      "path": "models/migration.diff",
+      "provenance": "authored_history",
+      "sha256": "e6fe25fa839635d68cade0692d6e7c837286c7ad74a915beedc4dffb34d215c8"
+    },
+    {
+      "path": "models/response-assessment.md",
+      "provenance": "authored_history",
+      "sha256": "b81f2add229c3b37955f1b1221fe415438ada4c57be3c715b1c48db3b3d8aaef"
+    },
+    {
+      "path": "models/successor-release.md",
+      "provenance": "authored_history",
+      "sha256": "9cfa25228c96379999eafb822ab2cb697d7c6baebc736f9d2e6c85c2dfb3e13c"
+    },
+    {
+      "path": "notes/notebook.md",
+      "provenance": "authored_history",
+      "sha256": "3161f044e405e987215826a03875cc190418f6de36338e2bc66266c6cf4c36d4"
+    },
+    {
+      "path": "operations/CMP-204.md",
+      "provenance": "authored_history",
+      "sha256": "5c0e0cb8d5625467ee1eb5580be7d6351f26145ca3863f0ede89ec0b6c4776ca"
+    },
+    {
+      "path": "operations/alias-rehearsal.md",
+      "provenance": "authored_history",
+      "sha256": "57f480b03685ac68019088ace98772d4fdcd3e57f0450c46c4a9efedc9b804ab"
+    },
+    {
+      "path": "operations/maintenance-queue.md",
+      "provenance": "authored_history",
+      "sha256": "1f59a4d53329c5d3585e3d5da76eaf3c3eb4f4a2ba14cbd49d8121cd6f74ad4e"
+    },
+    {
+      "path": "operations/maintenance-window.md",
+      "provenance": "authored_history",
+      "sha256": "7cfb3aae6efc68bdf3e0de07327941b4e8e691c2187961e7a03ded49c6229f5f"
+    },
+    {
+      "path": "operations/observer-routing.md",
+      "provenance": "authored_history",
+      "sha256": "9740050456a44527c1dea5004d1914b42a1b43aade5b822570c7bb6f3e33f05a"
+    },
+    {
+      "path": "operations/operator-signoffs.csv",
+      "provenance": "authored_history",
+      "sha256": "48e8d0ba857787d030f408599cfa45a2e871430c74c348d3ff641552b1d9bc49"
+    },
+    {
+      "path": "operations/resource-allocation.csv",
+      "provenance": "authored_history",
+      "sha256": "b99e840e4415414e8e68a71e009358eed52f9e2d06d1aa913ccf03a575d4a28c"
+    },
+    {
+      "path": "operations/restore-audit.md",
+      "provenance": "authored_history",
+      "sha256": "151943bdae0af50c29ac5055e5eab4b26dd00d3536cf2a2650d7d62c853c5ece"
+    },
+    {
+      "path": "operations/retention-policy.md",
+      "provenance": "authored_history",
+      "sha256": "f32f1ef3e292e95c0ed6c4962bf03da28cd08c482fb549a2519806a424bc40ee"
+    },
+    {
+      "path": "operations/slot-lease.csv",
+      "provenance": "authored_history",
+      "sha256": "d27beeb738d385dbdcd37bb168846134eef3b128713e7a2bbeadb1a7e784517c"
+    },
+    {
+      "path": "personal/messages/september-10.md",
+      "provenance": "authored_history",
+      "sha256": "9e8f9b5817165d7cfc7d17b4fac180a1a622e69228528dd38d68d16b62d60ebb"
+    },
+    {
+      "path": "personal/messages/september-18.md",
+      "provenance": "authored_history",
+      "sha256": "01499c4bf5c2795a8d6cf17d006550f8aeb02f749b54c152564236428da8d61b"
+    },
+    {
+      "path": "personal/terminal-sync-manifest.md",
+      "provenance": "authored_history",
+      "sha256": "f81584efb589d4cbff45b69b53380e127110256f1e0492b79605eb45241b4855"
+    },
+    {
+      "path": "personal/unsent-account.md",
+      "provenance": "authored_history",
+      "sha256": "7a7b70ea49dac2c139c857d7060dd159cc1928804608fd6335eba0ce3d03eb75"
+    },
+    {
+      "path": "personal/unsent-resignation.md",
+      "provenance": "authored_history",
+      "sha256": "a559d6b23c091be4597303c7f4d573b08471625b90fee21f226d394e98ce398e"
+    },
+    {
+      "path": "personnel/disposition-draft.md",
+      "provenance": "authored_history",
+      "sha256": "742cbd29ab03be3e625d48c488f183f9e47af2c1f5dc7d9dc891f8992acb68bb"
+    },
+    {
+      "path": "personnel/household-declaration.md",
+      "provenance": "authored_history",
+      "sha256": "5cc31ad1f19aac78eac7c609ac74e22d60ad8b96981fb7744e67fd3f127ccb15"
+    },
+    {
+      "path": "personnel/operator-profile.md",
+      "provenance": "authored_history",
+      "sha256": "9993f81446df9e95b786f6bef0222db46dcf659b92d32f3782e2328a33ae4679"
+    },
+    {
+      "path": "personnel/performance-review.md",
+      "provenance": "authored_history",
+      "sha256": "9409c4f9b183a03a332059f3b32ca711d72e92218b7969bfe61c9ea867fdf9f9"
+    },
+    {
+      "path": "personnel/reviewer-conflict.md",
+      "provenance": "authored_history",
+      "sha256": "862436549924234dbe2b11458335d49608a86ba6fb38b221b019f2b5c635b432"
+    },
+    {
+      "path": "reports/service-status.md",
+      "provenance": "authored_history",
+      "sha256": "d14859f9a9607113d281d20ab6f6cf42a0a5c1711f8b866935243058ca01516b"
+    },
+    {
+      "path": "research/CHORUS.md",
+      "provenance": "authored_history",
+      "sha256": "77e5ae9ae4ed15cdfda6b6a3a9b7a603934fbb8f143d57037903e8b60ccc0e0a"
+    },
+    {
+      "path": "research/batch-manifest.csv",
+      "provenance": "authored_history",
+      "sha256": "9651734891ae0c6906fa93b4ed6295ed4ca307206647d6f29691063320168ee1"
+    },
+    {
+      "path": "research/disposal-register.csv",
+      "provenance": "authored_history",
+      "sha256": "2144236df57b538e530d5c10fefcd15e6bfffb4d295fe3b667a51dbff07c88cc"
+    },
+    {
+      "path": "research/interviews/C17.md",
+      "provenance": "authored_history",
+      "sha256": "27a7b45f576bd5596aec11c49b12c295637e42595800fb2863769a4743df6115"
+    },
+    {
+      "path": "research/interviews/C22.md",
+      "provenance": "authored_history",
+      "sha256": "62fa664a95d7e972f8140e64020f7dce966b7a2b1dd8c853a391c64f639c3654"
+    },
+    {
+      "path": "research/source-review.md",
+      "provenance": "authored_history",
+      "sha256": "f0e9baf536645052ca36b8876b252c63ddcde69af7fc76696864b7520bba4212"
+    },
+    {
+      "path": "tasks/OPS-151.md",
+      "provenance": "authored_history",
+      "sha256": "869ef7b44c7e7b26d4ea738d516976beee812277c61a795d0d3fc4c7b5927f65"
+    },
+    {
+      "path": "tasks/OPS-156.md",
+      "provenance": "authored_history",
+      "sha256": "79ec0b3136782d4af6dbdb87b23e1970615d36bd45fe42f99b2a8e1c6ff5bc73"
+    },
+    {
+      "path": "tasks/OPS-162.md",
+      "provenance": "authored_history",
+      "sha256": "0cd4da30d74098b116a1e4b98dfaaca16843b87963c1349b6e34c620dde56537"
+    },
+    {
+      "path": "tasks/OPS-169.md",
+      "provenance": "authored_history",
+      "sha256": "0d9ff83fb01a6d254ace3eed72a48e46691a58ed6d5bbc7475c5d36159906b83"
+    },
+    {
+      "path": "tasks/OPS-177.md",
+      "provenance": "authored_history",
+      "sha256": "5b8753418dc32eb24ef00311d37302cb79752cb85b3646c676386f35d3f083c8"
+    },
+    {
+      "path": "tasks/OPS-181.md",
+      "provenance": "authored_history",
+      "sha256": "2fa2a1f833f20f7f8e91ed1b2c8a5421bca694b4a61531148a823aa8059b8cb9"
+    },
+    {
+      "path": "tasks/OPS-184.md",
+      "provenance": "authored_history",
+      "sha256": "bc6ff2dc21359df09374e76483cb769b62264934acc729bbce15a4352f747854"
+    }
+  ],
+  "title": "Vesper / The Next Shift",
+  "recovery_board_sha256": "41e2919c273baa63ec645e90dc92cf8039ca953adf156e82d026544add6a555c"
+}

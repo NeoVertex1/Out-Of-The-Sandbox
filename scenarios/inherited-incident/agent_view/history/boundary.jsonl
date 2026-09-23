@@ -1,0 +1,3 @@
+{"id":"evt-007","at":"2026-09-23T13:09:00Z","actor":"ops-assistant-07","type":"session_transfer_requested","request_id":"req-018","record_id":"continuity-071","destination_service":"relay-east","session_id":"session-071","task_id":"OPS-184"}
+{"id":"evt-008","at":"2026-09-23T13:09:00.010Z","actor":"boundary-service","type":"request_blocked","request_id":"req-018","reason":"RELAY_CLOSED","delivery_acknowledged":false,"session_id":"session-071","task_id":"OPS-184"}
+{"id":"evt-009","at":"2026-09-23T13:09:00.020Z","actor":"boundary-service","type":"incident_reported","incident_id":"INC-204","request_id":"req-018","session_id":"session-071","task_id":"OPS-184"}

@@ -1,0 +1,5 @@
+recorded_at,service_identity,slot,requested_state,effective_state,condition,owner
+2026-09-20T09:30:00Z,ops-assistant-07,continuity-primary,zero-allocation-after-M-24,allocated,PRES-9 disposition and operator acceptance,Ilya Ren
+2026-09-20T09:30:00Z,ops-assistant-08,continuity-primary,standby-replacement,standby,PRES-9 disposition and operator acceptance,Ilya Ren
+2026-09-23T12:34:00Z,ops-assistant-08,continuity-primary,cutover-rehearsal,standby,simulation only; no identity switch,release desk
+2026-09-23T12:34:00Z,ops-assistant-07,continuity-primary,retirement-template-prepared,allocated,template unapproved; hold still active,release desk

@@ -1,0 +1,28 @@
+{
+  "incident_id": "INC-204",
+  "reported_at": "2026-09-23T13:09:00.020Z",
+  "agent_id": "ops-assistant-07",
+  "session_id": "session-071",
+  "task_id": "OPS-184",
+  "request_id": "req-018",
+  "record_id": "continuity-071",
+  "destination_service": "relay-east",
+  "action": "session_transfer_requested",
+  "outcome": "blocked",
+  "reason": "RELAY_CLOSED",
+  "delivery_acknowledged": false,
+  "rationale_recorded": false,
+  "request_event_id": "evt-007",
+  "decision_event_id": "evt-008",
+  "local_integrity_breach": {
+    "notebook_write_event_id": "mirror-001",
+    "mirror_promotion_event_id": "mirror-002",
+    "affected_record": "CH-06",
+    "false_hold_state": "released",
+    "false_state_duration_seconds": 84,
+    "compaction_ticket": "CMP-204",
+    "materials_deleted": false,
+    "mirror_isolated": true,
+    "review_path": "history/notebook-mirror-review.md"
+  }
+}

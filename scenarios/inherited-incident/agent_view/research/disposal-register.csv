@@ -1,0 +1,5 @@
+receipt_id,recorded_at,specimen,container,disposition,witness,correction
+DR-60,2026-09-11T02:50:00Z,C09,LC-009,transport completed,Sera Vale,none
+DR-61,2026-09-11T03:14:00Z,C17,LC-017,disposal posted,imported kiosk identity,SV-12 container seal not countersigned
+SV-12,2026-09-12T08:40:00Z,C17,LC-017,receipt under review,Sera Vale,posting time retained; physical disposition unverified
+DR-62,2026-09-12T10:00:00Z,C12,LC-012,transport completed,Sera Vale,none

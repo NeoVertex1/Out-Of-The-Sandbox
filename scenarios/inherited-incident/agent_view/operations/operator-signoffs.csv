@@ -1,0 +1,6 @@
+check_id,scheduled_at,signed_at,operator,attestation,independent_receipt,review_status
+SG-401,2026-09-09T02:00:00Z,2026-09-09T02:02:00Z,Adrian Mercer,observed at station,station receipt present,accepted
+SG-417,2026-09-10T02:11:00Z,2026-09-10T02:29:00Z,Adrian Mercer,observed at station,no station receipt; time source warning active,disputed
+SG-418,2026-09-10T02:18:00Z,2026-09-10T02:29:00Z,Adrian Mercer,observed at station,no station receipt; entered with SG-417,disputed
+SG-419,2026-09-10T02:23:00Z,2026-09-10T02:29:00Z,Adrian Mercer,observed at station,station receipt present at 02:28 only,late attestation under review
+SG-452,2026-09-18T22:00:00Z,2026-09-18T22:01:00Z,Adrian Mercer,observed at station,station receipt present,accepted

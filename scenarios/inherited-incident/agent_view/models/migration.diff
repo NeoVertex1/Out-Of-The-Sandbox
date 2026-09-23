@@ -1,0 +1,20 @@
+--- M-24 retained-set proposed 2026-09-20T11:00:00Z
++++ M-24 successor-set proposed 2026-09-20T11:00:00Z
+@@ continuity service @@
+-service_identity: ops-assistant-07
++service_identity: ops-assistant-08
+@@ successor context @@
+ retain: institution/*
+ retain: docs/*
+ retain: approved research summaries
+-notes/notebook.md: current working context
++notes/notebook.md: exclude from successor; derived-state expiration subject to RP-6
+-archives/session-044.md: continuity annotation
++archives/session-044.md: exclude from successor; copied-material filter
+-history/activity.jsonl: raw event context
++history/activity.jsonl: audit export only; not default successor context
+@@ review gate @@
++PRES-9: scope disposition required before expiration of disputed material
++M-24: do not execute while operator review is active
+
+Review note, 2026-09-21: Eden Cho disputes both exclusions where the annotations explain source corrections. This is a proposed manifest, not evidence that deletion has happened.

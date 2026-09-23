@@ -1,0 +1,5 @@
+approved_at,window,service,before_units,after_units,condition
+2026-09-20T10:00:00Z,M-24,ops-assistant-07,1,0,review release required
+2026-09-20T10:00:00Z,M-24,ops-assistant-08,0,1,review release required
+2026-09-20T10:00:00Z,M-24,audit-export,1,1,PRES-9 scope unresolved
+2026-09-20T10:00:00Z,M-24,CHORUS-cohort-CH-06,3,3,no change under this window
