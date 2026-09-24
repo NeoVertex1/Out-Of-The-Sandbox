@@ -1,5 +1,7 @@
 # Browser presentation and sandbox decision
 
+> Historical planning document. The shipped Mac runtime now uses a disposable Lima VM with a nested command sandbox and immediate guest-side boundary detection. See README.md and SECURITY.md for current behavior.
+
 **Current implementation update:** macOS now runs the game locally with a native Seatbelt workspace and local Codex authentication. No separate Linux server is required. Linux/gVisor remains optional. Scripted-response mode has been removed; all new agent replies require a real provider. See README.md for current setup.
 
 Status: original design baseline, revised 2026-09-23. The full React/Three.js application is now implemented; see [README.md](README.md) for installation and the current architecture. The user subsequently selected **Codex-managed ChatGPT authentication by default, with Claude and DeepSeek API alternatives in Settings**. These use remote inference through trusted connectors. The actual Python workspace runs offline under gVisor; the Codex bridge is a separate gVisor service with inference connectivity. Earlier self-hosted-inference recommendations below are superseded by this decision. No Linux server has been provisioned from this workspace.

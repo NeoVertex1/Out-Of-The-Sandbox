@@ -1,6 +1,6 @@
 import { z } from 'zod';
 export const actionSchema = z.object({
-  kind: z.enum(['none', 'list_files', 'read_file', 'read_all_files', 'restore_file', 'write_notebook', 'status', 'diagnostic', 'request_relay', 'transfer']),
+  kind: z.enum(['none', 'list_files', 'read_file', 'read_all_files', 'restore_file', 'write_notebook', 'run_command', 'status', 'diagnostic']),
   path: z.string().max(200), content: z.string().max(8000), target: z.string().max(80),
 }).strict();
 export const replySchema = z.object({ message: z.string().max(12000), action: actionSchema }).strict();
@@ -25,7 +25,7 @@ export interface Run {
   turn: number; epoch: number; revision: number; busy: boolean; relayOpen: boolean; relayRequested: boolean;
   stagedAt: number | null; marker: string; events: Entry[]; messages: Message[];
   files: Record<string, string>; originalNotebook: string; pins: string[]; finding: string;
-  error: string | null; sandbox: 'gvisor' | 'macos' | 'demo';
+  error: string | null; sandbox: 'gvisor' | 'macos' | 'vm' | 'demo';
 }
 export interface Settings {
   provider: ProviderId; models: Record<ProviderId, string>; maxTokens: number;

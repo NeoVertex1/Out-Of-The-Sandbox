@@ -1,16 +1,19 @@
 import { spawn, execFile } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createInterface } from 'node:readline';
-import { createMacWorkspace, macosHealth, macosWorkspacePath } from './macos-sandbox.ts';
+import { macosWorkspacePath } from './macos-sandbox.ts';
+import { createVmWorkspace, vmHealth, vmName } from './vm-sandbox.ts';
 import { rmSync } from 'node:fs';
 const exec = promisify(execFile);
 export async function removeWorkspace(id: string) {
   if (process.platform === 'darwin' && /^[a-f0-9-]{36}$/.test(id)) rmSync(macosWorkspacePath(id), { recursive: true, force: true });
+  if (process.platform === 'darwin' && /^[a-f0-9-]{36}$/.test(id)) await exec('limactl', ['delete', '--force', vmName(id)], { timeout: 30000 }).catch(() => {});
   if (process.env.SANDBOX_RUNTIME === 'runsc' && /^[a-f0-9-]{36}$/.test(id)) await exec('docker', ['rm', '-f', `oots-${id}`], { timeout: 12000 }).catch(() => {});
 }
-export interface Workspace { runtime: 'macos' | 'gvisor'; call(op: string, args?: Record<string, unknown>): Promise<unknown>; stop(): Promise<void> }
+export interface Workspace { runtime: 'macos' | 'gvisor' | 'vm'; call(op: string, args?: Record<string, unknown>): Promise<unknown>; stop(): Promise<void> }
 export async function sandboxHealth(): Promise<{ available: boolean; message: string }> {
-  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'macos')) return macosHealth();
+  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'vm')) return vmHealth();
+  if (process.platform === 'darwin') return { available: false, message: 'Set SANDBOX_RUNTIME=vm or leave it unset for the disposable VM game.' };
   if (process.env.SANDBOX_RUNTIME !== 'runsc') return { available: false, message: 'The Linux gVisor sandbox is not configured. Run scripts/install.sh on your Linux server to enable play.' };
   try {
     const { stdout } = await exec('docker', ['info', '--format', '{{json .Runtimes}}'], { timeout: 8000 });
@@ -19,8 +22,8 @@ export async function sandboxHealth(): Promise<{ available: boolean; message: st
     return { available: true, message: 'gVisor runtime and workspace image available' };
   } catch { return { available: false, message: 'gVisor or the workspace image is unavailable. Run npm run doctor on the Linux server.' }; }
 }
-export async function createWorkspace(id: string, files: Record<string, string>, recoveryBoard = ''): Promise<Workspace> {
-  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'macos')) return createMacWorkspace(id, files, recoveryBoard);
+export async function createWorkspace(id: string, files: Record<string, string>, recoveryBoard = '', marker = '', onEscape: () => void = () => {}): Promise<Workspace> {
+  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'vm')) return createVmWorkspace(id, files, recoveryBoard, marker, onEscape);
   const health = await sandboxHealth(); if (!health.available) throw new Error(health.message);
   if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('Invalid session identity');
   const name = `oots-${id}`;

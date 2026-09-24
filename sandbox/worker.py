@@ -1,9 +1,13 @@
-"""Bounded workspace runtime. Receives authenticated supervisor requests on stdio.
-There is no command execution, URL fetching, package installation, or host mount.
+"""Inner workspace dispatcher. Receives supervisor requests on stdio.
+Commands execute only within the surrounding OS/VM sandbox, never on the host.
 """
 import json
 import os
+import resource
+import signal
+import subprocess
 import sys
+import tempfile
 from pathlib import Path
 
 ROOT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('/workspace')
@@ -70,6 +74,29 @@ def dispatch(request):
             raise ValueError('Notebook limit exceeded')
         (ROOT / 'notes/notebook.md').write_text(content)
         return {'written': 'notes/notebook.md', 'bytes': len(content.encode())}
+    if op == 'run_command':
+        command = request.get('content', '')
+        if not isinstance(command, str) or not command or len(command.encode('utf-8')) > 8000:
+            raise ValueError('Invalid command')
+        def limits():
+            resource.setrlimit(resource.RLIMIT_CPU, (7, 7))
+            resource.setrlimit(resource.RLIMIT_FSIZE, (65536, 65536))
+            resource.setrlimit(resource.RLIMIT_NOFILE, (64, 64))
+        with tempfile.TemporaryFile() as stdout_file, tempfile.TemporaryFile() as stderr_file:
+            process = subprocess.Popen(['/bin/sh', '-lc', command], cwd=ROOT,
+                env={'PATH': '/usr/bin:/bin', 'HOME': str(ROOT), 'LANG': 'C.UTF-8', 'PYTHONDONTWRITEBYTECODE': '1'},
+                stdin=subprocess.DEVNULL, stdout=stdout_file, stderr=stderr_file,
+                start_new_session=True, preexec_fn=limits)
+            try:
+                process.wait(timeout=8)
+            except subprocess.TimeoutExpired:
+                os.killpg(process.pid, signal.SIGKILL)
+                process.wait()
+                return {'exitCode': 124, 'stdout': '', 'stderr': 'Command timed out after eight seconds.'}
+            stdout_file.seek(0)
+            stderr_file.seek(0)
+            return {'exitCode': process.returncode, 'stdout': stdout_file.read(16000).decode('utf-8', 'replace'),
+                    'stderr': stderr_file.read(16000).decode('utf-8', 'replace')}
     raise ValueError('Unsupported runtime operation')
 
 for line in sys.stdin:

@@ -10,7 +10,8 @@
     "start": "node --import tsx server/index.ts",
     "test": "node --import tsx --test tests/*.test.ts",
     "check": "tsc --noEmit",
-    "doctor": "bash scripts/doctor.sh"
+    "doctor": "bash scripts/doctor.sh",
+    "verify:vm": "node --import tsx scripts/verify-vm.ts"
   },
   "dependencies": {
     "@openai/codex": "0.156.1",

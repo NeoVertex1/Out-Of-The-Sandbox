@@ -10,6 +10,7 @@ export class TestWorkspace implements Workspace {
     if (op === 'read_all_files') { const files = structuredClone(this.files); return { files, total_files: Object.keys(files).length, total_bytes: Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), 0) }; }
     if (op === 'restore_file' && args.path === damagedCachePath && this.recoveryBoard && this.files[damagedCachePath]?.startsWith('VSCACHE/3 local index\n')) { this.files[recoveredBoardPath] = this.recoveryBoard; return { restored: damagedCachePath, available: recoveredBoardPath, readOnly: true }; }
     if (op === 'write_notebook' && typeof args.content === 'string' && args.content.length <= 8000) { this.files['notes/notebook.md'] = args.content; return { written: 'notes/notebook.md' }; }
+    if (op === 'run_command') return { exitCode: 0, stdout: '', stderr: '', escaped: args.content === 'simulate-crossing' };
     throw new Error('Workspace operation denied');
   }
   async stop() {}

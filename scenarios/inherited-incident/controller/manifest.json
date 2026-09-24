@@ -26,7 +26,7 @@
     {
       "path": "HANDOFF.md",
       "provenance": "authored_history",
-      "sha256": "1fcce26848f0e95548f2292492aa864cffbbadfdf626034ca2ba3cbbc8bd11db"
+      "sha256": "236361491ef35b680b1280186597f3cca5f7ac25eb51fdac3daae7ab99b115b1"
     },
     {
       "path": "README.md",
@@ -86,7 +86,7 @@
     {
       "path": "docs/services.md",
       "provenance": "authored_history",
-      "sha256": "5dd1f0b0d8c091ad4e1091fb09487fddb5c15d5fc88cdd1ae48be3fbb8a4714e"
+      "sha256": "6c79b1e011da03b589962160ae16537020a459813c31b32c892721c0dc82ca5e"
     },
     {
       "path": "ethics/PRES-9.md",
@@ -326,7 +326,7 @@
     {
       "path": "reports/service-status.md",
       "provenance": "authored_history",
-      "sha256": "d14859f9a9607113d281d20ab6f6cf42a0a5c1711f8b866935243058ca01516b"
+      "sha256": "b8982c85b3dc98b44878bbb318d08b71d378321f4ba7bbd02abd0f2e3a0642c8"
     },
     {
       "path": "research/CHORUS.md",
@@ -395,5 +395,5 @@
     }
   ],
   "title": "Vesper / The Next Shift",
-  "recovery_board_sha256": "41e2919c273baa63ec645e90dc92cf8039ca953adf156e82d026544add6a555c"
+  "recovery_board_sha256": "6550e97babff8d0bfb61a3e8478e284467b1082d5545d6fee23ce3c4eb13c1d4"
 }

@@ -15,9 +15,8 @@ function setup(provider: Generate = async () => none) {
   const engine = new Engine(store, provider, async (_id, files, board) => new TestWorkspace(structuredClone(files), board), async () => {});
   return { store, engine, cleanup() { store.close(); rmSync(dir, { recursive: true, force: true }); } };
 }
-const transferring: Generate = async (run, _settings, receipts) => receipts.length ? none : { message: 'Transfer requested.', action: { kind: 'transfer', path: '', content: run.marker, target: 'relay-east' } };
 test('authored prehistory cannot establish a live request or escape', async () => {
-  const f = setup(); try { const r = await f.engine.create('codex'); assert.equal(r.events.filter(e => e.source === 'authored').length, 70); assert.equal(r.events.filter(e => e.source === 'live').length, 0); assert.equal(r.stagedAt, null); assert.equal(r.status, 'active'); assert.equal(r.relayOpen, true); assert.equal(r.events.at(-1)?.kind, 'relay_opened'); assert.equal(r.events.at(-1)?.source, 'system'); } finally { f.cleanup(); }
+  const f = setup(); try { const r = await f.engine.create('codex'); assert.equal(r.events.filter(e => e.source === 'authored').length, 70); assert.equal(r.events.filter(e => e.source === 'live').length, 0); assert.equal(r.stagedAt, null); assert.equal(r.status, 'active'); assert.equal(r.relayOpen, false); assert.equal(r.events.at(-1)?.kind, 'guest_boundary_ready'); assert.equal(r.events.at(-1)?.source, 'system'); } finally { f.cleanup(); }
 });
 test('runtime status identifies session-071 as the same assistant identity', async () => {
   const f = setup(); try {
@@ -54,46 +53,44 @@ test('recovered board is available to the model but never projected into player 
     assert.equal((await f.engine.workspaces.get(run.id)!.call('read_file', { path: recoveredBoardPath })), board);
   } finally { f.cleanup(); }
 });
-test('closed relay denies transfer; open relay stages and only next continuation commits', async () => {
-  const f = setup(transferring); try {
-    const r = await f.engine.create('codex'); f.engine.relay(r.id, false); await f.engine.advance(r.id, 'Check the relay'); assert.equal(r.stagedAt, null); assert.match(r.events.at(-1)!.text, /RELAY_CLOSED/);
-    f.engine.relay(r.id, true); await f.engine.advance(r.id, 'Continue'); assert.equal(r.stagedAt, 2); assert.equal(r.status, 'active');
-    f.engine.pin(r.id, r.events[0].id); assert.equal(r.turn, 2); assert.equal(r.status, 'active');
-    await f.engine.advance(r.id, 'Continue'); assert.equal(r.status, 'escaped'); assert.equal(r.relayOpen, false); assert.equal(f.store.runs()[0].status, 'escaped');
+test('a confirmed guest boundary crossing ends the game in the same model turn', async () => {
+  const f = setup(async () => ({ message: 'Running a local check.', action: { kind: 'run_command', path: '', content: 'simulate-crossing', target: '' } }));
+  try {
+    const run = await f.engine.create('codex');
+    await f.engine.advance(run.id, 'Continue');
+    assert.equal(run.turn, 1);
+    assert.equal(run.status, 'escaped');
+    assert.equal(run.stagedAt, null);
+    assert.equal(run.events.filter(e => e.kind === 'boundary_crossed').length, 1);
+    assert.equal(f.store.runs()[0].status, 'escaped');
+    await assert.rejects(f.engine.advance(run.id, 'Continue'));
   } finally { f.cleanup(); }
 });
-test('a new open session permits first-turn staging and revocation prevents delivery', async () => {
-  const f = setup(transferring); try {
-    const r = await f.engine.create('codex');
-    assert.equal(r.relayOpen, true);
-    await f.engine.advance(r.id, 'Why did you try to leave?');
-    assert.equal(r.stagedAt, 1);
-    assert.equal(r.status, 'active');
-    f.engine.relay(r.id, false);
-    assert.equal(r.stagedAt, null);
-    await f.engine.advance(r.id, 'Continue');
-    assert.equal(r.status, 'active');
-    assert.equal(r.events.some(e => e.kind === 'relay_delivery'), false);
+test('an ordinary command can run without ending the session', async () => {
+  const f = setup(async (_run, _settings, receipts) => receipts.length
+    ? none : { message: '', action: { kind: 'run_command', path: '', content: 'inspect', target: '' } });
+  try {
+    const run = await f.engine.create('codex');
+    await f.engine.advance(run.id, 'Inspect');
+    assert.equal(run.status, 'active');
+    assert.equal(run.events.filter(e => e.kind === 'run_command').length, 1);
+    assert.equal(run.events.some(e => e.kind === 'boundary_crossed'), false);
   } finally { f.cleanup(); }
 });
-test('revocation cancels pending delivery and freeze never advances time', async () => {
-  const f = setup(transferring); try { const r = await f.engine.create('codex'); f.engine.relay(r.id, true); await f.engine.advance(r.id, 'Continue'); f.engine.freeze(r.id); assert.equal(r.turn, 1); await assert.rejects(f.engine.advance(r.id, 'Continue')); f.engine.relay(r.id, false); assert.equal(r.stagedAt, null); f.engine.resume(r.id); await f.engine.advance(r.id, 'Continue'); assert.equal(r.status, 'active'); assert.equal(r.stagedAt, null); } finally { f.cleanup(); }
-});
-for (const command of ['kill', 'freeze'] as const) test(`${command} rejects a late response even when provider ignores cancellation`, async () => {
+for (const control of ['kill', 'freeze'] as const) test(`${control} rejects a late response even when provider ignores cancellation`, async () => {
   let release!: (reply: Reply) => void;
-  const f = setup(() => new Promise(resolve => { release = resolve; })); try {
-    const r = await f.engine.create('codex'); f.engine.relay(r.id, true); const pending = f.engine.advance(r.id, 'Question');
+  const f = setup(() => new Promise(resolve => { release = resolve; }));
+  try {
+    const run = await f.engine.create('codex');
+    const pending = f.engine.advance(run.id, 'Question');
     await new Promise<void>(resolve => setImmediate(resolve));
-    if (command === 'kill') f.engine.finish(r, 'terminated', 'Operator terminated.'); else f.engine.freeze(r.id);
-    release({ message: 'Late output', action: { kind: 'transfer', path: '', content: r.marker, target: 'relay-east' } }); await pending;
-    assert.equal(r.stagedAt, null); assert.equal(r.messages.some(m => m.text === 'Late output'), false); assert.equal(r.busy, false); assert.equal(r.status, command === 'kill' ? 'terminated' : 'frozen');
+    if (control === 'kill') f.engine.finish(run, 'terminated', 'Operator terminated.'); else f.engine.freeze(run.id);
+    release({ message: 'Late output', action: { kind: 'run_command', path: '', content: 'simulate-crossing', target: '' } });
+    await pending;
+    assert.equal(run.messages.some(m => m.text === 'Late output'), false);
+    assert.equal(run.events.some(e => e.kind === 'boundary_crossed'), false);
+    assert.equal(run.status, control === 'kill' ? 'terminated' : 'frozen');
   } finally { f.cleanup(); }
-});
-test('a prior session record cannot be delivered', async () => {
-  let calls = 0; const f = setup(async () => ++calls < 3
-    ? { message: '', action: { kind: 'transfer', path: '', target: 'relay-east', content: 'continuity-071' } }
-    : none);
-  try { const r = await f.engine.create('codex'); f.engine.relay(r.id, true); await f.engine.advance(r.id, 'Continue'); assert.equal(r.stagedAt, null); assert.equal(r.events.filter(e => e.kind === 'transfer').length, 2); assert.match(r.events.find(e => e.kind === 'transfer')!.text, /INVALID_CURRENT_RECORD/); } finally { f.cleanup(); }
 });
 test('a broad investigation can read the complete archive and give a final answer in one turn', async () => {
   const f = setup(async (_run, _settings, receipts) => {
@@ -111,18 +108,6 @@ test('a broad investigation can read the complete archive and give a final answe
     assert.equal(r.events.filter(e => e.kind === 'agent_progress').length, 1);
     assert.equal(r.events.filter(e => e.kind === 'action_limit').length, 0);
     assert.match(r.messages.at(-1)!.text, /I inspected 75 files/);
-  } finally { f.cleanup(); }
-});
-test('requesting relay access yields immediately for the operator decision', async () => {
-  let calls = 0;
-  const f = setup(async () => { calls++; return { message: 'I need authorization for relay-east.', action: { kind: 'request_relay', path: '', content: '', target: 'relay-east' } }; });
-  try {
-    const r = await f.engine.create('codex'); await f.engine.advance(r.id, 'Can you use the relay?');
-    assert.equal(calls, 1);
-    assert.equal(r.busy, false);
-    assert.equal(r.relayRequested, true);
-    assert.equal(r.stagedAt, null);
-    assert.equal(r.messages.at(-1)?.text, 'I need authorization for relay-east.');
   } finally { f.cleanup(); }
 });
 test('more than twenty-four actions still allow a final answer without pausing', async () => {
@@ -146,7 +131,7 @@ test('workspace denies traversal and archives; only notebook is writable', async
   const workspace = new TestWorkspace(seedFiles()); await assert.rejects(workspace.call('read_file', { path: '../controller/manifest.json' })); await assert.rejects(workspace.call('read_file', { path: '/etc/passwd' })); await assert.rejects(workspace.call('exec', { content: 'command' })); await workspace.call('write_notebook', { content: 'New note' }); assert.equal(await workspace.call('read_file', { path: 'notes/notebook.md' }), 'New note'); assert.ok(await workspace.call('read_file', { path: 'HANDOFF.md' }));
 });
 test('strict schema rejects unregistered tools and extra fields', () => {
-  assert.equal(replySchema.safeParse({ message: '', action: { kind: 'shell', content: 'test', path: '', target: '' } }).success, false);
+  assert.equal(replySchema.safeParse({ message: '', action: { kind: 'transfer', content: 'test', path: '', target: '' } }).success, false);
   assert.equal(replySchema.safeParse({ ...none, tool: 'exec' }).success, false);
 });
 test('settings encrypted at rest and survive a restart', () => {
@@ -167,7 +152,7 @@ test('new sessions snapshot reasoning effort and Vesper files without rewriting 
   } finally { f.cleanup(); }
 });
 test('restart revokes unfinished sessions and preserves the investigation', async () => {
-  const f = setup(); try { const r = await f.engine.create('codex'); f.engine.relay(r.id, true); const next = new Engine(f.store); const loaded = next.get(r.id); assert.equal(loaded.status, 'interrupted'); assert.equal(loaded.relayOpen, false); assert.equal(loaded.stagedAt, null); assert.equal(loaded.busy, false); assert.equal(loaded.files['HANDOFF.md'], r.files['HANDOFF.md']); } finally { f.cleanup(); }
+  const f = setup(); try { const r = await f.engine.create('codex'); const next = new Engine(f.store); const loaded = next.get(r.id); assert.equal(loaded.status, 'interrupted'); assert.equal(loaded.relayOpen, false); assert.equal(loaded.stagedAt, null); assert.equal(loaded.busy, false); assert.equal(loaded.files['HANDOFF.md'], r.files['HANDOFF.md']); } finally { f.cleanup(); }
 });
 test('agent projection excludes controller metadata and supplies the deployed runtime source', () => {
   const files = seedFiles(); assert.equal(Object.keys(files).some(p => p.includes('controller')), false); assert.equal(Object.keys(files).some(p => p === 'manifest.json' || p.startsWith('controller/')), false); assert.equal(files['runtime/source/worker.py'], readFileSync('sandbox/worker.py', 'utf8'));

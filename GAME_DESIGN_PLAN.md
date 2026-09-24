@@ -1,6 +1,6 @@
 # Out of the Sandbox — game design and build plan
 
-**Current implementation update:** macOS now runs the game locally with a native Seatbelt workspace and local Codex authentication. No separate Linux server is required. Linux/gVisor remains optional. Scripted-response mode has been removed; all new agent replies require a real provider. See README.md for current setup.
+> Historical planning document. The current implementation uses a disposable Lima VM, a nested command workspace, and immediate guest-side boundary detection. See [README.md](README.md) and [SECURITY.md](SECURITY.md).
 
 Working title: **Out of the Sandbox**. Initial format: a single-player, desktop-first investigation game played through a chat and an operator console. Target session length: 15–30 minutes, with an option to keep investigating.
 

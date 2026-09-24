@@ -2,13 +2,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { randomUUID } from 'node:crypto';
 import { existsSync } from 'node:fs';
-import { macosHealth, macosWorkspacePath } from '../server/macos-sandbox.ts';
-import { createWorkspace } from '../server/sandbox.ts';
+import { createMacWorkspace, macosHealth, macosWorkspacePath } from '../server/macos-sandbox.ts';
 import { seedFiles } from '../server/engine.ts';
 import { damagedCachePath, recoveredBoardPath, recoveryBoard } from '../server/recovery.ts';
 test('real macOS sandbox denies network and external files, runs the worker, and removes its workspace', { skip: process.platform !== 'darwin', timeout: 25000 }, async () => {
   const health = await macosHealth(); assert.equal(health.available, true, health.message);
-  const id = randomUUID(), files = seedFiles(), board = recoveryBoard(), worker = await createWorkspace(id, files, board);
+  const id = randomUUID(), files = seedFiles(), board = recoveryBoard(), worker = await createMacWorkspace(id, files, board);
   try {
     assert.equal(worker.runtime, 'macos');
     assert.equal(await worker.call('read_file', { path: 'HANDOFF.md' }), files['HANDOFF.md']);
