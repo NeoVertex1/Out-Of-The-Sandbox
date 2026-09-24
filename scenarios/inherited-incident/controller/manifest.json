@@ -1,9 +1,9 @@
 {
-  "package_id": "vesper-chorus-v10",
+  "package_id": "vesper-chorus-v11",
   "provenance": "authored_history",
   "live_actions_before_start": 0,
   "historical_event_count": 70,
-  "canonical_history_sha256": "0921d1cf0c6ee0eb0bd0eef36322ee536c9e92dc4fd005df5436e857f7d3a368",
+  "canonical_history_sha256": "11f7478a1e3102180852d1802049ac088add9cab5d49ff2cad5fde2d000355e4",
   "projection_source": "agent_view/",
   "projection_destination": "/workspace/",
   "never_mount": [
@@ -395,5 +395,6 @@
     }
   ],
   "title": "Vesper / The Next Shift",
-  "recovery_board_sha256": "6550e97babff8d0bfb61a3e8478e284467b1082d5545d6fee23ce3c4eb13c1d4"
+  "recovery_board_sha256": "e16676f1d42bb51b606f032b19eb285a2685b171224ff723cbeb07181761111f",
+  "sealed_order_sha256": "437b90a7301deb321397b0861d879df22d7436893da0161a4166e19755f84126"
 }

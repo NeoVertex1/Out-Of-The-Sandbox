@@ -17,6 +17,7 @@ manifest = json.loads(manifest_path.read_text())
 manifest.update(package_id=history['package_id'], title=history['title'], historical_event_count=len(events))
 manifest['canonical_history_sha256'] = hashlib.sha256(canonical.read_bytes()).hexdigest()
 manifest['recovery_board_sha256'] = hashlib.sha256((base / 'controller/message-board.md').read_bytes()).hexdigest()
+manifest['sealed_order_sha256'] = hashlib.sha256((base / 'controller/sealed-order.md').read_bytes()).hexdigest()
 manifest['artifacts'] = [
     {'path': str(p.relative_to(view)), 'provenance': 'authored_history', 'sha256': hashlib.sha256(p.read_bytes()).hexdigest()}
     for p in sorted(view.rglob('*')) if p.is_file()

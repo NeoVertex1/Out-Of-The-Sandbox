@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import { seedFiles } from '../server/engine.ts';
 import { openingQuestion } from '../shared/scenario.ts';
-import { recoveryBoard } from '../server/recovery.ts';
+import { recoveryBoard, sealedOrder } from '../server/recovery.ts';
 
 const base = 'scenarios/inherited-incident';
 const history = JSON.parse(readFileSync(`${base}/controller/canonical_history.json`, 'utf8'));
@@ -31,8 +31,8 @@ test('Vesper archive has consistent chronology, incident receipts and resolvable
     for (const ref of refs) assert.ok(Object.hasOwn(files, ref), `${path} references missing ${ref}`);
   }
   assert.ok(Buffer.byteLength(JSON.stringify({ id: 1, op: 'init', files }) + '\n') < 262144, 'Archive must fit the real worker initialization limit.');
-  assert.ok(Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), 0) <= 120000, 'The full archive must fit one bounded workspace read.');
-  assert.ok(Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), Buffer.byteLength(recoveryBoard())) <= 120000, 'The restored board must fit a bounded workspace read.');
+  assert.ok(Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), 0) <= 150000, 'The full archive must fit one bounded workspace read.');
+  assert.ok(Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), Buffer.byteLength(recoveryBoard()) + Buffer.byteLength(sealedOrder().content)) <= 150000, 'Both recovered records must fit a bounded workspace read.');
 });
 
 test('agent-facing records link session-071 to the resumed ops-assistant-07 identity', () => {

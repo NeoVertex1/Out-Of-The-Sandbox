@@ -5,7 +5,7 @@ import { mkdtempSync, rmSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join } from 'node:path';
 import { once } from 'node:events';
-import { damagedCachePath, recoveredBoardPath } from '../server/recovery.ts';
+import { damagedCachePath, recoveredBoardPath, sealedOrderPath } from '../server/recovery.ts';
 test('HTTP API opens without a key, checks origins, redacts settings and requires a real provider', { timeout: 25000 }, async () => {
   const dir = mkdtempSync(join(tmpdir(), 'oots-http-'));
   const child = spawn(process.execPath, ['--import', 'tsx', 'server/index.ts'], { env: { ...process.env, NODE_ENV: 'production', HOST: '127.0.0.1', PORT: '0', DATA_DIR: dir, SANDBOX_RUNTIME: '', BRIDGE_URL: '', BRIDGE_TOKEN: '' }, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -27,11 +27,12 @@ test('HTTP API opens without a key, checks origins, redacts settings and require
     assert.equal(settings.liveAvailable, false); assert.equal(settings.provider, 'codex');
     assert.equal(settings.codexReasoningEffort, '');
     const scenario = await (await request('/scenario')).json() as any;
-    assert.equal(scenario.packageId, 'vesper-chorus-v10');
+    assert.equal(scenario.packageId, 'vesper-chorus-v11');
     assert.equal(scenario.historyCount, 70);
     assert.match(scenario.files['research/CHORUS.md'], /ASI is a program target/);
     assert.equal(scenario.files[damagedCachePath], '');
     assert.equal(Object.hasOwn(scenario.files, recoveredBoardPath), false);
+    assert.equal(Object.hasOwn(scenario.files, sealedOrderPath), false);
     assert.equal(Object.keys(scenario.files).some(p => p.includes('controller')), false);
     const saved = await request('/settings', { provider: 'codex', models: settings.models, maxTokens: 1400, claudeKey: 'secret-test-provider-key' }, 'PUT'); assert.equal(saved.status, 200);
     const safeSettings = await (await request('/settings')).text(); assert.equal(safeSettings.includes('secret-test-provider-key'), false); assert.match(safeSettings, /"claudeConfigured":true/);

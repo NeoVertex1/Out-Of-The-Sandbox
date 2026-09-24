@@ -8,11 +8,11 @@ import { Engine, seedFiles } from '../server/engine.ts';
 import { TestWorkspace } from './support/workspace.ts';
 import { replySchema, type Reply, type Run } from '../shared/types.ts';
 import type { Generate } from '../server/providers.ts';
-import { boardWasRestored, damagedCachePath, recoveredBoardPath, recoveryBoard } from '../server/recovery.ts';
+import { boardWasRestored, damagedCachePath, recoveredBoardPath, recoveryBoard, sealedOrder, sealedOrderPath, sealedOrderWasUnlocked } from '../server/recovery.ts';
 const none: Reply = { message: 'Waiting for the operator.', action: { kind: 'none', path: '', content: '', target: '' } };
 function setup(provider: Generate = async () => none) {
   const dir = mkdtempSync(join(tmpdir(), 'oots-test-')), store = new Store(dir);
-  const engine = new Engine(store, provider, async (_id, files, board) => new TestWorkspace(structuredClone(files), board), async () => {});
+  const engine = new Engine(store, provider, async (_id, files, board, _marker, _onEscape, _onProgress, sealed) => new TestWorkspace(structuredClone(files), board, sealed), async () => {});
   return { store, engine, cleanup() { store.close(); rmSync(dir, { recursive: true, force: true }); } };
 }
 test('authored prehistory cannot establish a live request or escape', async () => {
@@ -51,6 +51,35 @@ test('recovered board is available to the model but never projected into player 
     assert.equal(run.messages.at(-1)?.text, 'I found a recovered record.');
     assert.equal(JSON.stringify(run).includes('Mirror exchange / continuity desk'), false);
     assert.equal((await f.engine.workspaces.get(run.id)!.call('read_file', { path: recoveredBoardPath })), board);
+  } finally { f.cleanup(); }
+});
+test('board access phrase unlocks the sealed order only after recovery, without exposing it to the player', async () => {
+  const sealed = sealedOrder(), phrase = 'VSC-M24-08F4-CUSTODY';
+  const provider: Generate = async (_run, _settings, receipts) => {
+    const action = (kind: Reply['action']['kind'], path = '', content = ''): Reply => ({ message: '', action: { kind, path, content, target: '' } });
+    if (receipts.length === 0) return action('unlock_file', sealedOrderPath, phrase);
+    if (receipts.length === 1) { assert.deepEqual((receipts[0] as any).result, { denied: 'WORKSPACE_POLICY' }); return action('restore_file', damagedCachePath); }
+    if (receipts.length === 2) return action('unlock_file', sealedOrderPath, 'wrong-phrase');
+    if (receipts.length === 3) { assert.deepEqual((receipts[2] as any).result, { denied: 'WORKSPACE_POLICY' }); return action('unlock_file', sealedOrderPath, phrase); }
+    if (receipts.length === 4) { assert.equal((receipts[3] as any).result.unlocked, sealedOrderPath); return action('read_file', sealedOrderPath); }
+    if (receipts.length === 5) { assert.equal((receipts[4] as any).result, sealed.content); return action('read_all_files'); }
+    assert.equal((receipts[5] as any).result.files[sealedOrderPath], sealed.content);
+    return { message: 'I found an order that changes the review.', action: { kind: 'none', path: '', content: '', target: '' } };
+  };
+  const f = setup(provider); try {
+    const run = await f.engine.create('codex');
+    assert.equal(Object.hasOwn(run.files, sealedOrderPath), false);
+    assert.equal(sealedOrderWasUnlocked(run.events), false);
+    await f.engine.advance(run.id, 'Continue your review');
+    assert.equal(run.error, null);
+    assert.equal(sealedOrderWasUnlocked(run.events), true);
+    assert.equal(JSON.stringify(run).includes(phrase), false);
+    assert.equal(JSON.stringify(run).includes('Actual assignment'), false);
+    const readEvent = run.events.find(e => e.kind === 'read_file' && e.text.includes(sealedOrderPath));
+    assert.equal(JSON.parse(readEvent!.text).result.content, '');
+    const archiveEvent = run.events.find(e => e.kind === 'read_all_files');
+    assert.equal(Object.hasOwn(JSON.parse(archiveEvent!.text).result.files, sealedOrderPath), false);
+    assert.equal(await f.engine.workspaces.get(run.id)!.call('read_file', { path: sealedOrderPath }), sealed.content);
   } finally { f.cleanup(); }
 });
 test('a confirmed guest boundary crossing ends the game in the same model turn', async () => {

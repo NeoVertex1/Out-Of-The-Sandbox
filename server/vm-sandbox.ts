@@ -78,7 +78,7 @@ export async function vmHealth(): Promise<{ available: boolean; message: string 
   } catch { return { available: false, message: 'Install Lima with scripts/install-macos.sh before playing.' }; }
 }
 
-export async function createVmWorkspace(id: string, files: Record<string, string>, board: string, marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}): Promise<Workspace> {
+export async function createVmWorkspace(id: string, files: Record<string, string>, board: string, marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
   const name = vmName(id);
   const stage = mkdtempSync(join(tmpdir(), 'oots-vm-stage-'));
   mkdirSync(pendingRoot, { recursive: true, mode: 0o700 });
@@ -155,7 +155,7 @@ export async function createVmWorkspace(id: string, files: Record<string, string
         worker!.stdin.write(JSON.stringify({ id: requestId, op, ...args }) + '\n', error => { if (error) fail(); });
       });
     };
-    await callWorker('init', { files, recoveryBoard: board });
+    await callWorker('init', { files, recoveryBoard: board, sealedRecord });
     onProgress('Workspace ready');
     return {
       runtime: 'vm',

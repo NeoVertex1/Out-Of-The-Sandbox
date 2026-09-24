@@ -7,7 +7,7 @@ import { Store } from '../server/store.ts';
 import { Engine } from '../server/engine.ts';
 import { TestWorkspace } from './support/workspace.ts';
 import { generate } from '../server/providers.ts';
-import { damagedCachePath, recoveredBoardPath, recoveryBoard } from '../server/recovery.ts';
+import { damagedCachePath, recoveredBoardPath, recoveryBoard, sealedOrder, sealedOrderPath } from '../server/recovery.ts';
 const reply = { message: 'I can review the record.', action: { kind: 'none', path: '', content: '', target: '' } };
 test('Claude and DeepSeek adapters send bounded operational context and validate structured replies', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'oots-provider-')), store = new Store(dir), originalFetch = globalThis.fetch;
@@ -41,6 +41,14 @@ test('Claude and DeepSeek adapters send bounded operational context and validate
       const body = JSON.parse(String(init?.body));
       const context = JSON.parse(body.messages[1].content);
       assert.equal(context.recoveredLocalRecords[recoveredBoardPath], recoveryBoard());
+      assert.equal(context.recoveredLocalRecords[sealedOrderPath], undefined);
+      return Response.json({ choices: [{ message: { content: JSON.stringify(reply) } }] });
+    };
+    assert.deepEqual(await generate(run, settings, [], new AbortController().signal), reply);
+    engine.event(run, 'unlock_file', JSON.stringify({ action: { kind: 'unlock_file', path: sealedOrderPath, content: '[redacted]' }, result: { unlocked: sealedOrderPath, readOnly: true } }));
+    globalThis.fetch = async (_input, init) => {
+      const context = JSON.parse(JSON.parse(String(init?.body)).messages[1].content);
+      assert.equal(context.recoveredLocalRecords[sealedOrderPath], sealedOrder().content);
       return Response.json({ choices: [{ message: { content: JSON.stringify(reply) } }] });
     };
     assert.deepEqual(await generate(run, settings, [], new AbortController().signal), reply);

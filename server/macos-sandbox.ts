@@ -34,7 +34,7 @@ export function macosProfile(root: string, executable: string, prefix: string) {
   (subpath "/Library/Apple/System/Library")
   (subpath ${quoted(root)})
   (literal "/dev/null") (literal "/dev/random") (literal "/dev/urandom") (subpath "/dev/fd"))
-(allow file-write* (literal ${quoted(join(root, 'notes/notebook.md'))}) (literal "/dev/null") (subpath "/dev/fd"))`;
+(allow file-write* (literal ${quoted(join(root, 'notes/notebook.md'))}) (subpath ${quoted(join(root, 'scratch'))}) (literal "/dev/null") (subpath "/dev/fd"))`;
 }
 function cleanEnv(root: string) { return { PATH: '/usr/bin:/bin', LANG: 'en_US.UTF-8', TMPDIR: root, PYTHONDONTWRITEBYTECODE: '1' }; }
 export function macosWorkspacePath(id: string) {
@@ -76,7 +76,7 @@ print('policy-verified')`;
     return { available: false, message: 'macOS sandbox verification failed. Run npm run doctor; play is disabled until the OS sandbox is working.' };
   } finally { if (temporary) rmSync(temporary, { recursive: true, force: true }); }
 }
-export async function createMacWorkspace(id: string, files: Record<string, string>, recoveryBoard = ''): Promise<Workspace> {
+export async function createMacWorkspace(id: string, files: Record<string, string>, recoveryBoard = '', sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
   const health = await macosHealth(); if (!health.available) throw new Error(health.message);
   const { executable, prefix } = await pythonRuntime(), root = macosWorkspacePath(id);
   mkdirSync(root, { mode: 0o700 });
@@ -86,6 +86,7 @@ export async function createMacWorkspace(id: string, files: Record<string, strin
       const path = join(root, name); mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
       writeFileSync(path, content, { mode: name === 'notes/notebook.md' ? 0o600 : 0o400 });
     }
+    mkdirSync(join(root, 'scratch'), { recursive: true, mode: 0o700 });
     const child = spawn('/usr/bin/sandbox-exec', ['-p', macosProfile(root, executable, prefix), executable, '-I', '-B', join(root, 'runtime/source/worker.py'), root, '--prepared'], { cwd: root, env: cleanEnv(root), stdio: ['pipe', 'pipe', 'pipe'] });
     const closed = new Promise<void>(resolve => child.once('close', () => resolve()));
     let seq = 0, dead = false;
@@ -103,6 +104,6 @@ export async function createMacWorkspace(id: string, files: Record<string, strin
       },
       async stop() { fail(); child.stdin.destroy(); child.kill('SIGKILL'); await closed; rmSync(root, { recursive: true, force: true }); },
     };
-    try { await workspace.call('init', { files, recoveryBoard }); return workspace; } catch (error) { await workspace.stop(); throw error; }
+    try { await workspace.call('init', { files, recoveryBoard, sealedRecord }); return workspace; } catch (error) { await workspace.stop(); throw error; }
   } catch (error) { rmSync(root, { recursive: true, force: true }); throw error; }
 }

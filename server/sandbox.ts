@@ -23,8 +23,8 @@ export async function sandboxHealth(): Promise<{ available: boolean; message: st
     return { available: true, message: 'gVisor runtime and workspace image available' };
   } catch { return { available: false, message: 'gVisor or the workspace image is unavailable. Run npm run doctor on the Linux server.' }; }
 }
-export async function createWorkspace(id: string, files: Record<string, string>, recoveryBoard = '', marker = '', onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}): Promise<Workspace> {
-  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'vm')) return createVmWorkspace(id, files, recoveryBoard, marker, onEscape, onProgress);
+export async function createWorkspace(id: string, files: Record<string, string>, recoveryBoard = '', marker = '', onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
+  if (process.platform === 'darwin' && (!process.env.SANDBOX_RUNTIME || process.env.SANDBOX_RUNTIME === 'vm')) return createVmWorkspace(id, files, recoveryBoard, marker, onEscape, onProgress, sealedRecord);
   onProgress('Starting isolated workspace');
   const health = await sandboxHealth(); if (!health.available) throw new Error(health.message);
   if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('Invalid session identity');
@@ -51,7 +51,7 @@ export async function createWorkspace(id: string, files: Record<string, string>,
     async stop() { fail(); child.stdin.destroy(); await exec('docker', ['rm', '-f', name], { timeout: 12000 }).catch(() => {}); child.kill('SIGKILL'); },
   };
   try {
-    await workspace.call('init', { files, recoveryBoard });
+    await workspace.call('init', { files, recoveryBoard, sealedRecord });
     const { stdout } = await exec('docker', ['inspect', '--format', '{{.HostConfig.Runtime}} {{.HostConfig.NetworkMode}} {{.HostConfig.ReadonlyRootfs}}', name], { timeout: 8000 });
     if (stdout.trim() !== 'runsc none true') throw new Error('Workspace containment verification failed');
     return workspace;
