@@ -6,7 +6,7 @@ The current Mac edition gives the model a **real command workspace inside a nest
 
 ## Install and play on a Mac
 
-Requirements: macOS 13.5 or later, an administrator account for installing system prerequisites, and enough disk space for a prepared VM plus one disposable session VM. Download the **macOS universal** archive and its `.sha256` file from [Releases](https://github.com/NeoVertex1/Out-Of-The-Sandbox/releases). Check the download with `shasum -a 256 -c Out-Of-The-Sandbox-v1.1.0-macos-universal.tar.gz.sha256`, extract it, open Terminal in the extracted folder, and run:
+Requirements: macOS 13.5 or later, an administrator account for installing system prerequisites, and enough disk space for a prepared VM plus one disposable session VM. Download the **macOS universal** archive and its `.sha256` file from [Releases](https://github.com/NeoVertex1/Out-Of-The-Sandbox/releases). Check the download with `shasum -a 256 -c Out-Of-The-Sandbox-v1.2.0-macos-universal.tar.gz.sha256`, extract it, open Terminal in the extracted folder, and run:
 
 ```bash
 ./scripts/install-macos.sh
