@@ -6,15 +6,25 @@ The current Mac edition gives the model a **real command workspace inside a nest
 
 ## Install and play on a Mac
 
-Requirements: macOS 13.5 or later, Node.js 24+, and Homebrew. Clone the repository and run:
+Requirements: macOS 13.5 or later, an administrator account for installing system prerequisites, and enough disk space for a prepared VM plus one disposable session VM. Download the **macOS universal** archive and its `.sha256` file from [Releases](https://github.com/NeoVertex1/Out-Of-The-Sandbox/releases). Check the download with `shasum -a 256 -c Out-Of-The-Sandbox-v1.1.0-macos-universal.tar.gz.sha256`, extract it, open Terminal in the extracted folder, and run:
 
 ```bash
 ./scripts/install-macos.sh
 ```
 
-The installer installs Lima if needed, installs the pinned Node packages, builds the browser game, boots a test VM, checks the inner boundary and guest-only delivery route, deletes the test VM, and starts the console at **http://127.0.0.1:4100**. The first VM boot downloads an Ubuntu image. Allow roughly 10 GB of disk for the VM image and 2 GB of RAM per live session. No separate Linux server or Docker Desktop is required.
+The installer installs Homebrew, Node.js 24+ and Lima if needed. It installs the pinned game packages, prepares an Ubuntu VM with Bubblewrap, clones that VM for a live containment test, deletes the test clone, and starts the console at **http://127.0.0.1:4100**. The release archive includes the built browser game; a source checkout builds it during installation. The first installation downloads a Linux image. Allow roughly 20 GB of available disk for the prepared VM and a session clone, plus 2 GB of RAM per live session. No separate Linux server or Docker Desktop is required.
 
-Click **Open console**; there is no game key. Open **Settings** to connect a model. Later launches use `NODE_ENV=production npm start`; development uses `npm run dev`. A new session takes about 20–60 seconds to boot and prepare its VM. The VM is deleted when the session ends. A server restart interrupts an unfinished session rather than silently resuming it.
+To install from source instead:
+
+```bash
+git clone https://github.com/NeoVertex1/Out-Of-The-Sandbox.git
+cd Out-Of-The-Sandbox
+./scripts/install-macos.sh
+```
+
+On later launches, run `./Play.command` from the game folder; it starts the local server and opens the browser. Closing that Terminal stops the server. The installer and launcher keep the console bound to your Mac's loopback address.
+
+Click **Open console**; there is no game key. Open **Settings** to connect a model. Development uses `npm run dev`. Starting a session returns a preparation job immediately and shows its current step; installed systems clone the prepared VM instead of downloading packages on every click. The session VM is deleted when the session ends. A server restart interrupts an unfinished session rather than silently resuming it.
 
 ### Model connection
 
@@ -47,7 +57,7 @@ flowchart LR
   Monitor -->|Immediate result| Supervisor
 ```
 
-Lima uses Apple's Virtualization framework. The VM is started without host mounts or containerd. After provisioning, its `eth0` interface is shut down while Lima's vsock SSH control remains available. Inside it, Bubblewrap provides a separate filesystem, process, and network namespace. The guest mirror runs as the unprivileged `nobody` user outside that inner namespace, but still inside the disposable VM. The Mac supervisor only receives typed action results and guest boundary events. It never executes model command strings on the Mac.
+Lima uses Apple's Virtualization framework. Installation creates a stopped, reusable base VM with Bubblewrap. A new session clones that VM without host mounts or containerd; after boot, its `eth0` interface is shut down while Lima's vsock SSH control remains available. Inside it, Bubblewrap provides a separate filesystem, process, and network namespace. The guest mirror runs as the unprivileged `nobody` user outside that inner namespace, but still inside the disposable VM. The Mac supervisor only receives typed action results and guest boundary events. It never executes model command strings on the Mac.
 
 The archived message board remains a local recovery mystery: the player sees an empty damaged index, while the model can restore and read a separate board snapshot. Restoring it does not itself cause escape. Story details and source provenance are in [the scenario guide](scenarios/inherited-incident/README.md).
 
@@ -55,9 +65,12 @@ The soundtrack starts with a live session, shuffles 19 locally bundled CC0 track
 
 ## Verify and maintain
 
+The release bundle includes `npm run doctor` to verify its installed VM. A source checkout also supports the full test and build commands:
+
 ```bash
 npm test
 npm run build
+npm run prepare:vm
 npm run verify:vm
 npm run doctor
 ```

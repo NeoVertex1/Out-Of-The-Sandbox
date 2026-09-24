@@ -15,7 +15,9 @@ jobs:
       - run: npm ci
       - run: npm test
       - run: npm run build
-      - run: bash -n scripts/*.sh
+      - run: bash -n scripts/*.sh Play.command
+      - if: matrix.os == 'macos-14'
+        run: ./scripts/package-release.sh
   sandbox:
     runs-on: ubuntu-24.04
     steps:

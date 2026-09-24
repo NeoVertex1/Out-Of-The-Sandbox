@@ -37,6 +37,17 @@ test('HTTP API opens without a key, checks origins, redacts settings and require
     const safeSettings = await (await request('/settings')).text(); assert.equal(safeSettings.includes('secret-test-provider-key'), false); assert.match(safeSettings, /"claudeConfigured":true/);
     assert.equal((await request('/runs', { provider: 'codex' })).status, 409);
     assert.equal((await request('/runs', { provider: 'demo' })).status, 400);
+    assert.equal((await request('/startups', { provider: 'demo' })).status, 400);
+    const startupResponse = await request('/startups', { provider: 'codex' });
+    assert.equal(startupResponse.status, 202);
+    const startup = await startupResponse.json() as { id: string; status: string };
+    assert.match(startup.id, /^[a-f0-9]{32}$/);
+    let startupState = startup.status;
+    for (let i = 0; i < 30 && startupState === 'preparing'; i++) {
+      await new Promise(resolve => setTimeout(resolve, 100));
+      startupState = (await (await request(`/startups/${startup.id}`)).json() as { status: string }).status;
+    }
+    assert.equal(startupState, 'failed');
     assert.equal((await request('/settings', { provider: 'demo', models: settings.models, maxTokens: 1400 }, 'PUT')).status, 400);
     assert.deepEqual(await (await request('/runs')).json(), []);
     await request('/logout', {}); assert.equal((await request('/runs')).status, 401);

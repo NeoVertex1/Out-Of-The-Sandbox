@@ -3,15 +3,34 @@ set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 if [[ "$(uname -s)" != Darwin ]]; then echo 'Use scripts/install.sh for Linux.' >&2; exit 1; fi
 if [[ $EUID -eq 0 ]]; then echo 'Run ./scripts/install-macos.sh as your normal Mac user, without sudo.' >&2; exit 1; fi
-command -v node >/dev/null || { echo 'Install Node.js 24 or later, then rerun this installer.' >&2; exit 1; }
+if ! command -v brew >/dev/null; then
+  echo 'Installing Homebrew to manage Node.js and Lima...'
+  /bin/bash -c "$(curl --fail --show-error --silent --location https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+if [[ -x /opt/homebrew/bin/brew ]]; then eval "$(/opt/homebrew/bin/brew shellenv)"; fi
+if [[ -x /usr/local/bin/brew ]]; then eval "$(/usr/local/bin/brew shellenv)"; fi
+command -v brew >/dev/null || { echo 'Homebrew installation did not complete. Rerun this installer after resolving its prompt.' >&2; exit 1; }
+if ! command -v node >/dev/null || ! node -e 'process.exit(+process.versions.node.split(".")[0] >= 24 ? 0 : 1)'; then
+  echo 'Installing Node.js 24 or later...'
+  brew install node
+fi
+export PATH="$(brew --prefix)/bin:$PATH"
 node -e 'if (+process.versions.node.split(".")[0] < 24) { console.error("Node.js 24+ required"); process.exit(1) }'
-command -v brew >/dev/null || { echo 'Install Homebrew, then rerun this installer so it can install Lima.' >&2; exit 1; }
-command -v limactl >/dev/null || brew install lima
+if ! command -v limactl >/dev/null; then echo 'Installing Lima...'; brew install lima; fi
 umask 077
-npm ci
-npm run build
+if [[ -f RELEASE-BUNDLE ]]; then
+  bundle_version="$(cat RELEASE-BUNDLE)"
+  package_version="$(node -p 'require("./package.json").version')"
+  [[ "$bundle_version" == "$package_version" ]] || { echo 'Release bundle version does not match package.json.' >&2; exit 1; }
+  npm ci --omit=dev
+else
+  npm ci
+  npm run build
+fi
+npm run prepare:vm
 npm run doctor
+if [[ ${OOTS_INSTALL_NO_START:-} == 1 ]]; then echo 'Installation verified. Run ./Play.command to start the game.'; exit 0; fi
 echo 'Starting the local game at http://127.0.0.1:4100'
 echo 'Click Open console in your browser; no game key is needed.'
 echo 'Open Settings → Sign in with ChatGPT. Each game session uses a disposable Linux VM on this Mac.'
-exec env NODE_ENV=production npm start
+exec bash scripts/run-macos.sh

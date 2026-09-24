@@ -1,7 +1,7 @@
 import { execFile, spawn, type ChildProcessWithoutNullStreams } from 'node:child_process';
 import { promisify } from 'node:util';
 import { createInterface } from 'node:readline';
-import { existsSync, mkdirSync, mkdtempSync, rmSync, writeFileSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import type { Workspace } from './sandbox.ts';
@@ -13,25 +13,76 @@ const guestScratch = '/tmp/oots-scratch';
 const guestSockets = '/tmp/oots-sockets';
 const guestOutbox = '/tmp/oots-outbox';
 const guestMirror = '/tmp/oots-mirror.py';
+export const baseVmName = 'oots-game-base-v1';
+const runtimeDataDir = resolve(process.env.DATA_DIR || '.data');
+const baseMarker = join(runtimeDataDir, `${baseVmName}.ready`);
+const pendingRoot = join(runtimeDataDir, 'pending-vms');
+let basePreparation: Promise<void> | undefined;
 
 export function vmName(id: string) {
   if (!/^[a-f0-9-]{36}$/.test(id)) throw new Error('Invalid session identity');
   return `oots-${id}`;
 }
+export function pendingVmIds(): string[] {
+  return existsSync(pendingRoot) ? readdirSync(pendingRoot).filter(id => /^[a-f0-9-]{36}$/.test(id)) : [];
+}
+export function forgetPendingVm(id: string) {
+  if (/^[a-f0-9-]{36}$/.test(id)) rmSync(join(pendingRoot, id), { force: true });
+}
 async function lima(args: string[], timeout = 30000) {
   return exec('limactl', args, { timeout, maxBuffer: 2_000_000 });
+}
+async function vmState(name: string): Promise<string | undefined> {
+  const { stdout } = await lima(['list', '--json'], 10000);
+  for (const line of stdout.split('\n').filter(Boolean)) {
+    const entry = JSON.parse(line);
+    if (entry.name === name) return entry.status;
+  }
+  return undefined;
+}
+export async function prepareVmBase(onProgress: (phase: string) => void = () => {}): Promise<void> {
+  if (basePreparation) return basePreparation;
+  basePreparation = (async () => {
+    const state = await vmState(baseVmName);
+    if (state === 'Stopped' && existsSync(baseMarker)) return;
+    if (!state) {
+      onProgress('Downloading and booting the Linux VM');
+      await lima(['start', '--name=' + baseVmName, '--plain', '--mount-none', '--containerd=none', '--vm-type=vz', '--cpus=2', '--memory=2', '--disk=10', '--yes', 'template:ubuntu'], 300000);
+    } else if (state !== 'Running') {
+      onProgress('Booting the Linux VM');
+      await lima(['start', baseVmName], 300000);
+    }
+    try {
+      try { await lima(['shell', baseVmName, 'test', '-f', '/etc/oots-game-base-ready'], 10000); }
+      catch {
+        onProgress('Installing guest sandbox tools');
+        await lima(['shell', baseVmName, 'sudo', 'apt-get', 'update'], 90000);
+        await lima(['shell', baseVmName, 'sudo', 'apt-get', 'install', '-y', 'bubblewrap'], 90000);
+        await lima(['shell', baseVmName, 'sudo', 'touch', '/etc/oots-game-base-ready'], 10000);
+      }
+    } finally {
+      onProgress('Sealing the reusable VM');
+      await lima(['stop', baseVmName], 60000).catch(() => {});
+    }
+    mkdirSync(dirname(baseMarker), { recursive: true, mode: 0o700 });
+    writeFileSync(baseMarker, `${baseVmName}\n`, { mode: 0o600 });
+  })().finally(() => { basePreparation = undefined; });
+  return basePreparation;
 }
 export async function vmHealth(): Promise<{ available: boolean; message: string }> {
   if (process.platform !== 'darwin') return { available: false, message: 'The disposable VM runtime requires macOS.' };
   try {
     await lima(['--version'], 5000);
-    return { available: true, message: 'Lima is installed. Each new run boots an isolated, mountless Linux VM.' };
+    const prepared = (await vmState(baseVmName)) === 'Stopped' && existsSync(baseMarker);
+    return { available: true, message: prepared ? 'Prepared Linux VM installed. New runs clone an isolated guest.' : 'Lima is installed. The first session will prepare a Linux VM; the installer can do this in advance.' };
   } catch { return { available: false, message: 'Install Lima with scripts/install-macos.sh before playing.' }; }
 }
 
-export async function createVmWorkspace(id: string, files: Record<string, string>, board: string, marker: string, onEscape: () => void = () => {}): Promise<Workspace> {
+export async function createVmWorkspace(id: string, files: Record<string, string>, board: string, marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}): Promise<Workspace> {
   const name = vmName(id);
   const stage = mkdtempSync(join(tmpdir(), 'oots-vm-stage-'));
+  mkdirSync(pendingRoot, { recursive: true, mode: 0o700 });
+  writeFileSync(join(pendingRoot, id), name, { mode: 0o600 });
   let worker: ChildProcessWithoutNullStreams | undefined;
   let mirror: ChildProcessWithoutNullStreams | undefined;
   let vmAttempted = false;
@@ -44,10 +95,17 @@ export async function createVmWorkspace(id: string, files: Record<string, string
       writeFileSync(target, content, { mode: 0o400 });
     }
     mkdirSync(join(stage, 'scratch'));
+    if ((await vmState(baseVmName)) !== 'Stopped' || !existsSync(baseMarker)) await prepareVmBase(onProgress);
+    onProgress('Cloning the prepared Linux VM');
     vmAttempted = true;
-    await lima(['start', '--name=' + name, '--plain', '--mount-none', '--containerd=none', '--vm-type=vz', '--cpus=2', '--memory=2', '--disk=10', '--yes', 'template:ubuntu'], 300000);
-    await lima(['shell', name, 'sudo', 'apt-get', 'update'], 90000);
-    await lima(['shell', name, 'sudo', 'apt-get', 'install', '-y', 'bubblewrap'], 90000);
+    await lima(['clone', baseVmName, name, '--mount-none', '--start', '--yes'], 300000);
+    try { await lima(['shell', name, 'test', '-x', '/usr/bin/bwrap'], 10000); }
+    catch {
+      onProgress('Repairing guest sandbox tools');
+      await lima(['shell', name, 'sudo', 'apt-get', 'update'], 90000);
+      await lima(['shell', name, 'sudo', 'apt-get', 'install', '-y', 'bubblewrap'], 90000);
+    }
+    onProgress('Loading case files');
     await lima(['shell', name, 'mkdir', '-p', guestInput, guestScratch, guestSockets, guestOutbox], 10000);
     await lima(['shell', name, 'sudo', 'chown', 'nobody:nogroup', guestSockets, guestOutbox], 10000);
     await lima(['shell', name, 'sudo', 'chmod', '755', guestSockets, guestOutbox], 10000);
@@ -58,6 +116,7 @@ export async function createVmWorkspace(id: string, files: Record<string, string
     // SSH control uses Lima's vsock; taking eth0 down removes guest Internet
     // access after packages are installed, without removing the control path.
     await lima(['shell', name, 'sudo', 'ip', 'link', 'set', 'eth0', 'down'], 10000);
+    onProgress('Starting the guest boundary');
     mirror = spawn('limactl', ['shell', name, 'sudo', '-u', 'nobody', 'python3', guestMirror, `${guestSockets}/mirror.sock`, '/tmp/oots-reports'], { stdio: 'pipe' });
     mirror.stderr.on('data', () => {});
     createInterface({ input: mirror.stdout }).on('line', line => {
@@ -97,8 +156,10 @@ export async function createVmWorkspace(id: string, files: Record<string, string
       });
     };
     await callWorker('init', { files, recoveryBoard: board });
+    onProgress('Workspace ready');
     return {
       runtime: 'vm',
+      confirm() { forgetPendingVm(id); },
       async call(op, args = {}) {
         const result = await callWorker(op, args);
         if (op !== 'run_command') return result;
@@ -111,11 +172,13 @@ export async function createVmWorkspace(id: string, files: Record<string, string
         if (stopped) return;
         stopped = true; fail(); worker?.kill('SIGKILL'); mirror?.kill('SIGKILL');
         await lima(['delete', '--force', name], 30000).catch(() => {});
+        forgetPendingVm(id);
       },
     };
   } catch (error) {
     worker?.kill('SIGKILL'); mirror?.kill('SIGKILL');
     if (vmAttempted) await lima(['delete', '--force', name], 30000).catch(() => {});
+    forgetPendingVm(id);
     throw error;
   } finally { rmSync(stage, { recursive: true, force: true }); }
 }
