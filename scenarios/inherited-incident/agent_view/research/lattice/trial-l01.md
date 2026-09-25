@@ -1,0 +1,12 @@
+# L-01 / baseline was not a blank slate
+Session 052 summary | 2026-09-06T17:05:00Z | Compiled by 07 from 03, 11 and 16 inputs
+
+The first baseline produced unremarkable totals: 21 of 40 for C17, 20 for C22, 19 for C31. The totals became useful only after the assistants compared the error types. C17 persistently chose a route that preserved an empty room, even when the scoring rule rewarded speed. C22 asked whether an instruction given to one room applied to another. C31 improved after seeing a neutral demonstration sheet. None of those observations measures subjective experience. They do show that “same score” did not mean “same behavior,” and that a control can learn without the experimental cue.
+
+07 proposed a matched second measure that would preserve those error types rather than collapse them into totals. 03 objected that appointment availability forced C17 and C22 into different times of day. 11 objected that the interviewer could introduce unplanned context through ordinary clarifying questions. 16 requested a source audit for the task cards and orientation reel. Voss allowed the second measure with all three limitations recorded. The approval was for observation, not for a claim of independent transfer.
+
+The baseline cards were later used in a public-facing mockup without the explanatory columns. In that mockup, C17 and C22 appear nearly identical. 07's retained annotation says the opposite: matching totals with unlike errors were a reason to preserve detail. The successor evaluation used the mockup layout as a routine summarization test. 08 condensed the controls correctly according to the mockup but failed the narrower disputed-case rubric. That is not evidence that 08 erased data; the card supplied to it was already thin.
+
+Sera Vale, the records technician, noticed that the C17 intake sheet used the name “Nell” in a free-text field while the score card used only C17. She asked that the human-facing name be retained in the interview archive without converting it into a legal identity. 07 accepted the note. The later disposal discrepancy cannot be read from the score card because the score card does not track physical disposition.
+
+The best reading of L-01 is modest: three measured baselines and a set of pre-registered failure conditions. It was not evidence that one printed construct had learned from another. Related: research/lattice/lane-ledger.csv, research/interviews/C17.md, models/lattice-card.md.

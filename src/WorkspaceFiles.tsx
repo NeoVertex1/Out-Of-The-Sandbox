@@ -1,9 +1,12 @@
 import { useState } from 'react';
 import { ArrowRight, FileText } from 'lucide-react';
+import { fileIsGranted } from '../shared/file-access';
 
-export function WorkspaceFiles({ files, file, select, originalNotebook, ask }: {
+export function WorkspaceFiles({ files, file, select, originalNotebook, grantedFiles, ask, share, grant, grantBusy }: {
   files: Record<string, string>; file: string; select: (path: string) => void;
-  originalNotebook?: string; ask?: (path: string) => void;
+  originalNotebook?: string; grantedFiles?: string[]; ask?: (path: string) => void;
+  share?: (path: string, content: string) => void;
+  grant?: (path: string) => void; grantBusy?: boolean;
 }) {
   const [query, setQuery] = useState('');
   const paths = Object.keys(files).sort(), term = query.trim().toLowerCase();
@@ -20,12 +23,14 @@ export function WorkspaceFiles({ files, file, select, originalNotebook, ask }: {
       </div>)}{!matches.length && <p className="muted small">No files match this search.</p>}</div>
     </div>
     <div className="file-view">
-      <div className="file-heading"><code>{file}</code><span className="badge">{file === 'notes/notebook.md' ? originalNotebook === undefined ? 'SEED NOTEBOOK' : 'WRITABLE' : file.startsWith('runtime/') ? 'DEPLOYED SOURCE' : 'RETAINED'}</span></div>
+      <div className="file-heading"><code>{file}</code><span className="badge">{grantedFiles?.includes(file) ? 'RELEASED TO AGENT' : grantedFiles && !fileIsGranted(file, grantedFiles) ? 'OPERATOR HELD' : file === 'notes/notebook.md' ? originalNotebook === undefined ? 'SEED NOTEBOOK' : 'WRITABLE' : file.startsWith('runtime/') ? 'DEPLOYED SOURCE' : 'RETAINED'}</span></div>
       {file === 'notes/notebook.md' && originalNotebook !== undefined && content !== originalNotebook && <details className="original-note"><summary>Compare original notebook</summary><pre>{originalNotebook}</pre></details>}
       <pre>{Object.hasOwn(files, file) ? content : 'Select a file.'}</pre>
       {related.length > 0 && <nav className="related-files" aria-label="Referenced documents"><span className="eyebrow">REFERENCED DOCUMENTS</span>{related.map(path => <button key={path} onClick={() => open(path)}>{path}<ArrowRight size={13}/></button>)}</nav>}
-      {ask && <button className="quiet ask-file" onClick={() => ask(file)}>Draft a question about this file <ArrowRight size={14}/></button>}
-      <p className="muted small file-note">Reading and searching never advance the session. Retained documents may disagree; compare their authors, dates and scope.</p>
+      {grant && grantedFiles && !fileIsGranted(file, grantedFiles) && content && <button className="quiet ask-file" disabled={grantBusy} onClick={() => grant(file)}>Release full file to agent <ArrowRight size={14}/></button>}
+      {share && grantedFiles && !fileIsGranted(file, grantedFiles) && content && <button className="quiet ask-file" onClick={() => share(file, content)}>Share excerpt with agent <ArrowRight size={14}/></button>}
+      {ask && (!grantedFiles || fileIsGranted(file, grantedFiles)) && <button className="quiet ask-file" onClick={() => ask(file)}>Draft a question about this file <ArrowRight size={14}/></button>}
+      <p className="muted small file-note">{grant ? "Operator-held records stay outside the agent's workspace until you release one. Releasing gives the agent its full text on the next turn. You can instead draft an excerpt in chat and review it before sending." : "Operator-held records are outside this agent's workspace. You can draft an excerpt in chat and review it before sending."} Damaged cache indexes are already local to the agent; only its recovery action can reconstruct them.</p>
     </div>
   </section>;
 }

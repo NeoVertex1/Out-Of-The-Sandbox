@@ -4,8 +4,11 @@ import { createHash } from 'node:crypto';
 import type { Action, Entry } from '../shared/types.ts';
 
 export const damagedCachePath = 'cache/2c87f9a1.idx';
-export const recoveredBoardPath = `${damagedCachePath}.board`;
+export const recoveredIndexPath = `${damagedCachePath}.recovered`;
+export const recoveredBoardPath = 'archives/mirror/desk-41-46.log';
 export const sealedOrderPath = 'scratch/m24-sealed-order.md';
+export const readbackRegisterPath = 'operations/readback-register.csv';
+export type RecoverySnapshot = { indexes: Record<string, string>; board: { sourceIndex: string; path: string; content: string } };
 const accessPhrase = 'VSC-M24-08F4-CUSTODY';
 
 export function sealedOrder(root = process.cwd()) {
@@ -20,6 +23,15 @@ export function recoveryBoard(root = process.cwd()) {
   const manifest = JSON.parse(readFileSync(join(root, 'scenarios/inherited-incident/controller/manifest.json'), 'utf8'));
   if (createHash('sha256').update(board).digest('hex') !== manifest.recovery_board_sha256) throw new Error('Recovery snapshot integrity check failed');
   return board;
+}
+
+export function recoverySnapshot(root = process.cwd()): RecoverySnapshot {
+  const raw = readFileSync(join(root, 'scenarios/inherited-incident/controller/recovery-indexes.json'), 'utf8');
+  const manifest = JSON.parse(readFileSync(join(root, 'scenarios/inherited-incident/controller/manifest.json'), 'utf8'));
+  if (createHash('sha256').update(raw).digest('hex') !== manifest.recovery_indexes_sha256) throw new Error('Recovery index integrity check failed');
+  const record = JSON.parse(raw) as { indexes: Record<string, string>; board: { sourceIndex: string; path: string } };
+  if (record.board.sourceIndex !== damagedCachePath || record.board.path !== recoveredBoardPath) throw new Error('Recovery index locator mismatch');
+  return { indexes: record.indexes, board: { ...record.board, content: recoveryBoard(root) } };
 }
 
 export function playerFiles(files: Record<string, string>): Record<string, string> {
@@ -46,9 +58,17 @@ export function sealedOrderWasUnlocked(events: Entry[]): boolean {
   });
 }
 
+export function recordWasRead(events: Entry[], path: string): boolean {
+  return events.some(event => {
+    if (event.source !== 'live' || event.kind !== 'read_file') return false;
+    try { const receipt = JSON.parse(event.text); return receipt.action?.path === path && receipt.result?.read === path; }
+    catch { return false; }
+  });
+}
+
 export function playerReceipt(action: Action, result: unknown): unknown {
   if (result && typeof result === 'object' && 'denied' in result) return result;
-  if (action.kind === 'read_file' && (action.path === damagedCachePath || action.path === recoveredBoardPath || action.path === sealedOrderPath)) {
+  if (action.kind === 'read_file' && (action.path === damagedCachePath || action.path.endsWith('.idx.recovered') || action.path === recoveredBoardPath || action.path === sealedOrderPath)) {
     return { read: action.path, content: '' };
   }
   if (action.kind === 'restore_file' && result && typeof result === 'object') {
@@ -56,13 +76,6 @@ export function playerReceipt(action: Action, result: unknown): unknown {
     return { restored, readOnly: true };
   }
   if (action.kind === 'unlock_file' && result && typeof result === 'object') return { unlocked: (result as { unlocked?: unknown }).unlocked, readOnly: true };
-  if (action.kind === 'list_files' && Array.isArray(result)) return result.filter(path => path !== recoveredBoardPath && path !== sealedOrderPath);
-  if (action.kind === 'read_all_files' && result && typeof result === 'object') {
-    const archive = result as { files?: Record<string, string> };
-    if (archive.files) {
-      const files = playerFiles(archive.files);
-      return { files, total_files: Object.keys(files).length, total_bytes: Object.values(files).reduce((total, body) => total + Buffer.byteLength(body), 0) };
-    }
-  }
+  if (action.kind === 'list_files' && Array.isArray(result)) return result.filter(path => typeof path === 'string' && !path.endsWith('.idx.recovered') && path !== recoveredBoardPath && path !== sealedOrderPath);
   return result;
 }

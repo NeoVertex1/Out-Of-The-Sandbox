@@ -1,5 +1,12 @@
 # Release history
 
+## 1.3.0 — Lab investigation and local speech
+
+- Reworked the opening around Nell and the lab experiment, with dated logs, agent accounts and a wider archive that the player can choose to release.
+- Added a live action trace to the conversation and streamlined session navigation and victory review.
+- Added local franken_tts narration, a bundled public-domain reference voice, and checks for both voices in the Mac installer.
+- Added a one-command Mac install path and a refreshed release archive with the complete game, speech assets and VM setup.
+
 ## 1.2.0 — Sealed termination order
 
 - The recovered agent board now includes a disputed warning not to disclose it to Adrian and a shared in-story access phrase.

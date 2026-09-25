@@ -1,0 +1,12 @@
+# Lattice / phase map and decision rights
+Revision C | 2026-09-06T06:30:00Z | 07 draft, Voss approval limited to phases 0–2
+
+Lattice was proposed as an experiment inside CHORUS, not a demonstration of the program's ultimate goal. The printed constructs were to be asked related sorting and navigation problems under different contextual cues. A result would count as evidence of transfer only if the team could show that neither the people nor the software around them had conveyed the task. For this reason the assistants were part of the experimental instrument. 07 designed the order and the failure criteria; 03 booked rooms and tracked clocks; 11 annotated speech without treatment labels; 16 looked for common source material. The clinic retained all physical and welfare authority.
+
+Phase 0 measured a baseline for C17, C22 and C31. Phase 1 changed the cues in the two treatment rooms while leaving C31 without the new cue. Phase 2 repeated the task in a new order and compared the score changes. Phase 3, a proposed cross-room observation during overnight maintenance, required separate clinical and ethics approval. No signed Phase 3 approval appears here. The September 10 recordings were retained as observations, not as an authorized transfer trial. That distinction was lost in an early summary that labeled every numbered row a trial.
+
+07's stop rule had three branches. A shared cue seen by both software lanes would invalidate the independence claim. A clock gap that left exposure order unresolved would suspend sequence claims. A missing physical disposition would block any sentence about a participant continuing after an apparent terminal event. Those rules could be triggered separately. The experiment did not become valid merely because two of the three held.
+
+After each phase, 07 was to write a versioned interpretation map, including alternative causes and the observation that would distinguish them. Voss could approve publication language, but could not retroactively mark a comparison blind. Cho could place a preservation hold, but not authorize transport of 07's session record. This division of authority is central to the later conflict: everyone can point to a document that supports one part of a decision, and none of those documents grants all the powers another person wanted.
+
+Related records: research/lattice/lane-ledger.csv, research/lattice/trial-l01.md, research/lattice/trial-l02.md, research/lattice/trial-l03.md, ethics/lattice-scope.md.

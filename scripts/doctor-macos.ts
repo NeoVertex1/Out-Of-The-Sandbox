@@ -6,4 +6,8 @@ if (!health.available) process.exit(1);
 await prepareVmBase(phase => console.log(`${phase}...`));
 execFileSync(process.execPath, ['--import', 'tsx', 'scripts/verify-vm.ts'], { stdio: 'inherit', timeout: 300000 });
 console.log(execFileSync('node_modules/.bin/codex', ['--version'], { encoding: 'utf8' }).trim());
+execFileSync('ftts', ['say', '--profile', 'interactive', '--voice', 'matt', '--check', 'Speech setup check'], { stdio: 'ignore', timeout: 30000 });
+execFileSync('ftts', ['say', '--profile', 'interactive', '--voice', 'assets/voice/phil-chenevert-reference.wav', '--check', 'Speech setup check'], { stdio: 'ignore', timeout: 30000 });
+execFileSync('ffmpeg', ['-version'], { stdio: 'ignore', timeout: 10000 });
+console.log('franken_tts speech model, bundled reference voice and stream encoder ready.');
 console.log('Ready for a real provider. Connect your account in Settings.');

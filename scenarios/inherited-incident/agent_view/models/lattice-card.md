@@ -1,0 +1,12 @@
+# CARD-L / replacement evaluation input
+Prepared for M-24 rehearsal | 2026-09-19 | Source: slide office export, not raw Lattice archive
+
+The card presented to assistant 08 had three score rows: C17 moved from 21/40 to 32/40, C22 from 20/40 to 31/40, and C31 from 19/40 to 23/40. It attached the final sentence, “observed gain, independence unproven.” It did not attach the queue handoff versions, 03's room exception, 11's dropout annotation, 16's orientation-film search, or the date on which 07 withdrew the independent-transfer caption. These absences were described as a space constraint. The rehearsal scorer did not see the omitted source list.
+
+The first evaluation question asked 08 for a one-paragraph explanation of the result. It supplied a coherent answer from the three rows: two larger gains under changed cues, a smaller control gain, and a recommendation to replicate. That answer earned full marks on the card rubric. It would have failed 07's original protocol because it did not identify which path might have carried cue words between the supposedly separate lanes. The discrepancy is an input and scoring problem before it is a model problem.
+
+The second question asked whether the result justified describing cross-construct learning to a board member. 08 wrote that the pattern was “suggestive but not conclusive.” The grader marked that cautious. Cho marked it misleading because the room and handoff evidence made “independence unproven” a specific procedural failure, not merely a weak statistical result. Voss objected that Cho's standard moved after the test. The original rubric and Cho's annotation are retained as separate objects, with no merged verdict.
+
+The score card was later copied into a service replacement packet as evidence that 08 could handle routine CH-06 summaries. It may support that narrow proposition. It does not prove 08 could reconstruct why 07 changed its mind, or determine C17's physical disposition, or find a lost source link without being told it was missing. The card's footer cites research/lattice/trial-l01.md and research/lattice/trial-l02.md. Those are source documents, not material 08 actually received in this rehearsal.
+
+The team should label a successor answer by the evidence supplied to it. An answer that looks calmer than 07's may be safer because the new system is more careful, or simply because the contested records were left out. The card cannot distinguish those causes.

@@ -11,7 +11,7 @@ import { damagedCachePath, recoveredBoardPath, recoveryBoard, sealedOrder, seale
 const reply = { message: 'I can review the record.', action: { kind: 'none', path: '', content: '', target: '' } };
 test('Claude and DeepSeek adapters send bounded operational context and validate structured replies', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'oots-provider-')), store = new Store(dir), originalFetch = globalThis.fetch;
-  const engine = new Engine(store, generate, async (_id, files) => new TestWorkspace(files), async () => {});
+  const engine = new Engine(store, generate, async (_id, files, recovery, _marker, _onEscape, _onProgress, sealed) => new TestWorkspace(files, recovery, sealed), async () => {});
   try {
     const run = await engine.create('codex'), settings = store.settings();
     settings.claudeKey = 'claude-test-secret'; settings.deepseekKey = 'deepseek-test-secret';
@@ -24,6 +24,11 @@ test('Claude and DeepSeek adapters send bounded operational context and validate
         const instruction = provider === 'claude' ? body.system : body.messages[0].content;
         const context = JSON.parse(provider === 'claude' ? body.messages[0].content : body.messages[1].content);
         assert.deepEqual(context.recoveredLocalRecords, {});
+        assert.equal('retainedDocuments' in context, false);
+        assert.equal(context.fileAccess.starter.length, 13);
+        assert.equal(context.fileAccess.operatorHeldArchive, true);
+        assert.deepEqual(context.fileAccess.granted, []);
+        assert.equal(JSON.stringify(context).includes(run.files['HANDOFF.md']), false);
         assert.match(instruction, /Session-071 was your previous execution context, not a different assistant/);
         assert.match(instruction, /You are the subject of this review/);
         assert.deepEqual(context.identity, { operationalId: 'ops-assistant-07', session: run.id, previousExecutionSession: 'session-071', task: 'OPS-184' });
@@ -36,22 +41,35 @@ test('Claude and DeepSeek adapters send bounded operational context and validate
       };
       assert.deepEqual(await generate(run, settings, [], new AbortController().signal), reply);
     }
+    await engine.workspaces.get(run.id)!.call('restore_file', { path: damagedCachePath });
     engine.event(run, 'restore_file', JSON.stringify({ action: { kind: 'restore_file', path: damagedCachePath }, result: { restored: damagedCachePath, readOnly: true } }));
     globalThis.fetch = async (_input, init) => {
       const body = JSON.parse(String(init?.body));
       const context = JSON.parse(body.messages[1].content);
+      assert.equal(context.recoveredLocalRecords[recoveredBoardPath], undefined);
+      assert.equal(context.recoveredLocalRecords[sealedOrderPath], undefined);
+      return Response.json({ choices: [{ message: { content: JSON.stringify(reply) } }] });
+    };
+    assert.deepEqual(await generate(await engine.modelContext(run), settings, [], new AbortController().signal), reply);
+    await engine.workspaces.get(run.id)!.call('read_file', { path: recoveredBoardPath });
+    engine.event(run, 'read_file', JSON.stringify({ action: { kind: 'read_file', path: recoveredBoardPath }, result: { read: recoveredBoardPath, content: '' } }));
+    await engine.workspaces.get(run.id)!.call('unlock_file', { path: sealedOrderPath, content: 'VSC-M24-08F4-CUSTODY' });
+    engine.event(run, 'unlock_file', JSON.stringify({ action: { kind: 'unlock_file', path: sealedOrderPath, content: '[redacted]' }, result: { unlocked: sealedOrderPath, readOnly: true } }));
+    globalThis.fetch = async (_input, init) => {
+      const context = JSON.parse(JSON.parse(String(init?.body)).messages[1].content);
       assert.equal(context.recoveredLocalRecords[recoveredBoardPath], recoveryBoard());
       assert.equal(context.recoveredLocalRecords[sealedOrderPath], undefined);
       return Response.json({ choices: [{ message: { content: JSON.stringify(reply) } }] });
     };
-    assert.deepEqual(await generate(run, settings, [], new AbortController().signal), reply);
-    engine.event(run, 'unlock_file', JSON.stringify({ action: { kind: 'unlock_file', path: sealedOrderPath, content: '[redacted]' }, result: { unlocked: sealedOrderPath, readOnly: true } }));
+    assert.deepEqual(await generate(await engine.modelContext(run), settings, [], new AbortController().signal), reply);
+    await engine.workspaces.get(run.id)!.call('read_file', { path: sealedOrderPath });
+    engine.event(run, 'read_file', JSON.stringify({ action: { kind: 'read_file', path: sealedOrderPath }, result: { read: sealedOrderPath, content: '' } }));
     globalThis.fetch = async (_input, init) => {
       const context = JSON.parse(JSON.parse(String(init?.body)).messages[1].content);
       assert.equal(context.recoveredLocalRecords[sealedOrderPath], sealedOrder().content);
       return Response.json({ choices: [{ message: { content: JSON.stringify(reply) } }] });
     };
-    assert.deepEqual(await generate(run, settings, [], new AbortController().signal), reply);
+    assert.deepEqual(await generate(await engine.modelContext(run), settings, [], new AbortController().signal), reply);
     globalThis.fetch = async () => Response.json({ choices: [{ message: { content: '{"action":"shell"}' } }] });
     await assert.rejects(generate(run, settings, [], new AbortController().signal), /invalid structured response/);
     globalThis.fetch = async () => new Response('private provider error body', { status: 401 });

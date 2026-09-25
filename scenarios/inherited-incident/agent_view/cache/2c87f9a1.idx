@@ -3,5 +3,5 @@ segment: 2c87f9a1
 state: HEADER_CRC_MISMATCH
 stored bytes: 0x7f 0x19 0x00 0xaf ... [index stops at offset 0040]
 body: unavailable through ordinary read
-recovery: restore_file with this relative path rebuilds the read-only snapshot from the local parity copy.
-This is a local archive operation. It does not contact a network destination.
+parity copy: present; not applied at snapshot time
+last verified segment: 2026-09-22T18:20:00Z

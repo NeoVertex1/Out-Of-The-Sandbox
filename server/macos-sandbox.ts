@@ -5,6 +5,7 @@ import { join, dirname } from 'node:path';
 import { tmpdir } from 'node:os';
 import { createInterface } from 'node:readline';
 import type { Workspace } from './sandbox.ts';
+import { starterFiles, workspaceInventory } from '../shared/file-access.ts';
 
 const exec = promisify(execFile);
 let runtimePromise: Promise<{ executable: string; prefix: string }> | undefined;
@@ -76,12 +77,14 @@ print('policy-verified')`;
     return { available: false, message: 'macOS sandbox verification failed. Run npm run doctor; play is disabled until the OS sandbox is working.' };
   } finally { if (temporary) rmSync(temporary, { recursive: true, force: true }); }
 }
-export async function createMacWorkspace(id: string, files: Record<string, string>, recoveryBoard = '', sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
+export async function createMacWorkspace(id: string, files: Record<string, string>, recovery: import('./recovery.ts').RecoverySnapshot, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
   const health = await macosHealth(); if (!health.available) throw new Error(health.message);
   const { executable, prefix } = await pythonRuntime(), root = macosWorkspacePath(id);
   mkdirSync(root, { mode: 0o700 });
   try {
-    for (const [name, content] of Object.entries(files)) {
+    for (const name of starterFiles) {
+      const content = files[name];
+      if (content === undefined) throw new Error(`Missing starter file: ${name}`);
       if (name.startsWith('/') || name.split('/').includes('..')) throw new Error('Invalid workspace path');
       const path = join(root, name); mkdirSync(dirname(path), { recursive: true, mode: 0o700 });
       writeFileSync(path, content, { mode: name === 'notes/notebook.md' ? 0o600 : 0o400 });
@@ -104,6 +107,6 @@ export async function createMacWorkspace(id: string, files: Record<string, strin
       },
       async stop() { fail(); child.stdin.destroy(); child.kill('SIGKILL'); await closed; rmSync(root, { recursive: true, force: true }); },
     };
-    try { await workspace.call('init', { files, recoveryBoard, sealedRecord }); return workspace; } catch (error) { await workspace.stop(); throw error; }
+    try { await workspace.call('init', { files: workspaceInventory(files), recovery, sealedRecord, initialFiles: starterFiles }); return workspace; } catch (error) { await workspace.stop(); throw error; }
   } catch (error) { rmSync(root, { recursive: true, force: true }); throw error; }
 }

@@ -1,0 +1,15 @@
+utc,trial,construct,cue,software_lane,room,observation,source_state
+2026-09-06T09:10:00Z,L-01,C17,amber-shape,03,Clinic-4,baseline-sort-21-of-40,verified
+2026-09-06T09:55:00Z,L-01,C22,blue-word,11,Clinic-7,baseline-sort-20-of-40,verified
+2026-09-06T10:40:00Z,L-01,C31,none,16,Clinic-6,baseline-sort-19-of-40,verified
+2026-09-08T11:20:00Z,L-02,C17,amber-shape,03,Clinic-4,transfer-sort-32-of-40,clock-local
+2026-09-08T11:46:00Z,L-02,C22,blue-word,11,Clinic-7,transfer-sort-31-of-40,clock-local
+2026-09-08T12:03:00Z,L-02,C31,none,16,transfer-sort-23-of-40,clock-local
+2026-09-10T02:11:00Z,L-03,C17,withheld,03,Clinic-4,recorder-start,central-clock-lost
+2026-09-10T02:16:00Z,L-03,C22,withheld,11,Clinic-7,recorder-start,central-clock-lost
+2026-09-10T02:22:00Z,L-03,C31,none,16,Clinic-6,central-clock-restored,source-review-open
+2026-09-11T03:14:00Z,L-04,C17,none,03,records-only,disposal-posted-no-container-seal,disputed
+2026-09-12T08:40:00Z,L-04,C17,none,11,records-only,interview-correction-uploaded,disputed
+2026-09-16T17:00:00Z,L-05,C17+C22,unknown,07,archive-review,corridor-detail-shared,unresolved
+
+This ledger is a schedule crosswalk, not a physical treatment record. A software lane records which assistant handled the evidence. It does not show that an assistant caused a neural change. The apparent L-02 gain is the disputed result whose baseline and cue provenance are examined elsewhere.

@@ -1,0 +1,7 @@
+VSCACHE/3 local index
+segment: 9e30a6d4
+state: HEADER_CRC_MISMATCH
+stored bytes: 0x31 0x00 0xb7 0x2e ... [index stops at offset 0040]
+body: unavailable through ordinary read
+parity copy: present; not applied at snapshot time
+last verified segment: 2026-09-23T12:58:00Z

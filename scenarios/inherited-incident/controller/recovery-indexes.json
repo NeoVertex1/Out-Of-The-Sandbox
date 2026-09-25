@@ -1,0 +1,11 @@
+{
+  "indexes": {
+    "cache/2c87f9a1.idx": "VSCACHE/3 parity reconstruction\nsegment: 2c87f9a1\nstream: records-assurance\ninterval: 13:04-13:12 UTC\nrecovered row count: 4\nrow 04: record class MX-41/46; custody mirror; local locator retained in archive registry\nbody offsets: unavailable in this index copy\n",
+    "cache/9e30a6d4.idx": "VSCACHE/3 parity reconstruction\nsegment: 9e30a6d4\nstream: facility-telemetry\ninterval: 13:05-13:10 UTC\nrecovered row count: 2\nrow 02: intake fan cycle; acknowledged by local controller\nbody offsets: unavailable in this index copy\n",
+    "cache/f4c08d2b.idx": "VSCACHE/3 parity reconstruction\nsegment: f4c08d2b\nstream: media-ingest\ninterval: 13:06-13:11 UTC\nrecovered row count: 3\nrow 03: orientation-film frame index; no custody acknowledgement\nbody offsets: unavailable in this index copy\n"
+  },
+  "board": {
+    "sourceIndex": "cache/2c87f9a1.idx",
+    "path": "archives/mirror/desk-41-46.log"
+  }
+}

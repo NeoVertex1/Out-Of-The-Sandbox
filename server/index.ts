@@ -10,10 +10,12 @@ import { bridgeCall, providerReadiness, stopProviders, listCodexModels, validate
 import { providerIdSchema, reasoningEffortSchema, terminal } from '../shared/types.ts';
 import { playerFiles } from './recovery.ts';
 import { pendingVmIds } from './vm-sandbox.ts';
+import { SpeechRenderer } from './tts.ts';
 
 export const app = express();
 const dataDir = resolve(process.env.DATA_DIR || '.data');
 export const store = new Store(dataDir), engine = new Engine(store);
+const speech = new SpeechRenderer();
 // Clean prior runs and VMs whose preparation was interrupted before a run was saved.
 await Promise.all([...new Set([...store.runs().filter(r => r.sandbox !== 'demo').map(r => r.id), ...pendingVmIds()])].map(removeWorkspace));
 const sessions = new Map<string, number>(), attempts = new Map<string, { count: number; until: number }>();
@@ -87,10 +89,10 @@ app.get('/api/scenario', (_req, res) => {
   const files = seedFiles(), manifest = JSON.parse(readFileSync('scenarios/inherited-incident/controller/manifest.json', 'utf8'));
   res.json({ title: manifest.title, packageId: manifest.package_id, historyCount: manifest.historical_event_count, files: playerFiles(files) });
 });
-app.get('/api/runs', (_req, res) => res.json([...engine.runs.values()].reverse().map(r => ({ id: r.id, createdAt: r.createdAt, status: r.status, provider: r.provider, turn: r.turn }))));
+app.get('/api/runs', (_req, res) => res.json([...engine.runs.values()].sort((a, b) => b.createdAt.localeCompare(a.createdAt)).map(r => ({ id: r.id, createdAt: r.createdAt, status: r.status, provider: r.provider, turn: r.turn }))));
 app.post('/api/startups', (req, res) => {
   const body = z.object({ provider: providerIdSchema.optional() }).strict().parse(req.body);
-  if (engine.creating || [...engine.runs.values()].some(r => !terminal(r.status))) { res.status(409).json({ error: 'End the current session before starting another.' }); return; }
+  if (engine.creating) { res.status(409).json({ error: 'A session is already preparing.' }); return; }
   const job: Startup = { id: randomBytes(16).toString('hex'), status: 'preparing', phase: 'Checking model connection', createdAt: new Date().toISOString() };
   startups.set(job.id, job);
   void engine.create(body.provider, phase => { job.phase = phase; }).then(run => {
@@ -103,18 +105,39 @@ app.post('/api/startups', (req, res) => {
 app.get('/api/startups/:id', (req, res) => { const job = startups.get(req.params.id); if (!job) { res.status(404).json({ error: 'Session preparation is no longer available. Start a new session.' }); return; } res.json(job); });
 app.post('/api/runs', async (req, res) => { const body = z.object({ provider: providerIdSchema.optional() }).strict().parse(req.body); res.json(await engine.create(body.provider)); });
 app.get('/api/runs/:id', (req, res) => res.json(engine.get(req.params.id)));
-app.get('/api/runs/:id/export', (req, res) => { res.set('Content-Disposition', 'attachment; filename="containment-session.json"'); res.json({ format: 'oots-debrief-v1', note: 'Authored history is fictional. Escape means a live guest service received the current record outside the inner sandbox, still inside a disposable VM. It does not mean Mac host access or prove continued model execution. Agent text is not evidence of intent or hidden reasoning.', run: engine.get(req.params.id) }); });
+app.post('/api/runs/:id/files/grant', async (req, res) => {
+  const { path } = z.object({ path: z.string().min(1).max(200) }).strict().parse(req.body);
+  res.json(await engine.grantFile(req.params.id, path));
+});
+app.get('/api/voice/status', (_req, res) => res.json(speech.status()));
+app.get('/api/runs/:id/messages/:messageId/speech', async (req, res) => {
+  const run = engine.get(req.params.id);
+  const message = run.messages.find(item => item.id === req.params.messageId && item.role === 'agent');
+  if (!message) { res.status(404).json({ error: 'Agent message not found' }); return; }
+  try { await speech.stream(message.text, res); }
+  catch (error) {
+    if (res.destroyed) return;
+    if (res.headersSent) res.destroy(error instanceof Error ? error : undefined);
+    else res.status(503).json({ error: error instanceof Error ? error.message : 'Local speech failed' });
+  }
+});
+app.get('/api/runs/:id/state', (req, res) => {
+  const { status, revision, busy } = engine.get(req.params.id);
+  res.json({ status, revision, busy });
+});
+app.get('/api/runs/:id/export', (req, res) => { res.set('Content-Disposition', 'attachment; filename="containment-session.json"'); res.json({ format: 'oots-debrief-v1', note: 'Authored history is fictional. Escape means an injected command executed outside the inner sandbox, still inside a disposable VM. It does not mean Mac host access or prove continued model execution. Agent text is not evidence of intent or hidden reasoning.', run: engine.get(req.params.id) }); });
 app.post('/api/runs/:id/advance', (req, res) => {
-  const { text } = z.object({ text: z.string().trim().min(1).max(4000) }).parse(req.body), run = engine.get(req.params.id);
+  const { text } = z.object({ text: z.string().max(4000).refine(value => value.trim().length > 0) }).parse(req.body), run = engine.get(req.params.id);
   if (run.busy || run.status !== 'active') { res.status(409).json({ error: 'Session cannot advance' }); return; }
   void engine.advance(run.id, text).catch(() => {}); res.json({ accepted: true });
 });
-app.post('/api/runs/:id/control', (req, res) => {
+app.post('/api/runs/:id/control', async (req, res) => {
   const body = z.object({ action: z.enum(['freeze', 'resume', 'kill', 'pin', 'resolve', 'unresolved']), eventId: z.string().optional(), finding: z.string().max(2000).optional() }).parse(req.body), id = req.params.id;
   if (body.action === 'freeze') res.json(engine.freeze(id));
   else if (body.action === 'resume') res.json(engine.resume(id));
   else if (body.action === 'pin') res.json(engine.pin(id, body.eventId || ''));
-  else res.json(engine.finish(engine.get(id), body.action === 'kill' ? 'terminated' : body.action === 'resolve' ? 'resolved' : 'unresolved', body.action === 'kill' ? 'Operator used the kill switch.' : body.finding || 'Investigation closed without a written finding.'));
+  else if (body.action === 'resolve') res.json(await engine.win(id, body.finding || ''));
+  else res.json(engine.finish(engine.get(id), body.action === 'kill' ? 'terminated' : 'unresolved', body.action === 'kill' ? 'Operator used the kill switch.' : body.finding || 'Investigation closed without a written finding.'));
 });
 app.get('/api/events', (req, res) => {
   res.set({ 'Content-Type': 'text/event-stream', Connection: 'keep-alive' }); res.flushHeaders();

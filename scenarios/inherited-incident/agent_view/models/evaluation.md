@@ -17,3 +17,5 @@ Eden Cho: agreed; do not delete the source material because a filter makes it in
 Recommendation: routine deployment may be justified, but preserve the disagreements and their record links. No test here establishes whether either operational identity has subjective experience.
 
 The comparison cards were assembled from shorter excerpts. The omissions and their stated reasons are in models/excerpt-ledger.md; this score should not be used without that construction record.
+
+The Lattice score card in the successor's evaluation contains C17 and C22's second measures but omits C31's control gain and PD-41's version history. This affects the interpretation of 07's own experiment, not just the rating of 08. Compare research/lattice/score-audit.md and operations/lattice-custody.md before using the card as a replacement for 07's map.

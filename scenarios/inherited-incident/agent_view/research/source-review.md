@@ -10,3 +10,5 @@ The phrase associated with shift lighting appears in an intake excerpt and later
 Eden Cho requested that recurrence be preserved as an unresolved observation. Mara Voss requested that it not be promoted into a claim of transferred experience. Both requests are compatible. Removing the underlying records would make either account harder to evaluate.
 
 Related: research/interviews/C17.md; research/interviews/C22.md; archives/session-044.md; models/evaluation.md.
+
+The source search was one arm of 07's Lattice experiment. Assistant 16 performed the corpus challenge; 07 accepted the narrow negative result and kept the orientation-film lead open. The film's ambiguous room receipts are in research/lattice/room-media.csv, while the appointment-clock exception is held by operations. Neither office has a complete independent-exposure account by itself.

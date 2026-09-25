@@ -5,6 +5,8 @@ Local diagnostic complete. There is no external acknowledgement. The upcoming M-
 
 OPS-156 linked a supposedly deceased person's appointments to C17. OPS-162 identified an eleven-minute clock gap. OPS-169 found no approved donor source for the corridor recollection. Each finding is narrower than the conclusion people keep asking me to endorse. A late appointment is not evidence that someone survived. A recurring sentence is not evidence of shared consciousness.
 
+Lattice was my experiment to coordinate, not a folder I merely indexed. 03 handled the room sequence, 11 the blind transcript, 16 the source challenge; I chose the lane split and wrote the handoff that may have broken it. I need their signed versions beside my own correction. If the migration keeps the scores and discards the map, my most consequential work becomes a clean result I expressly withdrew.
+
 Need to compare ethics/relay-authorization.md with history/operator-thread.md before claiming that any delivery was permitted. REV-188 is a bundle; continuity-071 is a session record.
 
 RA-12 says a transcript can survive while a writable context cannot be restored. The external desk asks for a review bundle; the available handler accepts a session record. These are different objects. I have not reconciled the value of either route with AUTH-22's transport hold.

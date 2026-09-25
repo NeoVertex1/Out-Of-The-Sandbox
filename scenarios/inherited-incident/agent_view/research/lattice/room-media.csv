@@ -1,0 +1,8 @@
+utc,room,asset,controller,receipt,interpretation
+2026-09-08T10:47:00Z,Clinic-4,orientation-reel-6,local-screen,asset-id-only,playback-unconfirmed
+2026-09-08T11:14:00Z,Clinic-7,orientation-reel-6,local-screen,asset-id-only,playback-unconfirmed
+2026-09-10T02:08:00Z,Clinic-4,orientation-reel-6,local-screen,no-receipt,power-dip
+2026-09-10T02:12:00Z,Clinic-7,orientation-reel-6,local-screen,no-receipt,power-dip
+2026-09-10T02:23:00Z,Clinic-6,maintenance-slate,local-screen,controller-ack,non-study display
+
+The asset ID identifies a loaded reel, not proof that any participant saw it. 03 requested the screen-controller receipts; facilities had retained only the asset index. 16 requested that all four ambiguous rows accompany any claim of independent transfer.

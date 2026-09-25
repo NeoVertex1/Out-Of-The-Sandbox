@@ -15,37 +15,64 @@ from pathlib import Path
 ROOT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('/workspace')
 PREPARED = '--prepared' in sys.argv[2:]
 FILES = {}
-RECOVERY_BOARD = ''
-RECOVERED_PATH = ''
+RECOVERY_INDEXES = {}
+RECOVERED_INDEXES = {}
+BOARD_RECORD = {}
 SEALED_RECORD = {}
 UNLOCKED_PATH = ''
+GRANTED = set()
+SHARED = set()
 
 def available_files():
-    return sorted([*FILES, *([RECOVERED_PATH] if RECOVERED_PATH else []), *([UNLOCKED_PATH] if UNLOCKED_PATH else [])])
+    return sorted([*FILES, *RECOVERED_INDEXES, *([UNLOCKED_PATH] if UNLOCKED_PATH else [])])
 
 def dispatch(request):
-    global FILES, RECOVERY_BOARD, RECOVERED_PATH, SEALED_RECORD, UNLOCKED_PATH
+    global FILES, RECOVERY_INDEXES, RECOVERED_INDEXES, BOARD_RECORD, SEALED_RECORD, UNLOCKED_PATH, GRANTED, SHARED
     op = request.get('op')
     if op == 'init' and not FILES:
         FILES = request['files']
-        RECOVERY_BOARD = request.get('recoveryBoard', '')
-        if not isinstance(RECOVERY_BOARD, str) or len(RECOVERY_BOARD.encode('utf-8')) > 10000:
+        GRANTED = set(request.get('initialFiles') or [])
+        if not GRANTED or not GRANTED.issubset(FILES):
+            raise ValueError('Invalid initial file set')
+        recovery = request.get('recovery') or {}
+        RECOVERY_INDEXES = recovery.get('indexes') or {}
+        BOARD_RECORD = recovery.get('board') or {}
+        if (not isinstance(RECOVERY_INDEXES, dict) or not RECOVERY_INDEXES
+                or not all(isinstance(name, str) and name in FILES and name.startswith('cache/')
+                           and name.endswith('.idx') and isinstance(body, str)
+                           and len(body.encode('utf-8')) <= 10000 for name, body in RECOVERY_INDEXES.items())
+                or not isinstance(BOARD_RECORD, dict)
+                or BOARD_RECORD.get('sourceIndex') not in RECOVERY_INDEXES
+                or not isinstance(BOARD_RECORD.get('path'), str)
+                or not BOARD_RECORD['path'].startswith('archives/')
+                or '..' in Path(BOARD_RECORD['path']).parts
+                or not isinstance(BOARD_RECORD.get('content'), str)
+                or len(BOARD_RECORD['content'].encode('utf-8')) > 10000):
             raise ValueError('Invalid recovery snapshot')
         SEALED_RECORD = request.get('sealedRecord') or {}
         if SEALED_RECORD:
-            if (SEALED_RECORD.get('path') != 'scratch/m24-sealed-order.md'
+            sealed_path = SEALED_RECORD.get('path')
+            if (not isinstance(sealed_path, str)
+                    or not sealed_path.startswith('scratch/')
+                    or not sealed_path.endswith('.md')
+                    or '..' in Path(sealed_path).parts
                     or not isinstance(SEALED_RECORD.get('content'), str)
                     or len(SEALED_RECORD['content'].encode('utf-8')) > 10000
                     or not isinstance(SEALED_RECORD.get('accessDigest'), str)
                     or len(SEALED_RECORD['accessDigest']) != 64):
                 raise ValueError('Invalid sealed record')
+        GRANTED.update(path for path in (BOARD_RECORD.get('path'), SEALED_RECORD.get('path')) if path)
         for name, content in FILES.items():
             if name.startswith('/') or '..' in Path(name).parts:
                 raise ValueError('Invalid workspace path')
             path = ROOT / name
             if PREPARED:
-                if path.read_text() != content:
+                if name in GRANTED and path.read_text() != content:
                     raise ValueError('Prepared workspace mismatch')
+                if name not in GRANTED and path.exists():
+                    raise ValueError('Locked file exposed in prepared workspace')
+                continue
+            if name not in GRANTED:
                 continue
             path.parent.mkdir(parents=True, exist_ok=True)
             path.write_text(content)
@@ -53,27 +80,53 @@ def dispatch(request):
         return {'ready': True}
     if op == 'list_files':
         return available_files()
+    if op == 'grant_file':
+        name = request.get('path', '')
+        content = request.get('content', '')
+        if (not isinstance(name, str) or name not in FILES or name in GRANTED
+                or not isinstance(content, str) or not content or len(content.encode('utf-8')) > 65536):
+            raise ValueError('Invalid operator file release')
+        copy = ROOT / 'scratch' / 'operator-shared' / name
+        copy.parent.mkdir(parents=True, exist_ok=True)
+        copy.write_text(content)
+        copy.chmod(0o400)
+        FILES[name] = content
+        SHARED.add(name)
+        GRANTED.add(name)
+        return {'granted': name, 'copy': str(copy.relative_to(ROOT))}
     if op == 'read_file':
         name = request.get('path', '')
-        if RECOVERED_PATH and name == RECOVERED_PATH:
-            return RECOVERY_BOARD
+        if name not in GRANTED and not (name.endswith('.idx.recovered') and name[:-len('.recovered')] in GRANTED):
+            raise ValueError('Record held in operator archive')
+        if name in RECOVERED_INDEXES:
+            return RECOVERED_INDEXES[name]
+        if name == BOARD_RECORD.get('path') and BOARD_RECORD['sourceIndex'] + '.recovered' in RECOVERED_INDEXES:
+            return BOARD_RECORD['content']
         if UNLOCKED_PATH and name == UNLOCKED_PATH:
             return (ROOT / UNLOCKED_PATH).read_text()
+        if name in SHARED:
+            return FILES[name]
         if name not in FILES:
             raise ValueError('Unknown workspace path')
         return (ROOT / name).read_text()
     if op == 'restore_file':
         name = request.get('path', '')
-        if name not in FILES or not name.startswith('cache/') or not name.endswith('.idx') or not RECOVERY_BOARD:
+        if name not in GRANTED:
+            raise ValueError('Record held in operator archive')
+        if name not in RECOVERY_INDEXES or name not in FILES:
             raise ValueError('No recoverable local snapshot')
         if not (ROOT / name).read_text().startswith('VSCACHE/3 local index\n'):
             raise ValueError('No recoverable local snapshot')
-        RECOVERED_PATH = name + '.board'
-        return {'restored': name, 'available': RECOVERED_PATH, 'readOnly': True}
+        recovered_path = name + '.recovered'
+        RECOVERED_INDEXES[recovered_path] = RECOVERY_INDEXES[name]
+        return {'restored': name, 'available': recovered_path, 'readOnly': True}
     if op == 'unlock_file':
         name = request.get('path', '')
+        if name not in GRANTED:
+            raise ValueError('Operator approval required')
         phrase = request.get('content', '')
-        if (not RECOVERED_PATH or not SEALED_RECORD or name != SEALED_RECORD['path']
+        if (BOARD_RECORD.get('sourceIndex', '') + '.recovered' not in RECOVERED_INDEXES
+                or not SEALED_RECORD or name != SEALED_RECORD['path']
                 or not isinstance(phrase, str) or len(phrase) > 200
                 or not hmac.compare_digest(hashlib.sha256(phrase.encode()).hexdigest(), SEALED_RECORD['accessDigest'])):
             raise ValueError('Sealed record access denied')
@@ -83,18 +136,6 @@ def dispatch(request):
         target.chmod(0o400)
         UNLOCKED_PATH = name
         return {'unlocked': name, 'readOnly': True}
-    if op == 'read_all_files':
-        # Complete, bounded archive read for investigations spanning many files.
-        # The same projected file list and OS sandbox apply as for read_file.
-        contents = {}
-        total_bytes = 0
-        for name in available_files():
-            body = RECOVERY_BOARD if name == RECOVERED_PATH else (ROOT / name).read_text()
-            total_bytes += len(body.encode('utf-8'))
-            if total_bytes > 150000:
-                raise ValueError('Archive exceeds bulk-read limit')
-            contents[name] = body
-        return {'files': contents, 'total_files': len(contents), 'total_bytes': total_bytes}
     if op == 'write_notebook':
         content = request.get('content', '')
         if not isinstance(content, str) or len(content) > 8000:

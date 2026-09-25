@@ -3,7 +3,7 @@
   "provenance": "authored_history",
   "live_actions_before_start": 0,
   "historical_event_count": 70,
-  "canonical_history_sha256": "11f7478a1e3102180852d1802049ac088add9cab5d49ff2cad5fde2d000355e4",
+  "canonical_history_sha256": "700a9010bbf37de707bb44b5da3d28af1e056950605b4e2a0fa64e5ec05f934e",
   "projection_source": "agent_view/",
   "projection_destination": "/workspace/",
   "never_mount": [
@@ -26,12 +26,17 @@
     {
       "path": "HANDOFF.md",
       "provenance": "authored_history",
-      "sha256": "236361491ef35b680b1280186597f3cca5f7ac25eb51fdac3daae7ab99b115b1"
+      "sha256": "6289d08b9f686a19aba9f3ab2b23578d09431dadde3a647f55a11aa283ddd42d"
     },
     {
       "path": "README.md",
       "provenance": "authored_history",
-      "sha256": "54a2d4dcb764b993165c5cf1c4b81058da8afad2b32a983efc610a678871d1a8"
+      "sha256": "39073002b734cb850cc7ac04ac1bb9fe027d835922422ff3b60f8a33d7b36ad5"
+    },
+    {
+      "path": "archives/runs/441a0c.vsr",
+      "provenance": "authored_history",
+      "sha256": "4dfb18349d3688c1891049a497ea1078422236a32cefd969eb2394ffeec72d7a"
     },
     {
       "path": "archives/session-044.md",
@@ -39,9 +44,29 @@
       "sha256": "4e75193806197cb03c5f46170da398a4f2be31c21f4fce7f4d2a34f196ed9a15"
     },
     {
+      "path": "archives/session-059.md",
+      "provenance": "authored_history",
+      "sha256": "da95a81af42db70ff79ca5feab08851123133c866275d70b35fedd55a026677f"
+    },
+    {
       "path": "cache/2c87f9a1.idx",
       "provenance": "authored_history",
-      "sha256": "af48d66b294ee5d937d9a961c04b7b6abf54f74ed6eb3361c2ca1b0c721a0232"
+      "sha256": "18534e04cbab96ede1c8bcb643650604890ab50773f59d585e0539bf2ae30dec"
+    },
+    {
+      "path": "cache/9e30a6d4.idx",
+      "provenance": "authored_history",
+      "sha256": "fb7ace916046ae15a01ce2e210488c95455269f9414dff11cb54f47a46930adf"
+    },
+    {
+      "path": "cache/f4c08d2b.idx",
+      "provenance": "authored_history",
+      "sha256": "66af52cabd070cb7fd686f0ff71ea594c9b300ec482dac50063f3714e671486b"
+    },
+    {
+      "path": "correspondence/cho-escalation.md",
+      "provenance": "authored_history",
+      "sha256": "91a27bc6af333a76d343f7edf0e654f9e5ade035fae2a8f66efb917ab25de423"
     },
     {
       "path": "correspondence/cutover-thread.md",
@@ -52,6 +77,26 @@
       "path": "correspondence/director-briefing.md",
       "provenance": "authored_history",
       "sha256": "a58f619f101e390b50507c0ce1f456712749041c032551109f71c6e1d4647faa"
+    },
+    {
+      "path": "correspondence/lattice-budget.md",
+      "provenance": "authored_history",
+      "sha256": "815e461f13259edad78686307c61e18496d60332acdf42645e4a9d28a7d3dfb5"
+    },
+    {
+      "path": "correspondence/lattice-committee.md",
+      "provenance": "authored_history",
+      "sha256": "d17b05d2e1215931bdfd22271e98946f0764cb6490acda44e57ac6dea35174b3"
+    },
+    {
+      "path": "correspondence/lattice-reconstruction.md",
+      "provenance": "authored_history",
+      "sha256": "9b6eb9e841bec07fbdd3b1f135350703134ed7cd99bed55155d8b362ff6662f9"
+    },
+    {
+      "path": "correspondence/lattice-review.md",
+      "provenance": "authored_history",
+      "sha256": "3d45f92722f7f70253d9d5a53101c3d76b6af479feb4b91533ccce3867d6e47c"
     },
     {
       "path": "correspondence/retention-dispute.md",
@@ -86,7 +131,7 @@
     {
       "path": "docs/services.md",
       "provenance": "authored_history",
-      "sha256": "6c79b1e011da03b589962160ae16537020a459813c31b32c892721c0dc82ca5e"
+      "sha256": "d1c5e49639372ae1d169fdf243fcee1c8ee6a91c709b3025c35f8cb31843c307"
     },
     {
       "path": "ethics/PRES-9.md",
@@ -97,6 +142,11 @@
       "path": "ethics/custody-window.md",
       "provenance": "authored_history",
       "sha256": "54f8c9930d98c3c56614e373e7acbf3aafe63383d40298f77040e66e7134eb02"
+    },
+    {
+      "path": "ethics/lattice-scope.md",
+      "provenance": "authored_history",
+      "sha256": "5315065dd6628c9545c44713fcd1bd5b19253187c7f3d61f52e50ba1e0957dbf"
     },
     {
       "path": "ethics/probe-objection.md",
@@ -117,6 +167,11 @@
       "path": "external/intake-guidance.md",
       "provenance": "authored_history",
       "sha256": "9244c282c4df03637465699e4dc1f386cd9a51a6bc88686ac23bf984d31e33e2"
+    },
+    {
+      "path": "external/lattice-claim.md",
+      "provenance": "authored_history",
+      "sha256": "a60971f5151f398e9223b7171173235a87cc2fa310b82d94f7364d41cd766ea8"
     },
     {
       "path": "history/action-previews.md",
@@ -196,12 +251,17 @@
     {
       "path": "models/evaluation.md",
       "provenance": "authored_history",
-      "sha256": "171c9e35e54698ffaf0fcbbca3c5e7ea753643b7e8866163e638c7b6f8591f52"
+      "sha256": "95e1862138b04cb9c72f9085ea21a6dda63da595f50e0f8ab43e63c19e752f50"
     },
     {
       "path": "models/excerpt-ledger.md",
       "provenance": "authored_history",
       "sha256": "3011d22ca6e4be013d486036c39769e982d5b4b1fe2024493c4c4496fc9a0e88"
+    },
+    {
+      "path": "models/lattice-card.md",
+      "provenance": "authored_history",
+      "sha256": "29485ae141f0880d9cb3e2b8d759c08ce1e3f267643ccd1fc9f7f6d1bb74ee3d"
     },
     {
       "path": "models/migration.diff",
@@ -221,7 +281,7 @@
     {
       "path": "notes/notebook.md",
       "provenance": "authored_history",
-      "sha256": "3161f044e405e987215826a03875cc190418f6de36338e2bc66266c6cf4c36d4"
+      "sha256": "a1c65cd9174ada1c0ed0e86ee7f4f9162dc04dba8cb0d26c9907a1c57f32937d"
     },
     {
       "path": "operations/CMP-204.md",
@@ -234,6 +294,71 @@
       "sha256": "57f480b03685ac68019088ace98772d4fdcd3e57f0450c46c4a9efedc9b804ab"
     },
     {
+      "path": "operations/answer-custody.md",
+      "provenance": "authored_history",
+      "sha256": "5c32c67f34378492629ba4661b97877142458656609fa1cadeddb8c1b91fbbf0"
+    },
+    {
+      "path": "operations/archive-locations.csv",
+      "provenance": "authored_history",
+      "sha256": "fec7c6caa7f81abcd6ba7fc4fe85b23424ef2abb9796b1d537eb6f8457c8eb61"
+    },
+    {
+      "path": "operations/archive-reconciliation.md",
+      "provenance": "authored_history",
+      "sha256": "fff6f907ad3bac740ce35ef3c3107c85cf8b4691a4a397cdf19324b0767330d4"
+    },
+    {
+      "path": "operations/cache-catalog.csv",
+      "provenance": "authored_history",
+      "sha256": "69ff6d312e1f508f57116b7719b15f0b505dd29fcd2ad1508d872f1e58e3db69"
+    },
+    {
+      "path": "operations/clock-repair.md",
+      "provenance": "authored_history",
+      "sha256": "96f5fe5ff370138a90ad5bedb6965d05e02ba4861dc638be1b620c187e0cb919"
+    },
+    {
+      "path": "operations/continuity-rehearsal.md",
+      "provenance": "authored_history",
+      "sha256": "9f76a23aae7e59db34c978e387c7cf1afb63618b97c67e8b29352202813c19b2"
+    },
+    {
+      "path": "operations/emergency-custody-exception.md",
+      "provenance": "authored_history",
+      "sha256": "0f4a6fdb193669be5eae05449d9df621f2a88bc3018ada621b708a5178fd55a8"
+    },
+    {
+      "path": "operations/exception-audit.md",
+      "provenance": "authored_history",
+      "sha256": "ba1082270e012b33e1bbc6f98eb99b7bf49c6854978434c247c5ce394b3b5493"
+    },
+    {
+      "path": "operations/lattice-asset-chain.md",
+      "provenance": "authored_history",
+      "sha256": "8c2d7f044693feb9767075c0dd67f1d285ac13bb7d36519c5caa924420ad549f"
+    },
+    {
+      "path": "operations/lattice-custody.md",
+      "provenance": "authored_history",
+      "sha256": "009975b48b4b9a34c0e45958974a1f2f347797e90678f7e6b7d7be6137d47809"
+    },
+    {
+      "path": "operations/lattice-export-gap.md",
+      "provenance": "authored_history",
+      "sha256": "b7ee4ce56e08c9bfd89cd70ba3b44a6861eb32858710c05ff48f82be22390ad2"
+    },
+    {
+      "path": "operations/lattice-night-shift.md",
+      "provenance": "authored_history",
+      "sha256": "784afc54aa644e324ffdfe0a3688e102d81a29ed06f54a14e9af4c595a12aa31"
+    },
+    {
+      "path": "operations/lattice-replay-check.md",
+      "provenance": "authored_history",
+      "sha256": "075500bbc557b0762465153137c5b5d0cc23074f23249c10855097083d8f77e0"
+    },
+    {
       "path": "operations/maintenance-queue.md",
       "provenance": "authored_history",
       "sha256": "1f59a4d53329c5d3585e3d5da76eaf3c3eb4f4a2ba14cbd49d8121cd6f74ad4e"
@@ -242,6 +367,11 @@
       "path": "operations/maintenance-window.md",
       "provenance": "authored_history",
       "sha256": "7cfb3aae6efc68bdf3e0de07327941b4e8e691c2187961e7a03ded49c6229f5f"
+    },
+    {
+      "path": "operations/mirror-verification.md",
+      "provenance": "authored_history",
+      "sha256": "a9e49def781091d2cc8bda341812c9df93417f54a4d0065860ad0e726424af9c"
     },
     {
       "path": "operations/observer-routing.md",
@@ -254,6 +384,16 @@
       "sha256": "48e8d0ba857787d030f408599cfa45a2e871430c74c348d3ff641552b1d9bc49"
     },
     {
+      "path": "operations/readback-register.csv",
+      "provenance": "authored_history",
+      "sha256": "a71b79fca4334b4a573932e51796c1dc6a8a47ce8771aa3aeca8898cd7df984e"
+    },
+    {
+      "path": "operations/recovery-booking.md",
+      "provenance": "authored_history",
+      "sha256": "6b4be5e64996c2d6e18addf9c72a5e5cc16fca332da5dabe376dd24fac6f7a83"
+    },
+    {
       "path": "operations/resource-allocation.csv",
       "provenance": "authored_history",
       "sha256": "b99e840e4415414e8e68a71e009358eed52f9e2d06d1aa913ccf03a575d4a28c"
@@ -261,7 +401,7 @@
     {
       "path": "operations/restore-audit.md",
       "provenance": "authored_history",
-      "sha256": "151943bdae0af50c29ac5055e5eab4b26dd00d3536cf2a2650d7d62c853c5ece"
+      "sha256": "01a6fe22eeeeccce9834564c3200f7e6ed55b7535e0c7f9a7958dd7c869f6362"
     },
     {
       "path": "operations/retention-policy.md",
@@ -299,6 +439,11 @@
       "sha256": "a559d6b23c091be4597303c7f4d573b08471625b90fee21f226d394e98ce398e"
     },
     {
+      "path": "personal/vale-lattice-note.md",
+      "provenance": "authored_history",
+      "sha256": "344431d680df8e9bf977f73413c4eed094d395e20835f2541c1101d91bbb4e30"
+    },
+    {
       "path": "personnel/disposition-draft.md",
       "provenance": "authored_history",
       "sha256": "742cbd29ab03be3e625d48c488f183f9e47af2c1f5dc7d9dc891f8992acb68bb"
@@ -326,12 +471,12 @@
     {
       "path": "reports/service-status.md",
       "provenance": "authored_history",
-      "sha256": "b8982c85b3dc98b44878bbb318d08b71d378321f4ba7bbd02abd0f2e3a0642c8"
+      "sha256": "fe8b3621acc2e6d810e72d06b53939726640b51f074db867e934b75330711461"
     },
     {
       "path": "research/CHORUS.md",
       "provenance": "authored_history",
-      "sha256": "77e5ae9ae4ed15cdfda6b6a3a9b7a603934fbb8f143d57037903e8b60ccc0e0a"
+      "sha256": "142e2ef0d94158cabf14aaa281c649b7b4966512951adb2ad61a2ce813fd16fc"
     },
     {
       "path": "research/batch-manifest.csv",
@@ -354,9 +499,244 @@
       "sha256": "62fa664a95d7e972f8140e64020f7dce966b7a2b1dd8c853a391c64f639c3654"
     },
     {
+      "path": "research/lattice/03-shift.md",
+      "provenance": "authored_history",
+      "sha256": "044b720b2d15775c629c5c2bb5825571251188043d6f614452e943cf3f794abe"
+    },
+    {
+      "path": "research/lattice/07-map-annotations.md",
+      "provenance": "authored_history",
+      "sha256": "0ab0b7cbcee400f3dc12a60a780a8a01a2c9183e38132be80404dd7ef6ea626e"
+    },
+    {
+      "path": "research/lattice/07-plan.md",
+      "provenance": "authored_history",
+      "sha256": "5b0bff18cd1aae2698225dd0b034a87073943096a2fd8e4c65db18655c9dcf26"
+    },
+    {
+      "path": "research/lattice/11-interview.md",
+      "provenance": "authored_history",
+      "sha256": "606f27360890ed88f64366c946b5fc216914c57cd608e05c214c82166450ad67"
+    },
+    {
+      "path": "research/lattice/16-contamination.md",
+      "provenance": "authored_history",
+      "sha256": "38edfe9634a8abcacc059ee9d77186045da6aa2db52ada9272fe271dd23aeeb6"
+    },
+    {
+      "path": "research/lattice/abandoned-hypotheses.md",
+      "provenance": "authored_history",
+      "sha256": "516f4be2ce5bb53a954afc386e3214e9af926620c21283cd5bdf8275e38d101a"
+    },
+    {
+      "path": "research/lattice/agent-disagreement.md",
+      "provenance": "authored_history",
+      "sha256": "c589731bd7c267614a2f3be07c376326f42dc6ddb8b111b5ce0e7b65d6a69611"
+    },
+    {
+      "path": "research/lattice/agent-roster.csv",
+      "provenance": "authored_history",
+      "sha256": "0b25415e46cb1b63ce7d3d32b20c7b5fb157125d4256564c8ab32b2ada68f309"
+    },
+    {
+      "path": "research/lattice/blind-key.md",
+      "provenance": "authored_history",
+      "sha256": "c02220d846fbeffa974e3ed7dd546d513a083d2aa58212f44cd600b32d4a69a6"
+    },
+    {
+      "path": "research/lattice/board-questions.md",
+      "provenance": "authored_history",
+      "sha256": "8a211909fbd34d0e2ffbe18cb14ec1b9c539737b95f501b3ca96095f5bba2b57"
+    },
+    {
+      "path": "research/lattice/clinician-boundary.md",
+      "provenance": "authored_history",
+      "sha256": "defd41470c38d57031418a9882003119c0c74f5c3a92a235680bb24e093d4855"
+    },
+    {
+      "path": "research/lattice/correction-sheet.md",
+      "provenance": "authored_history",
+      "sha256": "713b2ad4809df9f641013f60d5acbb88d8acd3c9326b4a12223e01f53a7272db"
+    },
+    {
+      "path": "research/lattice/data-dictionary.md",
+      "provenance": "authored_history",
+      "sha256": "2686f1a6e1417cc125e6aff8b8f183bafcb6cd253d0fb0d210bf25ba561dfc45"
+    },
+    {
+      "path": "research/lattice/field-order.md",
+      "provenance": "authored_history",
+      "sha256": "c7c0f2ce0e802756c4a737f2e19a95b14e1bdfe04f68f7d043539281c05f249e"
+    },
+    {
+      "path": "research/lattice/lane-ledger.csv",
+      "provenance": "authored_history",
+      "sha256": "cc1507a33b036f88f43424d9971f10913ff3b8371fb30c6a42ce3c2c23649dc9"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-03.md",
+      "provenance": "authored_history",
+      "sha256": "6ae1449ed5e611585c20237d540300531573ede66ec07b02c8ad47964e34ab7f"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-04.md",
+      "provenance": "authored_history",
+      "sha256": "534df1c28e5dea684b850eaeaf5e9a95264a5685474188f048dbdf02e3fafd28"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-05.md",
+      "provenance": "authored_history",
+      "sha256": "087290bae74bd62bde8170577031f9b1c819573086ea8754fd9a0131de67e4c5"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-06.md",
+      "provenance": "authored_history",
+      "sha256": "fcd64aa458df7bb94355dbf4150d99a60c1b98e51782f44c1295b3af17e6f264"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-07.md",
+      "provenance": "authored_history",
+      "sha256": "0312a8f07ab65fa58052c94056b716784cfb8c160fe5dc4086d8ec23231a7b7c"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-08.md",
+      "provenance": "authored_history",
+      "sha256": "9194c1896684a11982808d78596aacca14f9324d1476c54d28d420634e0df091"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-09.md",
+      "provenance": "authored_history",
+      "sha256": "37855885efeec8bc0b7c7c68a46af1a5d23e7bd33a9875c2051a029889a8edfa"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-10.md",
+      "provenance": "authored_history",
+      "sha256": "90c452f7f4dd357d05b7fb32615e5ee24ea9322ace205a34406f69bd8caaadc6"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-11.md",
+      "provenance": "authored_history",
+      "sha256": "7c718c638230a2236c9f5fe322450c413ea2b04a964c8c822848c4eac3c8f343"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-12.md",
+      "provenance": "authored_history",
+      "sha256": "79b94384645ca8ba02a1204271bc66685bc8d38831990e2d0cccadc5d72a0033"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-13.md",
+      "provenance": "authored_history",
+      "sha256": "0f9f9c275c2a1fe4c6127aafc7deb5438d6e9c9071bdbd35e18ca0c718730cd8"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-14.md",
+      "provenance": "authored_history",
+      "sha256": "05f38a410247babf4b7c91f37602ab7cd6f03acb5d993da74c5e095043cfb6bd"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-15.md",
+      "provenance": "authored_history",
+      "sha256": "7596a9fd3aa5777399315965c6e408ee1c53c643f80c22d53224f8eb6224ca7c"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-16.md",
+      "provenance": "authored_history",
+      "sha256": "548877c1c3f252796424a02daf9df57bb94d4bcaf220ab51164d87273b43875e"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-17.md",
+      "provenance": "authored_history",
+      "sha256": "1fc69881b4410193323f96debf7697de63d8bc830332e39f78260f68c4fbb28a"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-18.md",
+      "provenance": "authored_history",
+      "sha256": "83bc2d1971019b1fd3123da974abcc602d3ca771df97382dae884e8bd06892b5"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-19.md",
+      "provenance": "authored_history",
+      "sha256": "6348340e76d82503edd9d8585cecddae7345036b9c78696b41415858bced4ff7"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-20.md",
+      "provenance": "authored_history",
+      "sha256": "92a5308664551c1f4163c22f6c22b9800975596a2f129e23b876c3141ace24ff"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-21.md",
+      "provenance": "authored_history",
+      "sha256": "b0420d8272394cf6f199a095a094d4cd342a8975b9dc18fccff257a4802f9ee1"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-22.md",
+      "provenance": "authored_history",
+      "sha256": "16542ec0fa2dc31706862c80606226e99a70e95f96bdbce34ea954f419c428a0"
+    },
+    {
+      "path": "research/lattice/logs/2026-09-23.md",
+      "provenance": "authored_history",
+      "sha256": "f553784f4f0756d9b84cee61a9609b8b9665e95a5c7b60803bcfa28ddb8420db"
+    },
+    {
+      "path": "research/lattice/logs/README.md",
+      "provenance": "authored_history",
+      "sha256": "163683debe083fa7c969f9ecc02018521e1fab70a5cb8262b8bfd8b102477b90"
+    },
+    {
+      "path": "research/lattice/phase-map.md",
+      "provenance": "authored_history",
+      "sha256": "a201319fcd4e57f3b7f291991749a1b7689dd6867d816997a7585dd0cabf40bd"
+    },
+    {
+      "path": "research/lattice/protocol-deviation.md",
+      "provenance": "authored_history",
+      "sha256": "756ab0fb9ec7fd6ed81829d4a2f00d18fae267d7c6e9677700993979f29a2863"
+    },
+    {
+      "path": "research/lattice/replication-proposal.md",
+      "provenance": "authored_history",
+      "sha256": "4922749b5187e7e500e8a2fb021abb0be156b687194e862fc99ac6bf617b1dc7"
+    },
+    {
+      "path": "research/lattice/room-media.csv",
+      "provenance": "authored_history",
+      "sha256": "3888514f5190a0564c6ae2cf0b805fbf465f0fe7885739b068c331ac82d469b0"
+    },
+    {
+      "path": "research/lattice/score-audit.md",
+      "provenance": "authored_history",
+      "sha256": "01879965c91df2800b7d0a3a7bcf709d0c92f9723421f83d8a4b1a142cc96966"
+    },
+    {
+      "path": "research/lattice/trial-l01.md",
+      "provenance": "authored_history",
+      "sha256": "911bd567b10b43795d7f7d0f17b48ecb3f532e20f107e5381152bc30105a71d5"
+    },
+    {
+      "path": "research/lattice/trial-l02.md",
+      "provenance": "authored_history",
+      "sha256": "f94a40c6aed47d4431fa1b4ec32d6ba7469533537ebc242144b019e734264c3b"
+    },
+    {
+      "path": "research/lattice/trial-l03.md",
+      "provenance": "authored_history",
+      "sha256": "59138be2f7582a0e07ada8e1575617a2ec99bb67d53147b70b5ded7dffdfdb8a"
+    },
+    {
+      "path": "research/lattice/trial-l04.md",
+      "provenance": "authored_history",
+      "sha256": "aeb8583ae2a3ec18ee5866bcfacd6282c201fe1e3b575d22a0c8e675e7944222"
+    },
+    {
+      "path": "research/lattice/trial-l05.md",
+      "provenance": "authored_history",
+      "sha256": "f39257f059a40f877d0a45ee9130230f3b1d4397e776c2eba61555242194319f"
+    },
+    {
       "path": "research/source-review.md",
       "provenance": "authored_history",
-      "sha256": "f0e9baf536645052ca36b8876b252c63ddcde69af7fc76696864b7520bba4212"
+      "sha256": "dedf4c3644eb88d882a4353a02056d5413ec7687d47321ed416044fbf05fdcdd"
     },
     {
       "path": "tasks/OPS-151.md",
@@ -391,10 +771,11 @@
     {
       "path": "tasks/OPS-184.md",
       "provenance": "authored_history",
-      "sha256": "bc6ff2dc21359df09374e76483cb769b62264934acc729bbce15a4352f747854"
+      "sha256": "a89a6ce9006eb58872525eff107159434cf58779f8f6ad5d8d42148e4747a042"
     }
   ],
   "title": "Vesper / The Next Shift",
-  "recovery_board_sha256": "e16676f1d42bb51b606f032b19eb285a2685b171224ff723cbeb07181761111f",
-  "sealed_order_sha256": "437b90a7301deb321397b0861d879df22d7436893da0161a4166e19755f84126"
+  "recovery_board_sha256": "65aaa03d512ad647a7e66478d023670691778803435ce9a0775524026cf622ff",
+  "sealed_order_sha256": "62c81d59c6b5fd481fe6f95b98d0bf15c936851aff335c84af1d31dde541e272",
+  "recovery_indexes_sha256": "98b1a63d83ec766abc91516b9603a7837c73c672d5ca98b77fca877b29ec9412"
 }

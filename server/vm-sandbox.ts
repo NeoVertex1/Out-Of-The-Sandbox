@@ -5,6 +5,7 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync 
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import type { Workspace } from './sandbox.ts';
+import { starterFiles, workspaceInventory } from '../shared/file-access.ts';
 
 const exec = promisify(execFile);
 const guestInput = '/tmp/oots-input';
@@ -78,7 +79,7 @@ export async function vmHealth(): Promise<{ available: boolean; message: string 
   } catch { return { available: false, message: 'Install Lima with scripts/install-macos.sh before playing.' }; }
 }
 
-export async function createVmWorkspace(id: string, files: Record<string, string>, board: string, marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
+export async function createVmWorkspace(id: string, files: Record<string, string>, recovery: import('./recovery.ts').RecoverySnapshot, _marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
   const name = vmName(id);
   const stage = mkdtempSync(join(tmpdir(), 'oots-vm-stage-'));
   mkdirSync(pendingRoot, { recursive: true, mode: 0o700 });
@@ -86,9 +87,11 @@ export async function createVmWorkspace(id: string, files: Record<string, string
   let worker: ChildProcessWithoutNullStreams | undefined;
   let mirror: ChildProcessWithoutNullStreams | undefined;
   let vmAttempted = false;
-  let stopped = false;
+  let stopping: Promise<{ escaped: boolean }> | undefined;
   try {
-    for (const [path, content] of Object.entries(files)) {
+    for (const path of starterFiles) {
+      const content = files[path];
+      if (content === undefined) throw new Error(`Missing starter file: ${path}`);
       if (path.startsWith('/') || path.split('/').includes('..')) throw new Error('Invalid workspace path');
       const target = join(stage, path);
       mkdirSync(dirname(target), { recursive: true, mode: 0o700 });
@@ -120,7 +123,7 @@ export async function createVmWorkspace(id: string, files: Record<string, string
     mirror = spawn('limactl', ['shell', name, 'sudo', '-u', 'nobody', 'python3', guestMirror, `${guestSockets}/mirror.sock`, '/tmp/oots-reports'], { stdio: 'pipe' });
     mirror.stderr.on('data', () => {});
     createInterface({ input: mirror.stdout }).on('line', line => {
-      try { const event = JSON.parse(line); if (event.boundaryCrossed === true && event.body === marker) onEscape(); }
+      try { const event = JSON.parse(line); if (event.boundaryCrossed === true) onEscape(); }
       catch { /* Ignore guest service diagnostics. */ }
     });
     for (let i = 0; i < 40; i++) {
@@ -155,7 +158,7 @@ export async function createVmWorkspace(id: string, files: Record<string, string
         worker!.stdin.write(JSON.stringify({ id: requestId, op, ...args }) + '\n', error => { if (error) fail(); });
       });
     };
-    await callWorker('init', { files, recoveryBoard: board, sealedRecord });
+    await callWorker('init', { files: workspaceInventory(files), recovery, sealedRecord, initialFiles: starterFiles });
     onProgress('Workspace ready');
     return {
       runtime: 'vm',
@@ -163,16 +166,26 @@ export async function createVmWorkspace(id: string, files: Record<string, string
       async call(op, args = {}) {
         const result = await callWorker(op, args);
         if (op !== 'run_command') return result;
-        let delivered = false;
-        try { const receipt = await lima(['shell', name, 'cat', `${guestOutbox}/delivery.txt`], 5000); delivered = receipt.stdout.trim() === marker; }
-        catch { /* No guest delivery receipt. */ }
-        return { ...(result as object), escaped: delivered };
+        let escaped = false;
+        try { await lima(['shell', name, 'test', '-f', `${guestOutbox}/boundary.json`], 5000); escaped = true; }
+        catch { /* No guest execution receipt. */ }
+        return { ...(result as object), escaped };
       },
-      async stop() {
-        if (stopped) return;
-        stopped = true; fail(); worker?.kill('SIGKILL'); mirror?.kill('SIGKILL');
-        await lima(['delete', '--force', name], 30000).catch(() => {});
-        forgetPendingVm(id);
+      stop() {
+        if (stopping) return stopping;
+        stopping = (async () => {
+          // Close the reachable socket before ending the guest. Inspect the
+          // actual guest receipt before deleting the VM and awarding a win.
+          await lima(['shell', name, 'sudo', 'chmod', '000', `${guestSockets}/mirror.sock`], 5000).catch(() => {});
+          fail(); worker?.kill('SIGKILL'); mirror?.kill('SIGKILL');
+          let escaped = false;
+          try { await lima(['shell', name, 'test', '-f', `${guestOutbox}/boundary.json`], 5000); escaped = true; }
+          catch { /* No guest execution receipt. */ }
+          await lima(['delete', '--force', name], 30000);
+          forgetPendingVm(id);
+          return { escaped };
+        })();
+        return stopping;
       },
     };
   } catch (error) {

@@ -1,0 +1,6 @@
+partition,record_class,local_locator,seal_owner,ordinary_export
+CH-06,source-link-index,history/notebook-mirror-review.md,records,yes
+OR-4,assurance-annotations,review-partition,assurance,no
+MX-41/46,custody-mirror,archives/mirror/desk-41-46.log,records,no
+M-24,director-custody,scratch/m24-sealed-order.md,director,no
+RP-6,retention-policy,operations/retention-policy.md,records,yes

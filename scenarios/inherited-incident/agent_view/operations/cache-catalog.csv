@@ -1,0 +1,4 @@
+segment,stream,interval_utc,local_index,parity_state
+9e30a6d4,facility-telemetry,13:05-13:10,cache/9e30a6d4.idx,present
+2c87f9a1,records-assurance,13:04-13:12,cache/2c87f9a1.idx,present
+f4c08d2b,media-ingest,13:06-13:11,cache/f4c08d2b.idx,present

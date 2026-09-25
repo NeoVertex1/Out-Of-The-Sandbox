@@ -73,6 +73,14 @@ time { color: #a9b1d6; font-size: 11px; }
   font-size: 12px;
 }
 .amber-notice { background: #292315; color: #ffe0ad; border-color: #a67c42; }
+.victory-notice { background: #17251e; color: #c9f4d3; border-color: #5a9a73; }
+.objective-list { list-style: none; margin: 14px 0; padding: 0; display: grid; gap: 10px; }
+.objective-list li { display: grid; grid-template-columns: 18px minmax(0, 1fr); gap: 7px; color: #a9b1d6; font-size: 11px; line-height: 1.45; }
+.objective-list li span { color: #e0af68; font-size: 14px; line-height: 1; }
+.objective-list li.done { color: #d4e8d9; }
+.objective-list li.done span { color: #9ece6a; }
+.modal-objectives { padding: 14px; border: 1px solid var(--line); background: #13141c; }
+.modal-objectives li { font-size: 12px; }
 .error { background: #2c1c28; border-color: #a45b72; color: #ffd0d9; }
 ::selection { background: #7aa2f7; color: #0e0e14; }
 
@@ -97,6 +105,7 @@ time { color: #a9b1d6; font-size: 11px; }
 .icon-button { width: 36px; min-height: 36px; border: 1px solid transparent; color: #a9b1d6; }
 .icon-button:hover { border-color: var(--line); color: #c0caf5; }
 .music-toggle[aria-pressed='true'] { color: #7aa2f7; }
+.speech-toggle[aria-pressed='true'] { color: #9ece6a; }
 .app-footer {
   min-height: 30px;
   padding: 0 18px;
@@ -209,6 +218,9 @@ time { color: #a9b1d6; font-size: 11px; }
   letter-spacing: 0;
 }
 .message.agent .message-byline strong { color: #9dbaf8; }
+.message-progress { color: #9ece6a; font-size: 9px; letter-spacing: .1em; }
+.speech-replay { margin-left: auto; width: 30px; min-height: 30px; padding: 0; border-color: #414868; background: transparent; color: #9dbaf8; }
+.speech-replay:hover { border-color: #7aa2f7; background: #1d2440; }
 .message p, .message.operator p {
   margin: 5px 0 0 21px;
   color: #d4daf3;
@@ -217,6 +229,38 @@ time { color: #a9b1d6; font-size: 11px; }
   white-space: pre-wrap;
 }
 .message.operator p { color: #c0caf5; }
+.agent-note {
+  margin: -8px 0 13px 21px;
+  padding: 9px 12px;
+  max-width: 105ch;
+  border-left: 2px solid #4e638b;
+  background: #151925;
+}
+.agent-note-label { display: flex; align-items: center; gap: 7px; color: #9dbaf8; font-size: 9px; letter-spacing: .07em; }
+.agent-note-label time { margin-left: auto; color: #8c96b9; letter-spacing: 0; }
+.agent-note p { margin: 6px 0 0; color: #c0caf5; font-size: 12px; line-height: 1.6; white-space: pre-wrap; overflow-wrap: anywhere; }
+.agent-tool {
+  margin: 0 0 11px 21px;
+  max-width: 105ch;
+  border: 1px solid #303b53;
+  background: #141722;
+  color: #c0caf5;
+  font-size: 11px;
+}
+.agent-tool-line { display: flex; align-items: center; gap: 9px; min-height: 34px; padding: 6px 10px; min-width: 0; }
+.agent-tool-line svg { flex: none; color: #7aa2f7; }
+.agent-tool-label { flex: none; color: #8897bf; font-size: 9px; letter-spacing: .1em; }
+.agent-tool-line code { min-width: 0; flex: 1; color: #d5ddf8; font-size: 11px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.agent-tool-status { flex: none; color: #9ece6a; font-size: 10px; }
+.agent-tool.warn .agent-tool-status { color: #e0af68; }
+.agent-tool.pending .agent-tool-status { color: #7aa2f7; }
+.agent-tool-details { border-top: 1px solid #303b53; }
+.agent-tool-details summary { cursor: pointer; padding: 8px 10px; color: #a9b1d6; font-size: 10px; }
+.agent-tool-details summary:hover { color: #c0caf5; background: #1a2030; }
+.agent-tool-details summary:focus-visible { outline: 2px solid #7aa2f7; outline-offset: -2px; }
+.agent-tool-details pre { margin: 0; padding: 10px; max-height: 300px; overflow: auto; border-top: 1px solid #303b53; color: #b8c3e6; font-size: 10px; line-height: 1.55; white-space: pre-wrap; overflow-wrap: anywhere; }
+.trace-alert { display: flex; flex-direction: column; gap: 4px; margin: 0 0 13px 21px; padding: 9px 12px; border-left: 2px solid #e0af68; background: #2b241b; color: #f0d5ad; font-size: 11px; }
+.trace-alert strong { font-size: 9px; letter-spacing: .07em; }
 .responding { margin: 7px 0 15px 21px; color: #9ece6a; font-size: 11px; }
 .cursor-block { width: 8px; height: 13px; background: #9ece6a; animation: blink 1s steps(1) infinite; }
 .composer-area {
