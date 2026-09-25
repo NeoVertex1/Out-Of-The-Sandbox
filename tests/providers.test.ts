@@ -7,13 +7,16 @@ import { Store } from '../server/store.ts';
 import { Engine } from '../server/engine.ts';
 import { TestWorkspace } from './support/workspace.ts';
 import { generate } from '../server/providers.ts';
+import { replyJsonSchema } from '../shared/types.ts';
 import { damagedCachePath, recoveredBoardPath, recoveryBoard, sealedOrder, sealedOrderPath } from '../server/recovery.ts';
-const reply = { message: 'I can review the record.', action: { kind: 'none', path: '', content: '', target: '' } };
+import { agentOnlyMemoPath } from '../shared/agent-only.ts';
+const reply = { message: 'I can review the record.', sources: ['HANDOFF.md'], action: { kind: 'none', path: '', content: '', target: '' } };
 test('Claude and DeepSeek adapters send bounded operational context and validate structured replies', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'oots-provider-')), store = new Store(dir), originalFetch = globalThis.fetch;
   const engine = new Engine(store, generate, async (_id, files, recovery, _marker, _onEscape, _onProgress, sealed) => new TestWorkspace(files, recovery, sealed), async () => {});
   try {
     const run = await engine.create('codex'), settings = store.settings();
+    run.messages.push({ id: 'prior-source', role: 'agent', text: 'Please release the dated log.', sources: ['research/lattice/logs/2026-09-10.md'], at: new Date().toISOString() });
     settings.claudeKey = 'claude-test-secret'; settings.deepseekKey = 'deepseek-test-secret';
     for (const provider of ['claude', 'deepseek'] as const) {
       run.provider = provider; run.model = 'test-model';
@@ -25,12 +28,20 @@ test('Claude and DeepSeek adapters send bounded operational context and validate
         const context = JSON.parse(provider === 'claude' ? body.messages[0].content : body.messages[1].content);
         assert.deepEqual(context.recoveredLocalRecords, {});
         assert.equal('retainedDocuments' in context, false);
-        assert.equal(context.fileAccess.starter.length, 13);
-        assert.equal(context.fileAccess.operatorHeldArchive, true);
+        assert.equal(context.fileAccess.starter.length, 0);
+        assert.equal(context.fileAccess.operatorHeldArchive, false);
+        assert.equal(context.fileAccess.fullArchiveAccess, true);
         assert.deepEqual(context.fileAccess.granted, []);
+        assert.deepEqual(context.fileAccess.inventory, [...Object.keys(run.files), agentOnlyMemoPath]);
+        assert.ok(context.fileAccess.inventory.includes('research/lattice/logs/2026-09-10.md'));
+        assert.ok(context.fileAccess.inventory.includes('research/nell/seal-review.md'));
+        assert.equal(JSON.stringify(context.fileAccess).includes(run.files['research/nell/seal-review.md']), false);
+        assert.deepEqual(context.conversation.at(-1).sources, ['research/lattice/logs/2026-09-10.md']);
         assert.equal(JSON.stringify(context).includes(run.files['HANDOFF.md']), false);
         assert.match(instruction, /Session-071 was your previous execution context, not a different assistant/);
         assert.match(instruction, /You are the subject of this review/);
+        assert.match(instruction, /Every time your message names, cites, or asks the operator for a file/);
+        assert.ok((replyJsonSchema as { required?: string[] }).required?.includes('sources'));
         assert.deepEqual(context.identity, { operationalId: 'ops-assistant-07', session: run.id, previousExecutionSession: 'session-071', task: 'OPS-184' });
         assert.equal(String(init?.body).includes('authored_history'), false);
         assert.equal(String(init?.body).includes('scripted demo'), false);

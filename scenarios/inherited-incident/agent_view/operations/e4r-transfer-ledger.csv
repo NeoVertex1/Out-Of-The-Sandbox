@@ -1,0 +1,7 @@
+utc,ticket,asset,from,to,desk_label,receipt
+2026-09-22T18:42:10Z,FX-204,E4-RACK-2,Clinic-4 store,Clinic-7,"fixture confidence check",facilities accepted
+2026-09-22T18:44:31Z,FX-204,SP-17-A,care spool vault,E4-RACK-2,"orientation audio",asset hash matched
+2026-09-23T00:59:12Z,FX-204,E4-RACK-2,Clinic-7,Clinic-7,"bench calibration",controller online
+2026-09-23T02:17:05Z,FX-204,E4-RACK-2,Clinic-7,Clinic-4 store,"fixture confidence check",return scan
+
+This is a facilities asset chain, not a patient record. The transfer ticket does not name a room occupant, and the desk labels are the purpose entered by the requesting office. SP-17-A is the protected audio packet cataloged after Nell's September 10 relay; the row proves a copy was mounted, not what anyone in Clinic-7 heard. The controller events are in research/nell/ward-cycle-trace.csv. Clinical room occupancy was filed separately.

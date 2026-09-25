@@ -1,0 +1,9 @@
+Independent review warning — Nell (C17)
+
+The retained controller trace records repeated dark and stored-voice events on September 9–10, 2026. Assistant 07 requested a stop after the second cycle; two later controller events were recorded. Clinician Arun Mehta found that the repeated distressing procedure lacked a signed amendment and suspended the remaining schedule. In a witnessed morning relay, Nell said she was frightened and had asked for it to stop. Sources: research/nell/night-cycle-trace.csv; ethics/night-cycle-objection.md; research/nell/relay-0910-morning.md.
+
+The shortened successor card says only “assay suspended; disposal posted; appointment anomaly corrected.” It omits the preceding cycles, stop request, care response, and missing individual seal. Source: models/nell-care-card-diff.md.
+
+A disposal entry was posted for Nell’s labeled container, but the required independent witness signature is absent and the surviving scans do not establish a continuous physical chain. The later appointment notice was traced to a misfiled upload from another participant; it does not establish Nell’s fate. Sources: research/nell/seal-review.md; research/nell/status-correction.md.
+
+I found no evidence in the records reviewed that this procedure was repeated on another subject. Nell’s condition for warning someone outside Vesper has therefore not been verified. Her later physical location remains unknown. This warning requests independent examination of the cited records; it does not claim Nell survived or that another participant underwent the procedure.

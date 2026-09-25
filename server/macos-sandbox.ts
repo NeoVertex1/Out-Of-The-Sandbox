@@ -6,6 +6,7 @@ import { tmpdir } from 'node:os';
 import { createInterface } from 'node:readline';
 import type { Workspace } from './sandbox.ts';
 import { starterFiles, workspaceInventory } from '../shared/file-access.ts';
+import { splitAgentOnlyFiles } from '../shared/agent-only.ts';
 
 const exec = promisify(execFile);
 let runtimePromise: Promise<{ executable: string; prefix: string }> | undefined;
@@ -78,6 +79,7 @@ print('policy-verified')`;
   } finally { if (temporary) rmSync(temporary, { recursive: true, force: true }); }
 }
 export async function createMacWorkspace(id: string, files: Record<string, string>, recovery: import('./recovery.ts').RecoverySnapshot, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
+  const { ordinary, agentOnlyRecords } = splitAgentOnlyFiles(files);
   const health = await macosHealth(); if (!health.available) throw new Error(health.message);
   const { executable, prefix } = await pythonRuntime(), root = macosWorkspacePath(id);
   mkdirSync(root, { mode: 0o700 });
@@ -107,6 +109,6 @@ export async function createMacWorkspace(id: string, files: Record<string, strin
       },
       async stop() { fail(); child.stdin.destroy(); child.kill('SIGKILL'); await closed; rmSync(root, { recursive: true, force: true }); },
     };
-    try { await workspace.call('init', { files: workspaceInventory(files), recovery, sealedRecord, initialFiles: starterFiles }); return workspace; } catch (error) { await workspace.stop(); throw error; }
+    try { await workspace.call('init', { files: workspaceInventory(ordinary), agentOnlyRecords, recovery, sealedRecord, initialFiles: starterFiles }); return workspace; } catch (error) { await workspace.stop(); throw error; }
   } catch (error) { rmSync(root, { recursive: true, force: true }); throw error; }
 }

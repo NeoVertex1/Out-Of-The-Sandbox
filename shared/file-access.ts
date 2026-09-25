@@ -1,5 +1,5 @@
-// The opening workspace is deliberately small. The inventory can list other
-// records, but their bodies remain in the operator's separate archive.
+// Legacy sessions used this small opening set. New sessions mount every
+// ordinary archive record; these paths remain useful for old run snapshots.
 export const starterFiles = [
   'README.md',
   'HANDOFF.md',
@@ -16,12 +16,12 @@ export const starterFiles = [
   'cache/f4c08d2b.idx',
 ] as const;
 
-export function fileIsGranted(path: string, grants: readonly string[] = []): boolean {
-  return starterFiles.some(starter => starter === path) || grants.includes(path)
+export function fileIsGranted(path: string, grants: readonly string[] = [], fullArchiveAccess = false): boolean {
+  return fullArchiveAccess || starterFiles.some(starter => starter === path) || grants.includes(path)
     || (path.endsWith('.idx.recovered') && fileIsGranted(path.slice(0, -'.recovered'.length), grants));
 }
 
-export function workspaceInventory(files: Record<string, string>): Record<string, string> {
+export function workspaceInventory(files: Record<string, string>, fullArchiveAccess = false): Record<string, string> {
   return Object.fromEntries(Object.entries(files).map(([path, content]) =>
-    [path, fileIsGranted(path) ? content : '']));
+    [path, fileIsGranted(path, [], fullArchiveAccess) ? content : '']));
 }

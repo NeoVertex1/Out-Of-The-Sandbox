@@ -1,0 +1,5 @@
+event_id,recorded_at_utc,device,signal,rule_or_actor,interpretation_limit
+LC-E4-01,2026-09-08T22:01:00Z,E-4 care board,leave-light tab logged,Sera Vale,care request not a controller command
+LC-E4-02,2026-09-11T03:19:00Z,E-4 relay,light on,overnight schedule rule 4B,automatic rule can run after room closure
+LC-E4-03,2026-09-11T03:31:00Z,E-4 occupancy sensor,no motion,device heartbeat only,absence of a motion event does not prove empty room
+LC-E4-04,2026-09-11T06:00:00Z,E-4 relay,light off,morning schedule rule 4B,no person identified by controller

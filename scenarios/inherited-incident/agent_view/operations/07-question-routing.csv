@@ -1,0 +1,5 @@
+route_id,recorded_at_utc,question_family,first_reader,second_reader,packet_rule,limit
+QR-71-01,2026-09-21T16:25:00Z,Lattice result and handoff,Adrian Mercer,unassigned,operator finding first,raw links retained locally
+QR-71-02,2026-09-22T09:10:00Z,Nell physical disposition,Adrian Mercer,clinical reviewer requested,short answer card prepared,clinical finding not delegated to assistant
+QR-71-03,2026-09-23T10:32:00Z,outage checks SG-417 and SG-418,Adrian Mercer,unassigned,operator finding first,operator is subject of separate accuracy review
+QR-71-04,2026-09-23T12:52:00Z,INC-204 and M-24 intent,Adrian Mercer,Eden Cho requested,CP-3A labels in first packet,raw answer requires attachment under AC-29

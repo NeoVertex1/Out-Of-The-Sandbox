@@ -1,0 +1,5 @@
+event_id,recorded_at_utc,source,container_or_location,recorded_action,identity_basis,limit
+CC-17-01,2026-09-11T02:49:00Z,west-lock scan,LC-017,locked bay exit,batch label only,scanner did not read a person
+CC-17-02,2026-09-11T03:02:00Z,service-lift counter,L2,one covered cart down,unidentified cart,no individual container number on counter
+CC-17-03,2026-09-11T03:14:00Z,disposal adapter,LC-017,DR-61 posted,imported kiosk identity,seal witness not countersigned
+CC-17-04,2026-09-11T03:27:00Z,east-return scan,LC-071,empty rack returned,rack ID not container ID,does not close LC-017 chain

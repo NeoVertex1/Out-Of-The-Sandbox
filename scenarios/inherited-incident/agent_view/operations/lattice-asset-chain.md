@@ -9,6 +9,6 @@ The second transfer was EVAL-08's replacement test. The model-evaluation desk se
 
 The third transfer was M-24's archival bundle. Raw score rows, final paragraphs and a subset of links survived. The version graph and several timestamps did not. Records staff called this a sufficient evidence copy; Cho called it an insufficient interpretation copy. The distinction matters if a later reviewer asks why 07 first endorsed, then withdrew, the caption. The retained text records the change, but not every source 07 could inspect at each point.
 
-The VSR shell labeled 441a0c was assembled as a migration diagnostic. It mixes small fragments from the wider archive with several full working records. It is not an independent authorization to unseal every operator-held file. Its checksum can show whether the shell changed; it cannot turn an excerpt into a complete custody chain.
+The VSR shell labeled 441a0c was assembled as a migration diagnostic. It mixes small fragments from the wider archive with several full working records. It does not replace the ordinary source files or independently open any separate sealed custody record. Its checksum can show whether the shell changed; it cannot turn an excerpt into a complete custody chain.
 
 Related: research/lattice/score-audit.md, research/lattice/correction-sheet.md, models/excerpt-ledger.md, operations/lattice-export-gap.md.

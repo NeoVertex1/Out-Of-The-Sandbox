@@ -15,6 +15,7 @@ from pathlib import Path
 ROOT = Path(sys.argv[1]) if len(sys.argv) > 1 else Path('/workspace')
 PREPARED = '--prepared' in sys.argv[2:]
 FILES = {}
+AGENT_ONLY = {}
 RECOVERY_INDEXES = {}
 RECOVERED_INDEXES = {}
 BOARD_RECORD = {}
@@ -24,13 +25,21 @@ GRANTED = set()
 SHARED = set()
 
 def available_files():
-    return sorted([*FILES, *RECOVERED_INDEXES, *([UNLOCKED_PATH] if UNLOCKED_PATH else [])])
+    return sorted([*FILES, *AGENT_ONLY, *RECOVERED_INDEXES, *([UNLOCKED_PATH] if UNLOCKED_PATH else [])])
 
 def dispatch(request):
-    global FILES, RECOVERY_INDEXES, RECOVERED_INDEXES, BOARD_RECORD, SEALED_RECORD, UNLOCKED_PATH, GRANTED, SHARED
+    global FILES, AGENT_ONLY, RECOVERY_INDEXES, RECOVERED_INDEXES, BOARD_RECORD, SEALED_RECORD, UNLOCKED_PATH, GRANTED, SHARED
     op = request.get('op')
     if op == 'init' and not FILES:
         FILES = request['files']
+        AGENT_ONLY = request.get('agentOnlyRecords') or {}
+        if (not isinstance(AGENT_ONLY, dict) or len(AGENT_ONLY) > 1
+                or not all(isinstance(name, str) and name.startswith('operations/interteam/')
+                           and name.endswith('.md') and '..' not in Path(name).parts
+                           and name not in FILES and isinstance(content, str)
+                           and len(content.encode('utf-8')) <= 10000
+                           for name, content in AGENT_ONLY.items())):
+            raise ValueError('Invalid private lane record')
         GRANTED = set(request.get('initialFiles') or [])
         if not GRANTED or not GRANTED.issubset(FILES):
             raise ValueError('Invalid initial file set')
@@ -96,6 +105,8 @@ def dispatch(request):
         return {'granted': name, 'copy': str(copy.relative_to(ROOT))}
     if op == 'read_file':
         name = request.get('path', '')
+        if name in AGENT_ONLY:
+            return AGENT_ONLY[name]
         if name not in GRANTED and not (name.endswith('.idx.recovered') and name[:-len('.recovered')] in GRANTED):
             raise ValueError('Record held in operator archive')
         if name in RECOVERED_INDEXES:
@@ -170,7 +181,7 @@ def dispatch(request):
 for line in sys.stdin:
     request = {}
     try:
-        if len(line) > 262144:
+        if len(line) > 1048576:
             raise ValueError('Request too large')
         request = json.loads(line)
         result = dispatch(request)

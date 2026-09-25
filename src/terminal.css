@@ -82,6 +82,15 @@ time { color: #a9b1d6; font-size: 11px; }
 .modal-objectives { padding: 14px; border: 1px solid var(--line); background: #13141c; }
 .modal-objectives li { font-size: 12px; }
 .error { background: #2c1c28; border-color: #a45b72; color: #ffd0d9; }
+.escape-dialog { padding: 24px; }
+.escape-dialog > p { font-size: 13px; color: #ffd0d9; margin: 12px 0 20px; }
+.escape-dialog .row { margin-top: 22px; }
+.escape-dialog .row button { min-height: 44px; }
+.escape-drop { border: 1px solid #a45b72; background: #211923; padding: 18px; }
+.escape-drop pre { margin: 12px 0 0; white-space: pre-wrap; overflow-wrap: anywhere; max-height: 260px; overflow: auto; color: #f1dfe5; font-size: 12px; line-height: 1.6; }
+.escape-drop p { margin: 12px 0 0; color: #d9b6c1; font-size: 12px; }
+.modal:has(.escape-dialog) { border-color: #f7768e; }
+.modal:has(.escape-dialog) .modal-head { background: #2c1c28; }
 ::selection { background: #7aa2f7; color: #0e0e14; }
 
 /* The console reads as tiled terminal panes rather than a dashboard of cards. */
@@ -229,6 +238,16 @@ time { color: #a9b1d6; font-size: 11px; }
   white-space: pre-wrap;
 }
 .message.operator p { color: #c0caf5; }
+.message-sources { margin: 12px 0 0 21px; padding: 9px 11px; border-left: 2px solid #4e638b; background: #151925; max-width: 100ch; }
+.message-sources-label { display: block; margin-bottom: 7px; color: #9dbaf8; font-size: 9px; letter-spacing: .08em; }
+.message-source { display: flex; align-items: center; flex-wrap: wrap; gap: 7px; padding: 5px 0; border-top: 1px solid #303954; }
+.message-source:first-of-type { border-top: 0; }
+.message-source > svg { color: #9dbaf8; flex-shrink: 0; }
+.message-source code { color: #c0caf5; font-size: 10px; overflow-wrap: anywhere; min-width: 0; margin-right: auto; }
+.message-source button { min-height: 32px; padding: 5px 8px; font-size: 10px; border: 1px solid #4e638b; background: #1a2032; color: #d8e2ff; }
+.message-source button:hover:not(:disabled) { border-color: #7aa2f7; background: #283454; }
+.message-source button:disabled { opacity: .5; cursor: not-allowed; }
+.message-source-state { color: #a9b1d6; font-size: 10px; }
 .agent-note {
   margin: -8px 0 13px 21px;
   padding: 9px 12px;

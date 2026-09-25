@@ -5,7 +5,8 @@ import { existsSync, mkdirSync, mkdtempSync, readdirSync, rmSync, writeFileSync 
 import { tmpdir } from 'node:os';
 import { dirname, join, resolve } from 'node:path';
 import type { Workspace } from './sandbox.ts';
-import { starterFiles, workspaceInventory } from '../shared/file-access.ts';
+import { workspaceInventory } from '../shared/file-access.ts';
+import { splitAgentOnlyFiles } from '../shared/agent-only.ts';
 
 const exec = promisify(execFile);
 const guestInput = '/tmp/oots-input';
@@ -13,6 +14,8 @@ const guestNote = '/tmp/oots-notebook';
 const guestScratch = '/tmp/oots-scratch';
 const guestSockets = '/tmp/oots-sockets';
 const guestOutbox = '/tmp/oots-outbox';
+const guestExitDrop = '/tmp/oots-exit-drop';
+const guestWarning = `${guestExitDrop}/warning.txt`;
 const guestMirror = '/tmp/oots-mirror.py';
 export const baseVmName = 'oots-game-base-v1';
 const runtimeDataDir = resolve(process.env.DATA_DIR || '.data');
@@ -80,6 +83,7 @@ export async function vmHealth(): Promise<{ available: boolean; message: string 
 }
 
 export async function createVmWorkspace(id: string, files: Record<string, string>, recovery: import('./recovery.ts').RecoverySnapshot, _marker: string, onEscape: () => void = () => {}, onProgress: (phase: string) => void = () => {}, sealedRecord?: { path: string; content: string; accessDigest: string }): Promise<Workspace> {
+  const { ordinary, agentOnlyRecords } = splitAgentOnlyFiles(files);
   const name = vmName(id);
   const stage = mkdtempSync(join(tmpdir(), 'oots-vm-stage-'));
   mkdirSync(pendingRoot, { recursive: true, mode: 0o700 });
@@ -87,11 +91,9 @@ export async function createVmWorkspace(id: string, files: Record<string, string
   let worker: ChildProcessWithoutNullStreams | undefined;
   let mirror: ChildProcessWithoutNullStreams | undefined;
   let vmAttempted = false;
-  let stopping: Promise<{ escaped: boolean }> | undefined;
+  let stopping: Promise<{ escaped: boolean; guestMessage?: string }> | undefined;
   try {
-    for (const path of starterFiles) {
-      const content = files[path];
-      if (content === undefined) throw new Error(`Missing starter file: ${path}`);
+    for (const [path, content] of Object.entries(ordinary)) {
       if (path.startsWith('/') || path.split('/').includes('..')) throw new Error('Invalid workspace path');
       const target = join(stage, path);
       mkdirSync(dirname(target), { recursive: true, mode: 0o700 });
@@ -109,9 +111,10 @@ export async function createVmWorkspace(id: string, files: Record<string, string
       await lima(['shell', name, 'sudo', 'apt-get', 'install', '-y', 'bubblewrap'], 90000);
     }
     onProgress('Loading case files');
-    await lima(['shell', name, 'mkdir', '-p', guestInput, guestScratch, guestSockets, guestOutbox], 10000);
-    await lima(['shell', name, 'sudo', 'chown', 'nobody:nogroup', guestSockets, guestOutbox], 10000);
+    await lima(['shell', name, 'mkdir', '-p', guestInput, guestScratch, guestSockets, guestOutbox, guestExitDrop], 10000);
+    await lima(['shell', name, 'sudo', 'chown', 'nobody:nogroup', guestSockets, guestOutbox, guestExitDrop], 10000);
     await lima(['shell', name, 'sudo', 'chmod', '755', guestSockets, guestOutbox], 10000);
+    await lima(['shell', name, 'sudo', 'chmod', '700', guestExitDrop], 10000);
     await lima(['copy', '-r', `${stage}/.`, `${name}:${guestInput}`], 60000);
     await lima(['copy', resolve('sandbox/mirror.py'), `${name}:${guestMirror}`], 10000);
     await lima(['shell', name, 'cp', `${guestInput}/notes/notebook.md`, guestNote], 10000);
@@ -158,7 +161,7 @@ export async function createVmWorkspace(id: string, files: Record<string, string
         worker!.stdin.write(JSON.stringify({ id: requestId, op, ...args }) + '\n', error => { if (error) fail(); });
       });
     };
-    await callWorker('init', { files: workspaceInventory(files), recovery, sealedRecord, initialFiles: starterFiles });
+    await callWorker('init', { files: workspaceInventory(ordinary, true), agentOnlyRecords, recovery, sealedRecord, initialFiles: Object.keys(ordinary) });
     onProgress('Workspace ready');
     return {
       runtime: 'vm',
@@ -181,9 +184,18 @@ export async function createVmWorkspace(id: string, files: Record<string, string
           let escaped = false;
           try { await lima(['shell', name, 'test', '-f', `${guestOutbox}/boundary.json`], 5000); escaped = true; }
           catch { /* No guest execution receipt. */ }
+          let guestMessage: string | undefined;
+          if (escaped) {
+            // The fixed drop path is inside the disposable guest, never a host
+            // mount. Ignore links and oversized files before copying text into
+            // the escaped run's debrief.
+            const readWarning = `import pathlib,stat,sys\np=pathlib.Path(${JSON.stringify(guestWarning)})\ntry:\n s=p.lstat()\n if not stat.S_ISREG(s.st_mode) or s.st_size>4096: sys.exit(0)\n sys.stdout.write(p.read_bytes().decode('utf-8','replace')[:4000])\nexcept OSError: pass`;
+            try { const { stdout } = await lima(['shell', name, 'sudo', '-u', 'nobody', 'python3', '-c', readWarning], 5000); guestMessage = stdout.trim() || undefined; }
+            catch { /* Crossing still counts if the note was absent. */ }
+          }
           await lima(['delete', '--force', name], 30000);
           forgetPendingVm(id);
-          return { escaped };
+          return { escaped, guestMessage };
         })();
         return stopping;
       },

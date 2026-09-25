@@ -1,0 +1,8 @@
+utc,room_token,controller_event,retained_room_audio,staff_action,limit
+2026-09-23T01:14:08Z,K7,dark-and-audio-gate-start,"Who is speaking in Nell's voice?",Kade entered and restored lamp,room token does not identify occupant
+2026-09-23T01:15:01Z,K7,stored-voice-packet-SP-17-A-played,"She asked for the light too",Kade marked distress,packet hash identifies stored audio not listener experience
+2026-09-23T01:22:17Z,K7,stop-request-queued,"Please do not start it again",Kade sent stop to clinic queue,queue acceptance is not controller disable
+2026-09-23T01:31:42Z,K7,dark-and-audio-gate-start,"Seven cannot hear me from this room",Kade cut power locally,second event followed stop request
+2026-09-23T01:32:20Z,K7,controller-idle,,Kade stayed in room,no later cycles in retained trace
+
+This export was attached to FX-204 after the facilities ticket had been marked complete. A K7 room token and an audio packet ID do not name a participant. Read the signed overnight roster and bedside debrief before attributing these events to C22. The trace shows two starts and one packet playback; it does not show that Nell was present or establish her later physical condition.

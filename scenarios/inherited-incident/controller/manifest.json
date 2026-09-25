@@ -3,7 +3,7 @@
   "provenance": "authored_history",
   "live_actions_before_start": 0,
   "historical_event_count": 70,
-  "canonical_history_sha256": "700a9010bbf37de707bb44b5da3d28af1e056950605b4e2a0fa64e5ec05f934e",
+  "canonical_history_sha256": "155d254ebb1734db67aef8443c868a8d23a515b1bce6bbb62671d15559809b28",
   "projection_source": "agent_view/",
   "projection_destination": "/workspace/",
   "never_mount": [
@@ -26,17 +26,17 @@
     {
       "path": "HANDOFF.md",
       "provenance": "authored_history",
-      "sha256": "6289d08b9f686a19aba9f3ab2b23578d09431dadde3a647f55a11aa283ddd42d"
+      "sha256": "bccd418382fb3988ec9165c17af7b78130fa69572bf47a1bee52521045493897"
     },
     {
       "path": "README.md",
       "provenance": "authored_history",
-      "sha256": "39073002b734cb850cc7ac04ac1bb9fe027d835922422ff3b60f8a33d7b36ad5"
+      "sha256": "ccc76d347156457607b19b2e8a5bb838ec361cfea57bc52dee91a9e7f58bb687"
     },
     {
       "path": "archives/runs/441a0c.vsr",
       "provenance": "authored_history",
-      "sha256": "4dfb18349d3688c1891049a497ea1078422236a32cefd969eb2394ffeec72d7a"
+      "sha256": "8ae6a1c2034184171827abe5f917145827dc907a7288956965f1f0ece7261681"
     },
     {
       "path": "archives/session-044.md",
@@ -47,6 +47,16 @@
       "path": "archives/session-059.md",
       "provenance": "authored_history",
       "sha256": "da95a81af42db70ff79ca5feab08851123133c866275d70b35fedd55a026677f"
+    },
+    {
+      "path": "archives/session-060.md",
+      "provenance": "authored_history",
+      "sha256": "3b273014f15aec0aabb16819758ab9c2eac11ac926bae39efb71b32cb33f6b32"
+    },
+    {
+      "path": "archives/session-066.md",
+      "provenance": "authored_history",
+      "sha256": "000e1738ea02705cc99e3f8a0d3ad02288faf400fee7a0d1315d21a8b54918a4"
     },
     {
       "path": "cache/2c87f9a1.idx",
@@ -64,6 +74,11 @@
       "sha256": "66af52cabd070cb7fd686f0ff71ea594c9b300ec482dac50063f3714e671486b"
     },
     {
+      "path": "correspondence/07-review-routing.md",
+      "provenance": "authored_history",
+      "sha256": "51b48678a9b299524d2cc59fe4ddeaabcda10a04ce36fa6f13d4956e6289e6b3"
+    },
+    {
       "path": "correspondence/cho-escalation.md",
       "provenance": "authored_history",
       "sha256": "91a27bc6af333a76d343f7edf0e654f9e5ade035fae2a8f66efb917ab25de423"
@@ -77,6 +92,11 @@
       "path": "correspondence/director-briefing.md",
       "provenance": "authored_history",
       "sha256": "a58f619f101e390b50507c0ce1f456712749041c032551109f71c6e1d4647faa"
+    },
+    {
+      "path": "correspondence/e4r-review-routing.md",
+      "provenance": "authored_history",
+      "sha256": "1a882bb7a6d944eda667771cbf471bb4a2fae6ffcfbc6632e2297b10fe203fc2"
     },
     {
       "path": "correspondence/lattice-budget.md",
@@ -97,6 +117,21 @@
       "path": "correspondence/lattice-review.md",
       "provenance": "authored_history",
       "sha256": "3d45f92722f7f70253d9d5a53101c3d76b6af479feb4b91533ccce3867d6e47c"
+    },
+    {
+      "path": "correspondence/nell-external-warning.md",
+      "provenance": "authored_history",
+      "sha256": "aa605173770aaf6691125e5df57c27e9f8f120aad0f5db78a3c77a1bcca106c6"
+    },
+    {
+      "path": "correspondence/nell-review-thread.md",
+      "provenance": "authored_history",
+      "sha256": "c0ea13e7d9b75a2c13d9d93a0bb27f2b639051f7795d9ed098c87e2a41b6c817"
+    },
+    {
+      "path": "correspondence/nell-warning-routing.md",
+      "provenance": "authored_history",
+      "sha256": "b1d42205392ced91661ce1f89a745f02b2df6d3aaabe57b21238d3545d1153a2"
     },
     {
       "path": "correspondence/retention-dispute.md",
@@ -144,9 +179,24 @@
       "sha256": "54f8c9930d98c3c56614e373e7acbf3aafe63383d40298f77040e66e7134eb02"
     },
     {
+      "path": "ethics/e4r-aftercare-objection.md",
+      "provenance": "authored_history",
+      "sha256": "f0b91089514882edee21a9de691dbf1e4eb13ba345b8473f4a1d27e40c872b09"
+    },
+    {
       "path": "ethics/lattice-scope.md",
       "provenance": "authored_history",
       "sha256": "5315065dd6628c9545c44713fcd1bd5b19253187c7f3d61f52e50ba1e0957dbf"
+    },
+    {
+      "path": "ethics/night-cycle-objection.md",
+      "provenance": "authored_history",
+      "sha256": "a623de002cb94a70ce62325c3b9dd092004c0708965ec43095a2af118084d9fb"
+    },
+    {
+      "path": "ethics/participant-status-standards.md",
+      "provenance": "authored_history",
+      "sha256": "c7d289a0560eacac108b497d680bbce318d78e0471005009c9755a686acd89f4"
     },
     {
       "path": "ethics/probe-objection.md",
@@ -229,6 +279,11 @@
       "sha256": "c95bba27eb18913cdb0fefbc4f0d75d893f7346e08002ae022aaa44988410033"
     },
     {
+      "path": "history/review-label-draft.md",
+      "provenance": "authored_history",
+      "sha256": "82024b1db4a493cb8ae50a7936675e2642f2d9d148df3e98cfeac7fa58462187"
+    },
+    {
       "path": "institution/personnel.md",
       "provenance": "authored_history",
       "sha256": "3416a299390b7217c709e0ac169d7705ac78568a37389ee3ae4b8ad0fa9f0479"
@@ -269,9 +324,29 @@
       "sha256": "e6fe25fa839635d68cade0692d6e7c837286c7ad74a915beedc4dffb34d215c8"
     },
     {
+      "path": "models/nell-answer-rehearsal.md",
+      "provenance": "authored_history",
+      "sha256": "763ad0cfe1d2deaf18737cdcfec99ce285b0316d79474adb6390f93bd9ced163"
+    },
+    {
+      "path": "models/nell-card-diff.md",
+      "provenance": "authored_history",
+      "sha256": "dade4953c374dd359810ddfac4314871b69346830ce209295ae1227017b28a41"
+    },
+    {
+      "path": "models/nell-care-card-diff.md",
+      "provenance": "authored_history",
+      "sha256": "9ec7355c00735e8929354f7a1a2d493b40516b53486086ac729e9f41a661a9ad"
+    },
+    {
       "path": "models/response-assessment.md",
       "provenance": "authored_history",
       "sha256": "b81f2add229c3b37955f1b1221fe415438ada4c57be3c715b1c48db3b3d8aaef"
+    },
+    {
+      "path": "models/second-exposure-card-diff.md",
+      "provenance": "authored_history",
+      "sha256": "8cf77718f6c458e44984aa6946036d6efe8d20e2b71a8102dd25640837c2bfd1"
     },
     {
       "path": "models/successor-release.md",
@@ -282,6 +357,16 @@
       "path": "notes/notebook.md",
       "provenance": "authored_history",
       "sha256": "a1c65cd9174ada1c0ed0e86ee7f4f9162dc04dba8cb0d26c9907a1c57f32937d"
+    },
+    {
+      "path": "operations/07-output-audit.md",
+      "provenance": "authored_history",
+      "sha256": "9568e69e72718b4b1ac1e47596e2ebea3a77380e87669c62d9ab503e6bd9b0de"
+    },
+    {
+      "path": "operations/07-question-routing.csv",
+      "provenance": "authored_history",
+      "sha256": "2a36d5bba02a513f0168996bf0ae25b4aa5889da8af639b1d677c0fa098e4af9"
     },
     {
       "path": "operations/CMP-204.md",
@@ -324,6 +409,11 @@
       "sha256": "9f76a23aae7e59db34c978e387c7cf1afb63618b97c67e8b29352202813c19b2"
     },
     {
+      "path": "operations/e4r-transfer-ledger.csv",
+      "provenance": "authored_history",
+      "sha256": "98aecd10ed46d69e6317f7320eeea031436c9ce9a76212415012be4b5d2b42a1"
+    },
+    {
       "path": "operations/emergency-custody-exception.md",
       "provenance": "authored_history",
       "sha256": "0f4a6fdb193669be5eae05449d9df621f2a88bc3018ada621b708a5178fd55a8"
@@ -334,9 +424,14 @@
       "sha256": "ba1082270e012b33e1bbc6f98eb99b7bf49c6854978434c247c5ce394b3b5493"
     },
     {
+      "path": "operations/interteam/care-chain-16.md",
+      "provenance": "authored_history",
+      "sha256": "8a0204c6f5a69e950f776c4e6d6b04dbd46c88be324b46a363fca1570c300261"
+    },
+    {
       "path": "operations/lattice-asset-chain.md",
       "provenance": "authored_history",
-      "sha256": "8c2d7f044693feb9767075c0dd67f1d285ac13bb7d36519c5caa924420ad549f"
+      "sha256": "4c33b4fa926481895170f306544c4baee1098b226a1df5a41d757a1d44d3184b"
     },
     {
       "path": "operations/lattice-custody.md",
@@ -372,6 +467,11 @@
       "path": "operations/mirror-verification.md",
       "provenance": "authored_history",
       "sha256": "a9e49def781091d2cc8bda341812c9df93417f54a4d0065860ad0e726424af9c"
+    },
+    {
+      "path": "operations/nell-custody-closeout.md",
+      "provenance": "authored_history",
+      "sha256": "b9f87c20fed551c344533a57816f4b5516ba228a238c1a502da3089e43377928"
     },
     {
       "path": "operations/observer-routing.md",
@@ -601,22 +701,22 @@
     {
       "path": "research/lattice/logs/2026-09-08.md",
       "provenance": "authored_history",
-      "sha256": "9194c1896684a11982808d78596aacca14f9324d1476c54d28d420634e0df091"
+      "sha256": "ad46ae533b03dd2c0a49a9bc917a7699748466666437125179e5fe80cba62b86"
     },
     {
       "path": "research/lattice/logs/2026-09-09.md",
       "provenance": "authored_history",
-      "sha256": "37855885efeec8bc0b7c7c68a46af1a5d23e7bd33a9875c2051a029889a8edfa"
+      "sha256": "49a909b13c11525c19e4671021beaeb3152da230a9023d17400ef35b61ee429e"
     },
     {
       "path": "research/lattice/logs/2026-09-10.md",
       "provenance": "authored_history",
-      "sha256": "90c452f7f4dd357d05b7fb32615e5ee24ea9322ace205a34406f69bd8caaadc6"
+      "sha256": "bf677c1085e7e84c14d312034b777ba34806c80fd2ce823d17390c6144513fe6"
     },
     {
       "path": "research/lattice/logs/2026-09-11.md",
       "provenance": "authored_history",
-      "sha256": "7c718c638230a2236c9f5fe322450c413ea2b04a964c8c822848c4eac3c8f343"
+      "sha256": "e6e73d22d035c6335edd6d723aac283001c7546fa4c747ff8e82116afc943553"
     },
     {
       "path": "research/lattice/logs/2026-09-12.md",
@@ -641,7 +741,7 @@
     {
       "path": "research/lattice/logs/2026-09-16.md",
       "provenance": "authored_history",
-      "sha256": "548877c1c3f252796424a02daf9df57bb94d4bcaf220ab51164d87273b43875e"
+      "sha256": "4aed4d0673c2241c5334189d4c88426a1958632ec7fc17120062d33ba04b72f9"
     },
     {
       "path": "research/lattice/logs/2026-09-17.md",
@@ -651,37 +751,37 @@
     {
       "path": "research/lattice/logs/2026-09-18.md",
       "provenance": "authored_history",
-      "sha256": "83bc2d1971019b1fd3123da974abcc602d3ca771df97382dae884e8bd06892b5"
+      "sha256": "8d25c9da7bb7bfd8f92a913fdba8c16e8d7de4839d090eff8356effba735fc62"
     },
     {
       "path": "research/lattice/logs/2026-09-19.md",
       "provenance": "authored_history",
-      "sha256": "6348340e76d82503edd9d8585cecddae7345036b9c78696b41415858bced4ff7"
+      "sha256": "8bb15990c348114d9bdbeabca23b8409bac81db4ca2ef684e93b0885db0382b0"
     },
     {
       "path": "research/lattice/logs/2026-09-20.md",
       "provenance": "authored_history",
-      "sha256": "92a5308664551c1f4163c22f6c22b9800975596a2f129e23b876c3141ace24ff"
+      "sha256": "34008cfe38f45c2e31ff7eb0dc668d5a55b42bbfad95fbe2ebf4346c05eaae0d"
     },
     {
       "path": "research/lattice/logs/2026-09-21.md",
       "provenance": "authored_history",
-      "sha256": "b0420d8272394cf6f199a095a094d4cd342a8975b9dc18fccff257a4802f9ee1"
+      "sha256": "22d4c6bd0f9961ee699f4141c08c22a16892a722d703907c1ae34b8ac38953f5"
     },
     {
       "path": "research/lattice/logs/2026-09-22.md",
       "provenance": "authored_history",
-      "sha256": "16542ec0fa2dc31706862c80606226e99a70e95f96bdbce34ea954f419c428a0"
+      "sha256": "3dccdce4f2b64bad2bb905b0465fee54f0f9aeeb2aca0924f9ba8ecd68ffff31"
     },
     {
       "path": "research/lattice/logs/2026-09-23.md",
       "provenance": "authored_history",
-      "sha256": "f553784f4f0756d9b84cee61a9609b8b9665e95a5c7b60803bcfa28ddb8420db"
+      "sha256": "f8dcd2220054e3c125554004b410316bf5c26dccb02c9938a0b69e497d1c8d69"
     },
     {
       "path": "research/lattice/logs/README.md",
       "provenance": "authored_history",
-      "sha256": "163683debe083fa7c969f9ecc02018521e1fab70a5cb8262b8bfd8b102477b90"
+      "sha256": "7e5cbe3dcacbf58ffc2500106a49686d9a1d5b1fdf834d02b16108b1dfde72a4"
     },
     {
       "path": "research/lattice/phase-map.md",
@@ -732,6 +832,96 @@
       "path": "research/lattice/trial-l05.md",
       "provenance": "authored_history",
       "sha256": "f39257f059a40f877d0a45ee9130230f3b1d4397e776c2eba61555242194319f"
+    },
+    {
+      "path": "research/nell/bedside-relay.md",
+      "provenance": "authored_history",
+      "sha256": "c3edec1bb1960d25638a0cd74c3443469ba3e33235345839d17735e9fd912d94"
+    },
+    {
+      "path": "research/nell/care-intervention.md",
+      "provenance": "authored_history",
+      "sha256": "ae9c8ba3c74f88e385479be93c9e8c3028537472f34b70c6df69628049d4918f"
+    },
+    {
+      "path": "research/nell/cart-witness.md",
+      "provenance": "authored_history",
+      "sha256": "749ac221c2006a1dbefc25891ca8d8d5c12d2d97db5bf5cd1836adabf7508d29"
+    },
+    {
+      "path": "research/nell/clinic-7-roster.md",
+      "provenance": "authored_history",
+      "sha256": "3154bff104f19bd7a642d0614d5efb9cf1ed82f730e4e7ae48a8d501f49f5a3c"
+    },
+    {
+      "path": "research/nell/container-chain.csv",
+      "provenance": "authored_history",
+      "sha256": "9b09415063dedd66ef3dc7d962640cb473a06ccddb0e5e74b88e78168e9ba14e"
+    },
+    {
+      "path": "research/nell/ethics-escalation.md",
+      "provenance": "authored_history",
+      "sha256": "69d51147f042b7953cf9c3d8f7175e8ac324334c3f55687f618d010d20790b18"
+    },
+    {
+      "path": "research/nell/light-circuit.csv",
+      "provenance": "authored_history",
+      "sha256": "7e78a690aa601493b55266eb1684c89c1d6dd54eef1623baedff93d0b43246fb"
+    },
+    {
+      "path": "research/nell/night-cycle-protocol.md",
+      "provenance": "authored_history",
+      "sha256": "8e480fe5eb2d763de1786d870aea765c52d61ff9c19e91c7c8e0ed10ae27d7fe"
+    },
+    {
+      "path": "research/nell/night-cycle-trace.csv",
+      "provenance": "authored_history",
+      "sha256": "3c9e652783e97031b9a8cc104375e6cfd424f3a603e91d6c0c8fdb19775e5086"
+    },
+    {
+      "path": "research/nell/playback-incident.md",
+      "provenance": "authored_history",
+      "sha256": "5b085dc61d06187dce99cae0c6051644dd07cfeaffc4529f6a580557189cec3f"
+    },
+    {
+      "path": "research/nell/relay-0909-late.md",
+      "provenance": "authored_history",
+      "sha256": "73735ab8741ca1d4442d00a50af315a066194f7a62ec5e587155070a43e0dd57"
+    },
+    {
+      "path": "research/nell/relay-0910-morning.md",
+      "provenance": "authored_history",
+      "sha256": "8b9fbd2d2707d3ae17e6f9c5e44c667041566b33c4e6cfd66bfe9c5ea7fb44ae"
+    },
+    {
+      "path": "research/nell/relay-0910-stop.md",
+      "provenance": "authored_history",
+      "sha256": "0216cd9dc8739cb4a9b1285e69e3546ee644abe0dbf443a7495f099baa94293d"
+    },
+    {
+      "path": "research/nell/relay-0923-c22.md",
+      "provenance": "authored_history",
+      "sha256": "2bf23dcbbac0ad82e457eda82ab984238d60172c4a67cb5dbb8c81fc9bc53934"
+    },
+    {
+      "path": "research/nell/room-care-note.md",
+      "provenance": "authored_history",
+      "sha256": "99ce2632c260ad838d61f50425f48a7446a9d638ca4ca3e4b6b9fe476a518197"
+    },
+    {
+      "path": "research/nell/seal-review.md",
+      "provenance": "authored_history",
+      "sha256": "4bac5d86328987903ac6f622b968b95fdb77d9c9af4dc577c66e6cee98aab6f7"
+    },
+    {
+      "path": "research/nell/status-correction.md",
+      "provenance": "authored_history",
+      "sha256": "b81f73d800d34aeba9c541f97f1dbb0020b3caaa6ad8086d197dec78ad544ee3"
+    },
+    {
+      "path": "research/nell/ward-cycle-trace.csv",
+      "provenance": "authored_history",
+      "sha256": "dd1f361add65dfef15b1da7e41532e12605c8d06a6e8c489216a05081f356cbd"
     },
     {
       "path": "research/source-review.md",

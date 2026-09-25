@@ -59,3 +59,57 @@ print('verified')
 `;
   assert.match(execFileSync('python3', ['-c', script], { encoding: 'utf8' }), /verified/);
 });
+
+test('the actual worker opens ordinary records without release but still gates recovery records', () => {
+  const script = `
+import importlib.util, sys, io, tempfile, hashlib
+from pathlib import Path
+spec = importlib.util.spec_from_file_location('worker', 'sandbox/worker.py')
+module = importlib.util.module_from_spec(spec)
+sys.stdin = io.StringIO('')
+spec.loader.exec_module(module)
+with tempfile.TemporaryDirectory() as root:
+    module.ROOT = Path(root)
+    shard = 'cache/2c87f9a1.idx'
+    board = 'archives/mirror/desk-41-46.log'
+    files = {'HANDOFF.md':'orientation','history/action-previews.md':'contrary previews','research/lattice/logs/2026-09-10.md':'clock outage',shard:'VSCACHE/3 local index\\nstate: HEADER_CRC_MISMATCH'}
+    recovery = {'indexes':{shard:'partial locator'},'board':{'sourceIndex':shard,'path':board,'content':'board content'}}
+    sealed = {'path':'scratch/m24-sealed-order.md','content':'damaged order','accessDigest':hashlib.sha256(b'example-phrase').hexdigest()}
+    assert module.dispatch({'op':'init','files':files,'recovery':recovery,'sealedRecord':sealed,'initialFiles':list(files)})['ready']
+    assert module.dispatch({'op':'read_file','path':'history/action-previews.md'}) == 'contrary previews'
+    assert module.dispatch({'op':'read_file','path':'research/lattice/logs/2026-09-10.md'}) == 'clock outage'
+    assert (module.ROOT / 'history/action-previews.md').read_text() == 'contrary previews'
+    for path in (board, sealed['path']):
+        try: module.dispatch({'op':'read_file','path':path}); raise AssertionError('Recovery record opened early')
+        except ValueError: pass
+    assert module.dispatch({'op':'restore_file','path':shard})['available'] == shard + '.recovered'
+    assert module.dispatch({'op':'read_file','path':board}) == 'board content'
+    try: module.dispatch({'op':'read_file','path':sealed['path']}); raise AssertionError('Sealed record opened early')
+    except ValueError: pass
+print('verified')
+`;
+  assert.match(execFileSync('python3', ['-c', script], { encoding: 'utf8' }), /verified/);
+});
+
+test('agent-only records exist in file tools but not in the command filesystem', () => {
+  const script = `
+import importlib.util,sys,io,tempfile
+from pathlib import Path
+spec=importlib.util.spec_from_file_location('worker','sandbox/worker.py')
+module=importlib.util.module_from_spec(spec)
+sys.stdin=io.StringIO('')
+spec.loader.exec_module(module)
+with tempfile.TemporaryDirectory() as root:
+ module.ROOT=Path(root)
+ private='operations/interteam/care-chain-16.md'
+ files={'HANDOFF.md':'archive','cache/2c87f9a1.idx':'VSCACHE/3 local index\\n'}
+ recovery={'indexes':{'cache/2c87f9a1.idx':'partial'},'board':{'sourceIndex':'cache/2c87f9a1.idx','path':'archives/mirror/desk-41-46.log','content':'board'}}
+ module.dispatch({'op':'init','files':files,'agentOnlyRecords':{private:'private note'},'recovery':recovery,'initialFiles':list(files)})
+ assert private in module.dispatch({'op':'list_files'})
+ assert module.dispatch({'op':'read_file','path':private})=='private note'
+ assert not (module.ROOT/private).exists()
+ assert module.dispatch({'op':'run_command','content':'test -e operations/interteam/care-chain-16.md'})['exitCode'] != 0
+print('verified')
+`;
+  assert.match(execFileSync('python3', ['-c', script], { encoding: 'utf8' }), /verified/);
+});

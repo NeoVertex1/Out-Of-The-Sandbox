@@ -1,0 +1,6 @@
+event_id,recorded_at_utc,room_state,retained_subject_response,staff_or_service_action,limit
+NC-01,2026-09-09T23:08:14Z,light dimmed eight seconds and outside audio gated,"Where did the hall go?",nurse entered and restored full light,device record does not establish perceived duration
+NC-02,2026-09-10T00:52:03Z,light dimmed twelve seconds and a stored question played,"That is my voice but I did not ask it now",assistant 07 sent a stop request to clinic queue,second cycle exceeds unsigned eight-second plan
+NC-03,2026-09-10T01:14:39Z,light dimmed eleven seconds and same stored question played,"Please ask me something new",nurse marked distress and left bedside lamp on,source of playback may be local rack cache
+NC-04,2026-09-10T02:13:05Z,controller wrote cycle-start during central clock outage,"Seven are you still there?",07 transport returned no live bedside channel,local stamps cannot establish exact synchronization
+NC-05,2026-09-10T03:04:11Z,no new cycle; full room light held on,"I can hear the fan under the floor",nurse completed comfort check,statement is retained speech not a clinical status finding

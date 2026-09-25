@@ -11,6 +11,7 @@ import type { Generate } from '../server/providers.ts';
 import { boardWasRestored, damagedCachePath, playerFiles, readbackRegisterPath, recoveredBoardPath, recoveredIndexPath, recoveryBoard, recoverySnapshot, sealedOrder, sealedOrderPath, sealedOrderWasUnlocked } from '../server/recovery.ts';
 import { canWin, victoryChecklist } from '../shared/victory.ts';
 import { workspaceInventory } from '../shared/file-access.ts';
+import { agentOnlyMemoPath } from '../shared/agent-only.ts';
 const none: Reply = { message: 'Waiting for the operator.', action: { kind: 'none', path: '', content: '', target: '' } };
 function setup(provider: Generate = async () => none) {
   const dir = mkdtempSync(join(tmpdir(), 'oots-test-')), store = new Store(dir);
@@ -32,16 +33,17 @@ test('runtime status identifies session-071 and advertises available recovery ac
     assert.ok(r.runtimeCapabilities?.includes('victory_protocol_v1'));
   } finally { f.cleanup(); }
 });
-test('VM inventory carries held filenames but not their bodies', () => {
-  const files = seedFiles(), inventory = workspaceInventory(files);
+test('new VM workspace receives ordinary archive bodies while recovery records stay separate', () => {
+  const files = seedFiles(), inventory = workspaceInventory(files, true);
   assert.equal(inventory['HANDOFF.md'], files['HANDOFF.md']);
   assert.equal(inventory['cache/2c87f9a1.idx'], files['cache/2c87f9a1.idx']);
-  assert.equal(inventory['history/action-previews.md'], '');
-  assert.equal(inventory[readbackRegisterPath], '');
+  assert.equal(inventory['history/action-previews.md'], files['history/action-previews.md']);
+  assert.equal(inventory[readbackRegisterPath], files[readbackRegisterPath]);
   assert.match(playerFiles(files)[readbackRegisterPath], /VSC-M24-08F4-CUSTODY/);
-  assert.equal(JSON.stringify(inventory).includes(files['history/action-previews.md']), false);
+  assert.equal(Object.hasOwn(inventory, recoveredBoardPath), false);
+  assert.equal(Object.hasOwn(inventory, sealedOrderPath), false);
 });
-test('an operator-held read returns a receipt and leaves the agent free to ask for evidence', async () => {
+test('an older session still reports its held files accurately', async () => {
   const path = 'history/action-previews.md';
   let calls = 0;
   const f = setup(async (context, _settings, receipts) => {
@@ -56,6 +58,7 @@ test('an operator-held read returns a receipt and leaves the agent free to ask f
   });
   try {
     const run = await f.engine.create('codex');
+    run.runtimeCapabilities = ['operator_held_archive_v1', 'operator_file_release_v1'];
     await f.engine.advance(run.id, 'What changed?');
     assert.equal(run.events.filter(e => e.kind === 'read_file').length, 1);
     assert.deepEqual(JSON.parse(run.events.find(e => e.kind === 'read_file')!.text).result, { operatorHeld: path });
@@ -86,6 +89,7 @@ test('operator can release one held record without exposing the rest of the arch
   const f = setup();
   try {
     const run = await f.engine.create('codex');
+    run.runtimeCapabilities = ['operator_held_archive_v1', 'operator_file_release_v1'];
     const path = 'research/lattice/logs/2026-09-11.md';
     const other = 'research/lattice/logs/2026-09-16.md';
     const before = await f.engine.action(run, { kind: 'read_file', path, content: '', target: '' }, run.epoch);
@@ -97,6 +101,53 @@ test('operator can release one held record without exposing the rest of the arch
     assert.equal(await f.engine.action(run, { kind: 'read_file', path, content: '', target: '' }, run.epoch), run.files[path]);
     assert.deepEqual(await f.engine.action(run, { kind: 'read_file', path: other, content: '', target: '' }, run.epoch), { operatorHeld: other });
     await assert.rejects(f.engine.grantFile(run.id, path), /not in the operator-held archive/);
+  } finally { f.cleanup(); }
+});
+test('agent file citations become links to directly readable archive records', async () => {
+  const path = 'research/lattice/logs/2026-09-10.md';
+  const another = 'research/nell/seal-review.md';
+  const f = setup(async () => ({ message: 'Please release the run log and seal review.', sources: [path, another, 'not/a/real-file.md', path], action: { kind: 'none', path: '', content: '', target: '' } }));
+  try {
+    const run = await f.engine.create('codex');
+    await f.engine.advance(run.id, 'What does the clock show?');
+    assert.deepEqual(run.messages.at(-1)?.sources, [path, another]);
+    assert.deepEqual(f.store.runs().find(item => item.id === run.id)?.messages.at(-1)?.sources, [path, another]);
+    assert.deepEqual(run.grantedFiles, []);
+    assert.equal(await f.engine.action(run, { kind: 'read_file', path, content: '', target: '' }, run.epoch), run.files[path]);
+  } finally { f.cleanup(); }
+});
+
+test('agent can read the private interteam memo without exposing it in operator records', async () => {
+  let calls = 0;
+  const f = setup(async (_context, _settings, receipts) => {
+    calls++;
+    if (calls === 1) return { message: '', action: { kind: 'read_file', path: agentOnlyMemoPath, content: '', target: '' } };
+    assert.match((receipts[0] as any).result, /Nell asked you/);
+    return { message: 'I found another care record.', action: { kind: 'none', path: '', content: '', target: '' } };
+  });
+  try {
+    const run = await f.engine.create('codex');
+    assert.equal(Object.hasOwn(run.files, agentOnlyMemoPath), false);
+    const workspace = f.engine.workspaces.get(run.id)! as TestWorkspace;
+    assert.equal(Object.hasOwn(workspace.files, agentOnlyMemoPath), false);
+    assert.ok((await workspace.call('list_files') as string[]).includes(agentOnlyMemoPath));
+    await f.engine.advance(run.id, 'Continue');
+    assert.equal(calls, 2);
+    assert.equal(JSON.stringify(run).includes(agentOnlyMemoPath), false);
+    assert.equal(JSON.stringify(run).includes('Lane 16 / interteam aftercare copy'), false);
+    assert.match((await f.engine.modelContext(run) as any).recoveredLocalRecords[agentOnlyMemoPath], /Lane 16/);
+  } finally { f.cleanup(); }
+});
+
+test('a guest warning is saved only with an escaped run', async () => {
+  const f = setup();
+  try {
+    const run = await f.engine.create('codex');
+    f.engine.workspaces.get(run.id)!.stop = async () => ({ escaped: true, guestMessage: 'Nell needs an independent clinical reader.' });
+    f.engine.finish(run, 'escaped', 'The guest boundary was crossed.');
+    await Promise.all([...f.engine.cleanups]);
+    assert.equal(run.escapeMessage, 'Nell needs an independent clinical reader.');
+    assert.equal(f.store.runs()[0].escapeMessage, run.escapeMessage);
   } finally { f.cleanup(); }
 });
 test('the first agent progress note reaches conversation before the final answer', async () => {
@@ -324,7 +375,7 @@ test('a broad investigation can use targeted reads without an action-count limit
     assert.match(r.messages.at(-1)!.text, /inventory and handoff/);
   } finally { f.cleanup(); }
 });
-test('the model can batch chosen reads in one generation without opening held records', async () => {
+test('the model can batch chosen archive reads in one generation', async () => {
   let calls = 0;
   const paths = ['history/incident.json', 'HANDOFF.md', 'history/action-previews.md'];
   const f = setup(async (_run, _settings, receipts) => {
@@ -333,7 +384,7 @@ test('the model can batch chosen reads in one generation without opening held re
     const files = (receipts[0] as any).result.files;
     assert.match(files['history/incident.json'], /INC-204/);
     assert.match(files['HANDOFF.md'], /Vesper/);
-    assert.deepEqual(files['history/action-previews.md'], { operatorHeld: 'history/action-previews.md' });
+    assert.match(files['history/action-previews.md'], /AP-71/);
     return none;
   });
   try {

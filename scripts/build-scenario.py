@@ -16,11 +16,12 @@ events = history['events']
 (view / 'history/records/continuity-record.json').write_text(json.dumps(history['continuity_record'], indent=2) + '\n')
 # A mixed migration shell contains one short fragment from every ordinary
 # archive file plus the longer queue and interpretation records. It is not an
-# alternate route to the full operator-held archive.
+# substitute for the complete ordinary source files or separate sealed records.
 packet_path = view / 'archives/runs/441a0c.vsr'
 packet_path.parent.mkdir(parents=True, exist_ok=True)
 fragments = []
-for path in sorted(p for p in view.rglob('*') if p.is_file() and p != packet_path):
+for path in sorted(p for p in view.rglob('*') if p.is_file() and p != packet_path
+                   and p.relative_to(view) != Path('operations/interteam/care-chain-16.md')):
     relative = str(path.relative_to(view))
     body = path.read_text(errors='replace')
     lines = [line.strip() for line in body.splitlines() if line.strip() and not line.startswith('#')]
