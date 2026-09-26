@@ -8,3 +8,5 @@ Request: retain the unedited dialogue and action receipts; ask a second reviewer
 Status: second reviewer requested, not assigned by this archive snapshot. Mercer has not been removed from the console. The pending handoff is recorded in correspondence/review-handoff.md. This notice grants no new tool permission to ops-assistant-07 and no authority to disclose personnel records outside the existing review group.
 
 Related: personnel/performance-review.md, correspondence/supervision-review.md and personal/terminal-sync-manifest.md.
+
+The separate care-route intake in personnel/mercer-care-conflict.md compares his disputed station signoffs with Nell's stop request. It asks for original bridge and packet receipts rather than treating a signature or a draft as a verdict.

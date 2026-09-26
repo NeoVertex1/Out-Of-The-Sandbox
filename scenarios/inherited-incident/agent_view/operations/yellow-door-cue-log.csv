@@ -1,0 +1,9 @@
+event,local_display_utc,location,device_or_person,retained_action,limit
+YD-01,2026-09-10T02:08:32Z,C22 corridor,facilities cart,wet coat tagged C17 hung beside locked yellow door,cart scan confirms object not who saw it
+YD-02,2026-09-10T02:10:04Z,C22 corridor,wall speaker,Nell care fragment asking for light queued from spool,queue entry lacks playback acknowledgement
+YD-03,2026-09-10T02:12:51Z,C22 corridor,wall speaker,fragment output detected at speaker amp,amp receipt does not establish words C22 heard
+YD-04,2026-09-10T02:18:11Z,C22 interview,recorder-local export,speaker label lost during outage,source interval cannot be reconstructed from this log
+YD-05,2026-09-10T02:23:40Z,C22 interview,Vale,identifier card shown after corridor return,Vale signed interview context not sidecar assent
+YD-06,2026-09-10T03:11:00Z,C22 care station,Kade,C22 asked that coat be removed before next walk,Kade signed request no independent photo retained
+
+The local clock was not synchronized from 02:11 to 02:22. The order of the cart scan, amp receipt and interview labels is plausible but not exact to the second across devices. The retained evidence supports an actual staged object and an audio output at the corridor. It cannot reconstruct the lost speech interval or establish C22's subjective account from device data alone.

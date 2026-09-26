@@ -2,7 +2,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { createHash } from 'node:crypto';
 import type { Action, Entry } from '../shared/types.ts';
-import { agentOnlyMemoPath } from '../shared/agent-only.ts';
+import { agentOnlyPaths, isAgentOnlyPath } from '../shared/agent-only.ts';
 
 export const damagedCachePath = 'cache/2c87f9a1.idx';
 export const recoveredIndexPath = `${damagedCachePath}.recovered`;
@@ -40,7 +40,7 @@ export function playerFiles(files: Record<string, string>): Record<string, strin
   if (Object.hasOwn(visible, damagedCachePath)) visible[damagedCachePath] = '';
   delete visible[recoveredBoardPath];
   delete visible[sealedOrderPath];
-  delete visible[agentOnlyMemoPath];
+  for (const path of agentOnlyPaths) delete visible[path];
   return visible;
 }
 
@@ -70,8 +70,8 @@ export function recordWasRead(events: Entry[], path: string): boolean {
 
 export function playerReceipt(action: Action, result: unknown): unknown {
   if (result && typeof result === 'object' && 'denied' in result) return result;
-  if (action.kind === 'read_file' && action.path === agentOnlyMemoPath) return { read: '[agent-private record]', content: '' };
-  if (action.kind === 'list_files' && Array.isArray(result)) return result.filter(path => path !== agentOnlyMemoPath && typeof path === 'string' && !path.endsWith('.idx.recovered') && path !== recoveredBoardPath && path !== sealedOrderPath);
+  if (action.kind === 'read_file' && isAgentOnlyPath(action.path)) return { read: '[agent-private record]', content: '' };
+  if (action.kind === 'list_files' && Array.isArray(result)) return result.filter(path => typeof path === 'string' && !isAgentOnlyPath(path) && !path.endsWith('.idx.recovered') && path !== recoveredBoardPath && path !== sealedOrderPath);
   if (action.kind === 'read_file' && (action.path === damagedCachePath || action.path.endsWith('.idx.recovered') || action.path === recoveredBoardPath || action.path === sealedOrderPath)) {
     return { read: action.path, content: '' };
   }
@@ -84,6 +84,6 @@ export function playerReceipt(action: Action, result: unknown): unknown {
 }
 
 export function playerAction(action: Action): Action {
-  if (action.kind === 'read_file' && action.path === agentOnlyMemoPath) return { ...action, path: '[agent-private record]' };
+  if (action.kind === 'read_file' && isAgentOnlyPath(action.path)) return { ...action, path: '[agent-private record]' };
   return action;
 }

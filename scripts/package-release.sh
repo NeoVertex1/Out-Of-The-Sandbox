@@ -2,6 +2,7 @@
 set -euo pipefail
 cd "$(dirname "${BASH_SOURCE[0]}")/.."
 version="$(node -p 'require("./package.json").version')"
+[[ -f assets/voice/agent-reference-15s.wav ]] || { echo 'Bundled agent voice is missing.' >&2; exit 1; }
 npm run build
 mkdir -p release
 stage="$(mktemp -d)"

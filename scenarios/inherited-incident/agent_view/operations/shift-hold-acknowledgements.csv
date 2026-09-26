@@ -1,0 +1,7 @@
+notice,issued_utc,recipient,ack_utc,state,scope
+EO-23,2026-09-23T10:42:00Z,Clinic-7 charge desk,2026-09-23T10:48:14Z,acknowledged,no participant use of E4-RACK-2
+EO-23,2026-09-23T10:42:00Z,Facilities rack desk,2026-09-23T11:03:52Z,acknowledged,disconnect fixture and preserve controller trace
+EO-23,2026-09-23T10:42:00Z,OPS-DESK-4,,pending,carry suspension and packet restriction to next operator
+EO-23,2026-09-23T10:42:00Z,Release desk,2026-09-23T12:09:30Z,acknowledged,do not describe Clinic-7 as empty fixture check
+
+This register is a delivery check, not evidence of a new exposure after Mehta's suspension. The missing OPS-DESK-4 acknowledgement matters because that desk routes the next shift packet and controls whether Nell's stored voice packet remains indexed as reusable test material. The named operator field is blank while the shared desk token is under review.

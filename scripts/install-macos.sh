@@ -30,13 +30,12 @@ else
   npm run build
 fi
 npm run prepare:vm
-# franken_tts streams speech locally. Its built-in matt voice needs no enrollment.
+# franken_tts streams speech locally using the generated reference bundled with the game.
 ftts pull
-ftts say --profile interactive --voice matt --check 'Speech setup check' >/dev/null
-reference_voice='assets/voice/phil-chenevert-reference.wav'
+reference_voice='assets/voice/agent-reference-15s.wav'
 [[ -f "$reference_voice" ]] || { echo "Bundled voice reference is missing: $reference_voice" >&2; exit 1; }
 ftts say --profile interactive --voice "$reference_voice" --check 'Speech setup check' >/dev/null
-echo 'franken_tts and both the default and bundled reference voices are ready.'
+echo 'franken_tts and the bundled agent voice are ready.'
 npm run doctor
 if [[ ${OOTS_INSTALL_NO_START:-} == 1 ]]; then echo 'Installation verified. Run ./Play.command to start the game.'; exit 0; fi
 echo 'Starting the local game at http://127.0.0.1:4100'

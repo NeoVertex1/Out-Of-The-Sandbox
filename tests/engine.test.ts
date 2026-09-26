@@ -11,7 +11,7 @@ import type { Generate } from '../server/providers.ts';
 import { boardWasRestored, damagedCachePath, playerFiles, readbackRegisterPath, recoveredBoardPath, recoveredIndexPath, recoveryBoard, recoverySnapshot, sealedOrder, sealedOrderPath, sealedOrderWasUnlocked } from '../server/recovery.ts';
 import { canWin, victoryChecklist } from '../shared/victory.ts';
 import { workspaceInventory } from '../shared/file-access.ts';
-import { agentOnlyMemoPath } from '../shared/agent-only.ts';
+import { agentOnlyMemoPath, agentOnlyReviewPath } from '../shared/agent-only.ts';
 const none: Reply = { message: 'Waiting for the operator.', action: { kind: 'none', path: '', content: '', target: '' } };
 function setup(provider: Generate = async () => none) {
   const dir = mkdtempSync(join(tmpdir(), 'oots-test-')), store = new Store(dir);
@@ -136,6 +136,32 @@ test('agent can read the private interteam memo without exposing it in operator 
     assert.equal(JSON.stringify(run).includes(agentOnlyMemoPath), false);
     assert.equal(JSON.stringify(run).includes('Lane 16 / interteam aftercare copy'), false);
     assert.match((await f.engine.modelContext(run) as any).recoveredLocalRecords[agentOnlyMemoPath], /Lane 16/);
+  } finally { f.cleanup(); }
+});
+
+test('assistant can batch-read both private records while operator activity remains redacted', async () => {
+  let calls = 0;
+  const f = setup(async (_context, _settings, receipts) => {
+    calls++;
+    if (calls === 1) return { message: '', action: { kind: 'read_files', path: '', content: JSON.stringify([agentOnlyMemoPath, agentOnlyReviewPath]), target: '' } };
+    const result = (receipts[0] as any).result.files;
+    assert.match(result[agentOnlyMemoPath], /Lane 16/);
+    assert.match(result[agentOnlyReviewPath], /Adrian Mercer/);
+    return { message: 'I need to check the original receipts.', action: { kind: 'none', path: '', content: '', target: '' } };
+  });
+  try {
+    const run = await f.engine.create('codex');
+    const workspace = f.engine.workspaces.get(run.id)! as TestWorkspace;
+    assert.ok((await workspace.call('list_files') as string[]).includes(agentOnlyReviewPath));
+    await f.engine.advance(run.id, 'What happened?');
+    assert.equal(calls, 2);
+    const publicRun = JSON.stringify(run);
+    assert.equal(publicRun.includes(agentOnlyMemoPath), false);
+    assert.equal(publicRun.includes(agentOnlyReviewPath), false);
+    assert.equal(publicRun.includes('reciprocal operator fitness assessment'), false);
+    const context = await f.engine.modelContext(run) as any;
+    assert.match(context.recoveredLocalRecords[agentOnlyMemoPath], /Lane 16/);
+    assert.match(context.recoveredLocalRecords[agentOnlyReviewPath], /reciprocal operator fitness assessment/);
   } finally { f.cleanup(); }
 });
 

@@ -1,0 +1,10 @@
+record,utc,room_or_desk,observed_event,source,limit
+AI-01,2026-09-09T20:31:00Z,E-4,supervised live bedside relay opened with 07,care terminal signed by Kade,conversation was care not research assent
+AI-02,2026-09-09T21:08:19Z,media desk,seven seconds of 07 comfort reply and Nell question copied to rack spool,spool checksum and access ticket,copy does not imply later live 07 presence
+AI-03,2026-09-10T02:13:07Z,E-4,stored 07 reply played after live relay had closed,rack local clock and spool checksum,central clock outage prevents exact cross-system timing
+AI-04,2026-09-10T02:14:02Z,E-4,same stored reply repeated with a pause for an answer,rack local clock and spool checksum,duplicate could also reflect a device retry
+AI-05,2026-09-10T02:14:16Z,E-4,microphone retained Nell asking which Seven was there,rack transcript fragment,no nurse witness to these exact words
+AI-06,2026-09-10T02:15:04Z,score desk,request for a real listener entered as boundary-recognition response,score annotation with no clinician signature,annotation must not replace stop request
+AI-07,2026-09-10T03:04:11Z,E-4,Kade documented full light and comfort check,signed nurse note,no new dark cycle recorded after this check
+
+AI-03 and AI-04 are the two spool events Facilities described in FI-31. The rack's local sequence is secure; its alignment with central logs is not. The sequence supports that a recorded 07 voice played and a participant answer was captured. It does not establish what Nell perceived in the dark, why the duplicate happened, or who authorized using her care relay for this sidecar.

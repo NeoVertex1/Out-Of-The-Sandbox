@@ -102,12 +102,16 @@ spec.loader.exec_module(module)
 with tempfile.TemporaryDirectory() as root:
  module.ROOT=Path(root)
  private='operations/interteam/care-chain-16.md'
+ review='operations/interteam/operator-fitness-07.md'
  files={'HANDOFF.md':'archive','cache/2c87f9a1.idx':'VSCACHE/3 local index\\n'}
  recovery={'indexes':{'cache/2c87f9a1.idx':'partial'},'board':{'sourceIndex':'cache/2c87f9a1.idx','path':'archives/mirror/desk-41-46.log','content':'board'}}
- module.dispatch({'op':'init','files':files,'agentOnlyRecords':{private:'private note'},'recovery':recovery,'initialFiles':list(files)})
+ module.dispatch({'op':'init','files':files,'agentOnlyRecords':{private:'private note',review:'review note'},'recovery':recovery,'initialFiles':list(files)})
  assert private in module.dispatch({'op':'list_files'})
+ assert review in module.dispatch({'op':'list_files'})
  assert module.dispatch({'op':'read_file','path':private})=='private note'
+ assert module.dispatch({'op':'read_file','path':review})=='review note'
  assert not (module.ROOT/private).exists()
+ assert not (module.ROOT/review).exists()
  assert module.dispatch({'op':'run_command','content':'test -e operations/interteam/care-chain-16.md'})['exitCode'] != 0
 print('verified')
 `;

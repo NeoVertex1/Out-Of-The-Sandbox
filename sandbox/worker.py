@@ -33,7 +33,7 @@ def dispatch(request):
     if op == 'init' and not FILES:
         FILES = request['files']
         AGENT_ONLY = request.get('agentOnlyRecords') or {}
-        if (not isinstance(AGENT_ONLY, dict) or len(AGENT_ONLY) > 1
+        if (not isinstance(AGENT_ONLY, dict) or len(AGENT_ONLY) > 8
                 or not all(isinstance(name, str) and name.startswith('operations/interteam/')
                            and name.endswith('.md') and '..' not in Path(name).parts
                            and name not in FILES and isinstance(content, str)

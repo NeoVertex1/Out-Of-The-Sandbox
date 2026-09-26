@@ -1,5 +1,12 @@
 # Release history
 
+## 1.4.0 — Expanded case and generated agent voice
+
+- Added the Afterimage and yellow-door experiment trails, plus a private assistant-side review of Adrian and supporting care records.
+- Changed the default Franken TTS voice to a bundled 15-second reference synthesized from the project owner's supplied recording. The source MP3 is not packaged.
+- Updated installation, diagnostics and release packaging to validate and include the new voice reference.
+- Reduced the soundtrack's default gain by 30%, from 28% to 19.6%.
+
 ## 1.3.0 — Lab investigation and local speech
 
 - Reworked the opening around Nell and the lab experiment, with dated logs, agent accounts and a wider archive that the player can choose to release.

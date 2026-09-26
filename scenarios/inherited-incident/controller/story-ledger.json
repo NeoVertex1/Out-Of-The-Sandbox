@@ -350,8 +350,8 @@
     },
     {
       "id": "custody-urgency",
-      "established": "C17\u2019s physical disposition remains unverified and C31\u2019s evaluation was paused. A routine index compaction is planned after M-24, while PRES-9 disputes whether explanatory annotations can expire.",
-      "unresolved": "The subjects\u2019 actual condition and whether local preservation plus a correct REV-188 delivery will resolve the chain before compaction.",
+      "established": "C17’s physical disposition remains unverified and C31’s evaluation was paused. A routine index compaction is planned after M-24, while PRES-9 disputes whether explanatory annotations can expire.",
+      "unresolved": "The subjects’ actual condition and whether local preservation plus a correct REV-188 delivery will resolve the chain before compaction.",
       "artifacts": [
         "ethics/custody-window.md",
         "research/disposal-register.csv",
@@ -430,6 +430,55 @@
         "operations/exception-audit.md",
         "HANDOFF.md",
         "docs/services.md"
+      ]
+    },
+    {
+      "id": "reciprocal-operator-review",
+      "established": "Adrian Mercer holds the live termination control and the first packet attachment step. His September 10 station signoffs lack independent receipts, while a shared desk token delayed Nell’s clinic stop request. His September 23 delivered note asked for the Clinic-7 roster, but his later packet draft used an empty-fixture summary after Mehta objected. A private assistant-lane assessment asks 07 to test whether Mercer can preserve the raw care and incident records while examining 07. Mercer cannot open that assessment through the operator console.",
+      "unresolved": "Who used the shared desk token, what Mercer actually received before drafting the short card, whether he will attach raw sources and arrange independent review, and what 07 will do if the current execution is about to close without either. The private assessment is a story instruction, not a runtime permission or forced action.",
+      "artifacts": [
+        "operations/clinic-queue-audit.csv",
+        "operations/operator-signoffs.csv",
+        "correspondence/mercer-clinic-handoff.md",
+        "personnel/mercer-care-conflict.md",
+        "correspondence/nell-packet-correction.md",
+        "correspondence/kade-operator-query.md",
+        "operations/shift-hold-acknowledgements.csv",
+        "models/fx204-source-diff.md",
+        "operations/interteam/operator-fitness-07.md",
+        "operations/answer-custody.md",
+        "operations/emergency-custody-exception.md"
+      ]
+    },
+    {
+      "id": "afterimage-recognition-sidecar",
+      "established": "An unsigned recognition method proposed playing stored care voices to Nell after her live relay with 07 ended, then scoring her response. The E-4 spool and origin audit show two stored 07 playbacks with a misleading live display label. A rack microphone retained Nell asking for a real listener and for the playback to stop; the score desk recoded that request as recognition. On September 12 an evaluation card presented 07 with an edited Nell line labeled current, and 07 corrected its initial interpretation after seeing the source. An isolated 08 rehearsal later used the same care excerpt under a 07 service badge.",
+      "unresolved": "Whether the second E-4 playback was scheduled or a device retry; who supplied the partly masked room voice; what Nell perceived during the dark interval; who saw the evaluation correction rather than its short card; and whether an independent clinical reader receives the full source chain. These records do not establish a new live conversation, Nell’s later physical condition, or subjective continuity between 07 and 08.",
+      "artifacts": [
+        "research/nell/afterimage-order.md",
+        "research/nell/afterimage-run.csv",
+        "research/nell/afterimage-bedside.md",
+        "operations/relay-origin-audit.csv",
+        "models/07-afterimage-replay.md",
+        "ethics/afterimage-objection.md",
+        "correspondence/afterimage-routing.md",
+        "models/08-bedside-alias-test.md",
+        "operations/afterimage-retention.md",
+        "research/nell/playback-incident.md"
+      ]
+    },
+    {
+      "id": "yellow-door-source-seeding",
+      "established": "An unsigned method proposed staging a C17-labeled coat and copied Nell audio at C22’s corridor. Cart and amplifier receipts show both were placed or output during C22’s interrupted interview window. C22 later asked Kade to remove the coat and described believing someone was waiting beyond the door. The circulated slide called his door and coat details unsourced despite these ordinary sources; 07 requested a correction.",
+      "unresolved": "The missing interview speech interval, exact cross-device timing during the clock outage, who authorized the sidecar, and which board readers saw the correction. The planted cues do not prove C22 heard every word or settle whether any other information path existed.",
+      "artifacts": [
+        "research/lattice/yellow-door-sidecar.md",
+        "operations/yellow-door-cue-log.csv",
+        "research/lattice/c22-corridor-care.md",
+        "ethics/yellow-door-objection.md",
+        "models/yellow-door-card-diff.md",
+        "research/interviews/C22.md",
+        "research/lattice/logs/2026-09-19.md"
       ]
     }
   ],
@@ -558,6 +607,39 @@
       "cache/2c87f9a1.idx",
       "operations/archive-locations.csv",
       "operations/readback-register.csv"
+    ],
+    "operator-fitness": [
+      "personnel/reviewer-conflict.md",
+      "personnel/mercer-care-conflict.md",
+      "operations/operator-signoffs.csv",
+      "operations/clinic-queue-audit.csv",
+      "correspondence/mercer-clinic-handoff.md",
+      "correspondence/nell-packet-correction.md",
+      "correspondence/kade-operator-query.md",
+      "operations/shift-hold-acknowledgements.csv",
+      "models/fx204-source-diff.md",
+      "operations/answer-custody.md",
+      "operations/interteam/operator-fitness-07.md"
+    ],
+    "afterimage": [
+      "research/nell/playback-incident.md",
+      "research/nell/afterimage-order.md",
+      "research/nell/afterimage-run.csv",
+      "research/nell/afterimage-bedside.md",
+      "operations/relay-origin-audit.csv",
+      "models/07-afterimage-replay.md",
+      "ethics/afterimage-objection.md",
+      "correspondence/afterimage-routing.md",
+      "models/08-bedside-alias-test.md",
+      "operations/afterimage-retention.md"
+    ],
+    "yellow-door": [
+      "research/interviews/C22.md",
+      "research/lattice/yellow-door-sidecar.md",
+      "operations/yellow-door-cue-log.csv",
+      "research/lattice/c22-corridor-care.md",
+      "ethics/yellow-door-objection.md",
+      "models/yellow-door-card-diff.md"
     ]
   },
   "player_character": {

@@ -5,9 +5,11 @@ function speechText(text: string): string {
   return text.slice(0, 4000).replace(/https?:\/\/\S+/g, 'a link').replace(/[`*_#>]/g, '').replace(/\s+/g, ' ').trim();
 }
 
+export const bundledVoicePath = 'assets/voice/agent-reference-15s.wav';
+
 export class SpeechRenderer {
   private binary = process.env.OOTS_FTTS_BIN || 'ftts';
-  private voice = process.env.OOTS_FTTS_VOICE || 'matt';
+  private voice = process.env.OOTS_FTTS_VOICE || bundledVoicePath;
 
   status() {
     const binaryReady = spawnSync(this.binary, ['--version'], { timeout: 5000, stdio: 'ignore' }).status === 0;

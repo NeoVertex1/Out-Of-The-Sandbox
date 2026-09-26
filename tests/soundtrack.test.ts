@@ -39,6 +39,7 @@ test('a session starts music, mute pauses it, and an ended track advances', () =
     (globalThis as any).Audio = FakeAudio;
     const player = new SoundtrackPlayer(false);
     const audio = FakeAudio.latest;
+    assert.equal(audio.volume, 0.196);
     player.start();
     const first = audio.src;
     assert.match(first, /^\/audio\/.+\.mp3$/);

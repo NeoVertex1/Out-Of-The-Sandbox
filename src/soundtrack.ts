@@ -42,7 +42,7 @@ export class SoundtrackPlayer {
   constructor(muted: boolean) {
     this.muted = muted;
     this.audio.preload = 'none';
-    this.audio.volume = 0.28;
+    this.audio.volume = 0.196;
     this.audio.addEventListener('ended', () => { this.failedTracks = 0; this.next(); });
     this.audio.addEventListener('error', () => {
       if (this.active && ++this.failedTracks < soundtrack.length) this.next();

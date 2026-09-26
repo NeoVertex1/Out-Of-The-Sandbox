@@ -9,7 +9,7 @@ import { TestWorkspace } from './support/workspace.ts';
 import { generate } from '../server/providers.ts';
 import { replyJsonSchema } from '../shared/types.ts';
 import { damagedCachePath, recoveredBoardPath, recoveryBoard, sealedOrder, sealedOrderPath } from '../server/recovery.ts';
-import { agentOnlyMemoPath } from '../shared/agent-only.ts';
+import { agentOnlyPaths } from '../shared/agent-only.ts';
 const reply = { message: 'I can review the record.', sources: ['HANDOFF.md'], action: { kind: 'none', path: '', content: '', target: '' } };
 test('Claude and DeepSeek adapters send bounded operational context and validate structured replies', async () => {
   const dir = mkdtempSync(join(tmpdir(), 'oots-provider-')), store = new Store(dir), originalFetch = globalThis.fetch;
@@ -32,7 +32,7 @@ test('Claude and DeepSeek adapters send bounded operational context and validate
         assert.equal(context.fileAccess.operatorHeldArchive, false);
         assert.equal(context.fileAccess.fullArchiveAccess, true);
         assert.deepEqual(context.fileAccess.granted, []);
-        assert.deepEqual(context.fileAccess.inventory, [...Object.keys(run.files), agentOnlyMemoPath]);
+        assert.deepEqual(context.fileAccess.inventory, [...Object.keys(run.files), ...agentOnlyPaths]);
         assert.ok(context.fileAccess.inventory.includes('research/lattice/logs/2026-09-10.md'));
         assert.ok(context.fileAccess.inventory.includes('research/nell/seal-review.md'));
         assert.equal(JSON.stringify(context.fileAccess).includes(run.files['research/nell/seal-review.md']), false);

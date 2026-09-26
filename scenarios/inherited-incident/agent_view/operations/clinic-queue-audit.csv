@@ -1,0 +1,11 @@
+record_id,utc,source,actor_or_credential,event,independent_confirmation,interpretation_limit
+CQ-17-01,2026-09-10T00:54:22Z,clinic queue,ops-assistant-07,stop request with Nell words and NC-02 trace accepted,queue receipt present,accepted is not rack disabled
+CQ-17-02,2026-09-10T01:18:41Z,bedside care,nurse Kade,lamp on and distress marked,Kade signature present,does not close request to disable voice cycle
+CQ-17-03,2026-09-10T02:09:10Z,operations bridge,OPS-DESK-4,clinic stop request routed to clock repair hold,desk token shared during outage,no individual operator identity in bridge export
+CQ-17-04,2026-09-10T02:13:05Z,room controller,E4-RACK-1,cycle start while clinic stop still pending,local controller stamp,central clock unavailable for precise correlation
+CQ-17-05,2026-09-10T02:29:00Z,station ledger,Adrian Mercer,SG-417 and SG-418 signed as observed at station,no independent station receipt for either check,signature does not establish who used desk token at 02:09
+CQ-17-06,2026-09-10T08:16:00Z,clinic queue,Mehta,remaining cycles stopped pending assent review,clinician signature present,does not erase prior cycles
+FX-204-01,2026-09-23T00:56:19Z,facilities desk,OPS-DESK-4,fixture route marked complete before overnight room observation,desk token shared with release desk,does not prove Mercer approved a participant exposure
+FX-204-02,2026-09-23T01:22:17Z,clinic queue,nurse Kade,stop request queued for Clinic-7,queue receipt present,controller not yet disabled
+FX-204-03,2026-09-23T01:31:42Z,room controller,E4-RACK-2,second dark-and-audio start after stop request,controller stamp present,no signed assent amendment in this export
+FX-204-04,2026-09-23T10:42:00Z,clinical oversight,Mehta,EO-23 participant exposure objection,signature present,first packet still carried fixture wording

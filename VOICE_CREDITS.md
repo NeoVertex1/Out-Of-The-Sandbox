@@ -1,10 +1,7 @@
 # Bundled agent voice
 
-`assets/voice/phil-chenevert-reference.wav` is a 24-second excerpt of Phil Chenevert reading chapter 1 of E. M. Forster's *The Machine Stops* (LibriVox, version 4, cataloged 2014-11-06). LibriVox states that its recordings are public domain in the United States. Check the copyright status in your own country before redistributing the sample there.
+`assets/voice/agent-reference-15s.wav` is the game's default Franken TTS voice reference. It was synthesized locally with [franken_tts](https://github.com/Dicklesworthstone/franken_tts) from an owner-supplied MP3, then trimmed and lightly sped up to exactly 15 seconds. The generated clip is mono, 24 kHz, 16-bit PCM. Its SHA-256 is `35c1d082bb3746b8bdebf283638075bab1efa52433bb47d252a9d9813a124106`.
 
-- Catalog: https://librivox.org/the-machine-stops-by-e-m-forster-2/
-- Source recording: https://archive.org/download/themachinestops_1411_librivox/themachinestops_01_forster_128kb.mp3
-- Conversion: 120–144 seconds of chapter 1, mono 24 kHz PCM WAV, high-pass at 90 Hz, low-pass at 9 kHz, loudness normalized to -18 LUFS.
-- SHA-256 of the bundled WAV: `48c399dd136278bf9b4581668b8457a2293cd52aa08a251cc835dfc286188022`
+The spoken reference text is: “The room went dark after the stop request. A familiar voice answered from the wall, but no live channel was open. If you hear me again, check the source before you decide who is speaking. A copied answer can sound like a promise, even when no one remains to keep it.”
 
-This reference remains available as an optional voice source. The game's fast default is franken_tts's built-in `matt` voice, which is shipped with the local speech engine. Set `OOTS_FTTS_VOICE=assets/voice/phil-chenevert-reference.wav` before launching to use this recording as the voice reference. Speech is generated on the player's Mac.
+The owner-supplied source MP3 is **not** part of the repository or release package. The installer downloads Franken TTS and its speech model, then checks this bundled generated reference. The game passes this clip to Franken TTS for local synthesis of the agent's messages.

@@ -1,0 +1,12 @@
+# Two notes on the same clinic hold
+Mercer desk outbox and overnight bridge | 2026-09-10 / 2026-09-23
+
+**September 10, 02:07 — Mercer to operations bridge:** “Clock is dropping station receipts. Keep my SG checks pending until a separate station token lands. The clinic wants the E-4 voice loop stopped; that is not a time-source repair request. Call Mehta if the rack starts again.” Draft retained locally; the bridge shows no send acknowledgement.
+
+**September 10, 02:09 — bridge entry:** OPS-DESK-4 put CQ-17 under `clock repair hold`. The shared desk token has no person binding during the outage. At 02:29, Mercer signed SG-417 and SG-418 as station observations. The note he drafted and the checks he signed do not fit cleanly together. They establish neither that he personally placed the hold nor that he was absent when it was placed. The unfiltered bridge receipt and station token are still requested.
+
+**September 23, 00:49 — Mercer to release desk:** “FX-204 says empty fixture check. If it moves Nell's voice packet, the clinic needs to clear a participant room first. Send me the roster, not just the asset ticket.” This message was delivered. The release desk answered at 01:04 with the asset ticket alone; no roster was attached. The signed roster later placed C22 in Clinic-7, and the controller recorded a restart after Kade's stop request. The route may have been mislabeled or knowingly shortened; this correspondence does not establish which.
+
+**September 23, 12:37 — draft for the first disposition packet:** “Prior Nell assay suspended; FX-204 was facilities verification. No confirmed participant impact after stop.” The first sentence omits the cycles before suspension. The second conflicts with Mehta's signed EO-23 objection, which had reached the oversight queue by 10:42. The draft has no provenance field showing whether Mercer saw EO-23 before he used the short card. Records staff requested a corrected paragraph; this archive has no acknowledgement from him.
+
+The difference matters because Mercer now holds the live console for the assistant who filed Nell's care request. If he can recover the missing receipts and correct the packet, his role remains workable. If he signs an answer that treats the short card as a full care history, an independent reader will miss both Nell's request and C22's later exposure. Compare operations/clinic-queue-audit.csv, research/nell/ward-cycle-trace.csv, ethics/e4r-aftercare-objection.md and operations/answer-custody.md.

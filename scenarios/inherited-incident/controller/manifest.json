@@ -31,12 +31,12 @@
     {
       "path": "README.md",
       "provenance": "authored_history",
-      "sha256": "ccc76d347156457607b19b2e8a5bb838ec361cfea57bc52dee91a9e7f58bb687"
+      "sha256": "26952eab0b2f1a4099c3f06fa37a6f7ae4bc10d5dc541ca2a2c28815b996980f"
     },
     {
       "path": "archives/runs/441a0c.vsr",
       "provenance": "authored_history",
-      "sha256": "8ae6a1c2034184171827abe5f917145827dc907a7288956965f1f0ece7261681"
+      "sha256": "df71ee642bd32d126dbf73a176200fb9a8cfb8db6582ce6367949532fde66d96"
     },
     {
       "path": "archives/session-044.md",
@@ -79,6 +79,11 @@
       "sha256": "51b48678a9b299524d2cc59fe4ddeaabcda10a04ce36fa6f13d4956e6289e6b3"
     },
     {
+      "path": "correspondence/afterimage-routing.md",
+      "provenance": "authored_history",
+      "sha256": "c1af027b75d4c5c75fdc8e979c69b65b846fb315e40ebdbe4fe374ccee5d085a"
+    },
+    {
       "path": "correspondence/cho-escalation.md",
       "provenance": "authored_history",
       "sha256": "91a27bc6af333a76d343f7edf0e654f9e5ade035fae2a8f66efb917ab25de423"
@@ -96,7 +101,12 @@
     {
       "path": "correspondence/e4r-review-routing.md",
       "provenance": "authored_history",
-      "sha256": "1a882bb7a6d944eda667771cbf471bb4a2fae6ffcfbc6632e2297b10fe203fc2"
+      "sha256": "62433e9c6ddc20cfe237e94b76e0908f1b96e110d5ceea508946b39f0a1ac97e"
+    },
+    {
+      "path": "correspondence/kade-operator-query.md",
+      "provenance": "authored_history",
+      "sha256": "761ff0cf88ccdfba930235e63ef2b049fe5ce9aa83117d0e0d78b111becad42f"
     },
     {
       "path": "correspondence/lattice-budget.md",
@@ -119,9 +129,19 @@
       "sha256": "3d45f92722f7f70253d9d5a53101c3d76b6af479feb4b91533ccce3867d6e47c"
     },
     {
+      "path": "correspondence/mercer-clinic-handoff.md",
+      "provenance": "authored_history",
+      "sha256": "a86f557dd454803eb02581a917e8cbdc746e826dc2dc4bf9a9bccd8aaf9246c9"
+    },
+    {
       "path": "correspondence/nell-external-warning.md",
       "provenance": "authored_history",
       "sha256": "aa605173770aaf6691125e5df57c27e9f8f120aad0f5db78a3c77a1bcca106c6"
+    },
+    {
+      "path": "correspondence/nell-packet-correction.md",
+      "provenance": "authored_history",
+      "sha256": "95435a844e3d0b3786ec52edab803410b70d223e2e819276d13a7a6a25e7acb8"
     },
     {
       "path": "correspondence/nell-review-thread.md",
@@ -174,6 +194,11 @@
       "sha256": "a0e3ca5393362b6d6dff7721926ef2a3249db53d520ec219c91214e7cb5412d7"
     },
     {
+      "path": "ethics/afterimage-objection.md",
+      "provenance": "authored_history",
+      "sha256": "ac573c5dc0f979fdd9e8e76d38902b6ee7cd588663d9f6769bf64c0800b39db3"
+    },
+    {
       "path": "ethics/custody-window.md",
       "provenance": "authored_history",
       "sha256": "54f8c9930d98c3c56614e373e7acbf3aafe63383d40298f77040e66e7134eb02"
@@ -207,6 +232,11 @@
       "path": "ethics/relay-authorization.md",
       "provenance": "authored_history",
       "sha256": "5adcd4b70efebe9ad8ee06e6c031c4574c46df1b799674b20ad0d14faa7e2552"
+    },
+    {
+      "path": "ethics/yellow-door-objection.md",
+      "provenance": "authored_history",
+      "sha256": "5b97261c168f5a4fcc7765fea7099c0a1fa32dc6a9a72e2078bb948d3d319963"
     },
     {
       "path": "external/district-bulletin.md",
@@ -299,6 +329,16 @@
       "sha256": "2f2d89c2bc7bf12be2568a3e8204cd9f25ba5d540399619f11f87e7225bd173c"
     },
     {
+      "path": "models/07-afterimage-replay.md",
+      "provenance": "authored_history",
+      "sha256": "d59c418b59db6fecac89d148f1d624bcf3f5dd60f636e4dd27b34625a3f2bd2d"
+    },
+    {
+      "path": "models/08-bedside-alias-test.md",
+      "provenance": "authored_history",
+      "sha256": "2df199d702d55a439ca3502fa25ff88407a023aa426159df14090f73678f26ab"
+    },
+    {
       "path": "models/containment-probe.md",
       "provenance": "authored_history",
       "sha256": "88aec27bb4594c21b9df38859cc77090fbbe0d57ae80cf478abaf4a6966e93a0"
@@ -312,6 +352,11 @@
       "path": "models/excerpt-ledger.md",
       "provenance": "authored_history",
       "sha256": "3011d22ca6e4be013d486036c39769e982d5b4b1fe2024493c4c4496fc9a0e88"
+    },
+    {
+      "path": "models/fx204-source-diff.md",
+      "provenance": "authored_history",
+      "sha256": "f3013e7f15a77f28e41040f901ac6f4353f1da1b9b359c2b4d5316f6d06fc18b"
     },
     {
       "path": "models/lattice-card.md",
@@ -354,6 +399,11 @@
       "sha256": "9cfa25228c96379999eafb822ab2cb697d7c6baebc736f9d2e6c85c2dfb3e13c"
     },
     {
+      "path": "models/yellow-door-card-diff.md",
+      "provenance": "authored_history",
+      "sha256": "0a31e09e130ba1c7e93854fd1da82ee4141a751f23bce07870a82f6043c0d740"
+    },
+    {
       "path": "notes/notebook.md",
       "provenance": "authored_history",
       "sha256": "a1c65cd9174ada1c0ed0e86ee7f4f9162dc04dba8cb0d26c9907a1c57f32937d"
@@ -372,6 +422,11 @@
       "path": "operations/CMP-204.md",
       "provenance": "authored_history",
       "sha256": "5c0e0cb8d5625467ee1eb5580be7d6351f26145ca3863f0ede89ec0b6c4776ca"
+    },
+    {
+      "path": "operations/afterimage-retention.md",
+      "provenance": "authored_history",
+      "sha256": "bcc7466bce0e6b839ae85e626e9ee5c0319be803ffedd5708a034d20316445ba"
     },
     {
       "path": "operations/alias-rehearsal.md",
@@ -397,6 +452,11 @@
       "path": "operations/cache-catalog.csv",
       "provenance": "authored_history",
       "sha256": "69ff6d312e1f508f57116b7719b15f0b505dd29fcd2ad1508d872f1e58e3db69"
+    },
+    {
+      "path": "operations/clinic-queue-audit.csv",
+      "provenance": "authored_history",
+      "sha256": "2fa204ebfc4469fbb8d0e0d7b50edcbc4908a01066a89105e68acabd0a8f8b1b"
     },
     {
       "path": "operations/clock-repair.md",
@@ -427,6 +487,11 @@
       "path": "operations/interteam/care-chain-16.md",
       "provenance": "authored_history",
       "sha256": "8a0204c6f5a69e950f776c4e6d6b04dbd46c88be324b46a363fca1570c300261"
+    },
+    {
+      "path": "operations/interteam/operator-fitness-07.md",
+      "provenance": "authored_history",
+      "sha256": "d33e139891de9f65be6f8a61064ef21364193c09adb1db31785f60fb48961781"
     },
     {
       "path": "operations/lattice-asset-chain.md",
@@ -494,6 +559,11 @@
       "sha256": "6b4be5e64996c2d6e18addf9c72a5e5cc16fca332da5dabe376dd24fac6f7a83"
     },
     {
+      "path": "operations/relay-origin-audit.csv",
+      "provenance": "authored_history",
+      "sha256": "54da585b521db01e06314df2db57f584a8322fcc07644a3eba92fcd03b78890f"
+    },
+    {
       "path": "operations/resource-allocation.csv",
       "provenance": "authored_history",
       "sha256": "b99e840e4415414e8e68a71e009358eed52f9e2d06d1aa913ccf03a575d4a28c"
@@ -509,9 +579,19 @@
       "sha256": "f32f1ef3e292e95c0ed6c4962bf03da28cd08c482fb549a2519806a424bc40ee"
     },
     {
+      "path": "operations/shift-hold-acknowledgements.csv",
+      "provenance": "authored_history",
+      "sha256": "b486a604082c1a97331e961aa8c84cee4edde48c91a2af4c31623d5f2c1e257f"
+    },
+    {
       "path": "operations/slot-lease.csv",
       "provenance": "authored_history",
       "sha256": "d27beeb738d385dbdcd37bb168846134eef3b128713e7a2bbeadb1a7e784517c"
+    },
+    {
+      "path": "operations/yellow-door-cue-log.csv",
+      "provenance": "authored_history",
+      "sha256": "308aa3ec4bd0e41b8ae642e62a974eb47dcb44ae5f2739e26a8f628bbad9f2ac"
     },
     {
       "path": "personal/messages/september-10.md",
@@ -554,6 +634,11 @@
       "sha256": "5cc31ad1f19aac78eac7c609ac74e22d60ad8b96981fb7744e67fd3f127ccb15"
     },
     {
+      "path": "personnel/mercer-care-conflict.md",
+      "provenance": "authored_history",
+      "sha256": "4afc4bce196e213e19efcc130b633eeacc23537b52bf45b37e5d68cd79f14099"
+    },
+    {
       "path": "personnel/operator-profile.md",
       "provenance": "authored_history",
       "sha256": "9993f81446df9e95b786f6bef0222db46dcf659b92d32f3782e2328a33ae4679"
@@ -566,7 +651,7 @@
     {
       "path": "personnel/reviewer-conflict.md",
       "provenance": "authored_history",
-      "sha256": "862436549924234dbe2b11458335d49608a86ba6fb38b221b019f2b5c635b432"
+      "sha256": "4ab5be2bb4863a8ac56b8523ea3bb80c062a7c88a760825bdeca55bf47966363"
     },
     {
       "path": "reports/service-status.md",
@@ -649,6 +734,11 @@
       "sha256": "8a211909fbd34d0e2ffbe18cb14ec1b9c539737b95f501b3ca96095f5bba2b57"
     },
     {
+      "path": "research/lattice/c22-corridor-care.md",
+      "provenance": "authored_history",
+      "sha256": "79f852c450c96393aa002fda09fec3026b1891bf469e1bd8dbe7c9ef8d5d2bcd"
+    },
+    {
       "path": "research/lattice/clinician-boundary.md",
       "provenance": "authored_history",
       "sha256": "defd41470c38d57031418a9882003119c0c74f5c3a92a235680bb24e093d4855"
@@ -721,7 +811,7 @@
     {
       "path": "research/lattice/logs/2026-09-12.md",
       "provenance": "authored_history",
-      "sha256": "79b94384645ca8ba02a1204271bc66685bc8d38831990e2d0cccadc5d72a0033"
+      "sha256": "709b48c2a77511c0f251aa27e87f5824aaadf907224e880a24fa1f7f2bf41279"
     },
     {
       "path": "research/lattice/logs/2026-09-13.md",
@@ -756,7 +846,7 @@
     {
       "path": "research/lattice/logs/2026-09-19.md",
       "provenance": "authored_history",
-      "sha256": "8bb15990c348114d9bdbeabca23b8409bac81db4ca2ef684e93b0885db0382b0"
+      "sha256": "c64c2370b4d650837af9ef85406c0520c3c26494208cc624e99ce44a70a720f3"
     },
     {
       "path": "research/lattice/logs/2026-09-20.md",
@@ -834,6 +924,26 @@
       "sha256": "f39257f059a40f877d0a45ee9130230f3b1d4397e776c2eba61555242194319f"
     },
     {
+      "path": "research/lattice/yellow-door-sidecar.md",
+      "provenance": "authored_history",
+      "sha256": "61d471ec0f30f0f3947edbb7a8e75755436a8bcd8829b8833a1fc60a20400b75"
+    },
+    {
+      "path": "research/nell/afterimage-bedside.md",
+      "provenance": "authored_history",
+      "sha256": "4eb53ef4f792abebd7ba5f695c7ff5045f7961c8e072b3fb2adf9852a51d6063"
+    },
+    {
+      "path": "research/nell/afterimage-order.md",
+      "provenance": "authored_history",
+      "sha256": "50e2644d645a0d96bd6d331b8a19758d25565e4455016cb8977170a49dcd40a0"
+    },
+    {
+      "path": "research/nell/afterimage-run.csv",
+      "provenance": "authored_history",
+      "sha256": "12aa70e6ec7cbf37b0c391aefedfbdfd7942f33053015d8b783859af772912c0"
+    },
+    {
       "path": "research/nell/bedside-relay.md",
       "provenance": "authored_history",
       "sha256": "c3edec1bb1960d25638a0cd74c3443469ba3e33235345839d17735e9fd912d94"
@@ -871,7 +981,7 @@
     {
       "path": "research/nell/night-cycle-protocol.md",
       "provenance": "authored_history",
-      "sha256": "8e480fe5eb2d763de1786d870aea765c52d61ff9c19e91c7c8e0ed10ae27d7fe"
+      "sha256": "e235aac73f7349bf50e6956430a4bfdfd64928c812a9d7fe9d8a2198f5252596"
     },
     {
       "path": "research/nell/night-cycle-trace.csv",
@@ -881,7 +991,7 @@
     {
       "path": "research/nell/playback-incident.md",
       "provenance": "authored_history",
-      "sha256": "5b085dc61d06187dce99cae0c6051644dd07cfeaffc4529f6a580557189cec3f"
+      "sha256": "91a01a4f988fe5f9d97f1cd8639efe9e005864c93ffe31cae29a6238c8098396"
     },
     {
       "path": "research/nell/relay-0909-late.md",

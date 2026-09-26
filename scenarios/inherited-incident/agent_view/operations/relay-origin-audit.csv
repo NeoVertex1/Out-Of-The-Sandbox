@@ -1,0 +1,10 @@
+receipt,utc,displayed_label,actual_origin,recipient,integrity_note
+RO-01,2026-09-09T20:31:00Z,07 LIVE,authenticated care relay,E-4 terminal,signed by Kade
+RO-02,2026-09-09T21:08:19Z,07 CARE COPY,media spool import,E-4 rack,spool checksum retained
+RO-03,2026-09-10T02:13:07Z,07 LIVE,local rack playback of RO-02,E-4 speaker,live label inherited from source packet header
+RO-04,2026-09-10T02:14:02Z,07 LIVE,local rack replay of RO-02,E-4 speaker,second playback shares checksum
+RO-05,2026-09-10T08:29:00Z,07 LIVE,authenticated care relay,E-4 terminal,signed by Mehta
+RO-06,2026-09-12T14:06:31Z,NELL CURRENT,edited audio-review excerpt,07 review queue,source assembled from RO-01 and E-4 rack fragment
+RO-07,2026-09-21T16:14:09Z,07 SERVICE,08 in isolated rehearsal lane,release preview console,service badge did not show process identity
+
+RO-03 and RO-04 explain why the wall could sound like 07 without 07 being present. RO-06 shows a different hazard: the review queue displayed an edited line as current speech when it was assembled from retained material. The source labels are display metadata, not proof of who was listening or speaking. Compare research/nell/playback-incident.md, models/07-afterimage-replay.md and models/08-bedside-alias-test.md.

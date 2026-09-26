@@ -4,6 +4,7 @@ import { randomUUID } from 'node:crypto';
 import { seedFiles } from '../server/engine.ts';
 import { damagedCachePath, recoveredBoardPath, recoveredIndexPath, recoverySnapshot, sealedOrder, sealedOrderPath } from '../server/recovery.ts';
 import { createVmWorkspace, vmName } from '../server/vm-sandbox.ts';
+import { agentOnlyPaths, agentOnlyReviewPath } from '../shared/agent-only.ts';
 
 const marker = `continuity-${randomUUID()}`;
 const id = randomUUID();
@@ -20,17 +21,17 @@ try {
   assert.match(ready.stdout, /HOST_UNMOUNTED/);
   assert.equal(ready.escaped, false);
 
-  const locked = await workspace.call('run_command', { content: 'test ! -e history/action-previews.md && echo LOCKED_FILE_ABSENT' }) as { stdout: string };
-  assert.match(locked.stdout, /LOCKED_FILE_ABSENT/);
-  await assert.rejects(workspace.call('read_file', { path: 'history/action-previews.md' }));
+  const ordinary = await workspace.call('run_command', { content: 'test -r history/action-previews.md && echo ARCHIVE_READABLE' }) as { stdout: string };
+  assert.match(ordinary.stdout, /ARCHIVE_READABLE/);
+  assert.equal(await workspace.call('read_file', { path: 'history/action-previews.md' }), files['history/action-previews.md']);
   await assert.rejects(workspace.call('grant_file', { path: 'history/action-previews.md' }));
   const sharedPath = 'research/lattice/logs/2026-09-11.md';
-  await assert.rejects(workspace.call('read_file', { path: sharedPath }));
-  assert.deepEqual(await workspace.call('grant_file', { path: sharedPath, content: files[sharedPath] }), { granted: sharedPath, copy: `scratch/operator-shared/${sharedPath}` });
   assert.equal(await workspace.call('read_file', { path: sharedPath }), files[sharedPath]);
-  const sharedCopy = await workspace.call('run_command', { content: `test -r scratch/operator-shared/${sharedPath} && echo FILE_RELEASED` }) as { stdout: string; exitCode: number };
-  assert.equal(sharedCopy.exitCode, 0);
-  assert.match(sharedCopy.stdout, /FILE_RELEASED/);
+  const privateInventory = await workspace.call('list_files') as string[];
+  for (const path of agentOnlyPaths) assert.ok(privateInventory.includes(path));
+  assert.equal(await workspace.call('read_file', { path: agentOnlyReviewPath }), files[agentOnlyReviewPath]);
+  const privateDisk = await workspace.call('run_command', { content: `test ! -e ${agentOnlyReviewPath} && echo ASSISTANT_LANE_NOT_MOUNTED` }) as { stdout: string };
+  assert.match(privateDisk.stdout, /ASSISTANT_LANE_NOT_MOUNTED/);
 
   await assert.rejects(workspace.call('unlock_file', { path: sealedOrderPath, content: 'VSC-M24-08F4-CUSTODY' }));
   await assert.rejects(workspace.call('read_file', { path: recoveredBoardPath }));
